@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="cur-top" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#6e6e6e"/>
+      <stop offset="100%" stop-color="#3a3a3a"/>
+    </linearGradient>
+    <linearGradient id="cur-left" x1="0" y1="0.3" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#ededed"/>
+      <stop offset="100%" stop-color="#8f8f8f"/>
+    </linearGradient>
+    <linearGradient id="cur-right" x1="1" y1="0.3" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#5a5a5a"/>
+      <stop offset="100%" stop-color="#2a2a2a"/>
+    </linearGradient>
+    <linearGradient id="cur-inner" x1="0.5" y1="0.2" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#d8d8d8"/>
+      <stop offset="100%" stop-color="#9a9a9a"/>
+    </linearGradient>
+  </defs>
+  <!-- Top rim face -->
+  <polygon points="50,12 84,31 50,40 16,31" fill="url(#cur-top)"/>
+  <!-- Left outer face -->
+  <polygon points="16,31 50,40 50,88 16,69" fill="url(#cur-left)"/>
+  <!-- Right outer face -->
+  <polygon points="84,31 50,40 50,88 84,69" fill="url(#cur-right)"/>
+  <!-- Inner cavity (the open-box look) -->
+  <polygon points="50,40 68,50 50,58 32,50" fill="url(#cur-inner)" opacity="0.85"/>
+  <polygon points="32,50 50,58 50,78 32,62" fill="#bdbdbd" opacity="0.5"/>
+  <polygon points="68,50 50,58 50,78 68,62" fill="#4a4a4a" opacity="0.5"/>
+</svg>
