@@ -290,17 +290,14 @@ const sections = [
             <span class="loader-connector">&#8594;</span>
             <span class="loader-step">skill tool</span>
           </div>
-          <div class="mini-code">
-            <div class="mini-code__header">Example: GitHub issues / PRs</div>
-            <pre class="mini-code__pre"><code>{`{
-  "skills": ["./team-skills/github"]
-}
 
----
-name: github-triage
-description: Triage issues and PRs
----`}</code></pre>
+          <div class="intervenes intervenes--skill">
+            <span class="intervenes__label">Intervenes</span>
+            <p class="intervenes__when">Model calls the built-in <code>skill</code> tool mid-conversation</p>
+            <p class="intervenes__touches">Injects SKILL.md instructions + linked resources into the conversation context</p>
+            <span class="intervenes__direction">pulled &middot; model-initiated, on demand</span>
           </div>
+
           <p class="loader-card__note">Best for recurring playbooks, checklists, and domain habits inside one agent.</p>
         </div>
 
@@ -322,68 +319,195 @@ description: Triage issues and PRs
             <span class="loader-connector">&#8594;</span>
             <span class="loader-step">runtime seams</span>
           </div>
-          <div class="mini-code">
-            <div class="mini-code__header">Example package</div>
-            <pre class="mini-code__pre"><code>{`@plannotator/opencode
 
-plan review
-annotations
-feedback loop`}</code></pre>
+          <div class="intervenes intervenes--plugin">
+            <span class="intervenes__label">Intervenes</span>
+            <p class="intervenes__when">Runtime fires hooks at lifecycle points</p>
+            <div class="intervenes__hooks">
+              <code>chat.params</code>
+              <code>chat.message</code>
+              <code>chat.headers</code>
+              <code>tool.execute.before</code>
+              <code>tool.execute.after</code>
+              <code>tool.definition</code>
+              <code>permission.ask</code>
+              <code>experimental.session.compacting</code>
+              <code>provider</code>
+              <code>auth</code>
+              <span class="intervenes__hooks-more">&hellip;</span>
+            </div>
+            <span class="intervenes__direction">pushed &middot; runtime-fired, always-on</span>
           </div>
+
+          <p class="loader-card__example">e.g. Plannotator &mdash; plan review, annotations, feedback loop</p>
           <p class="loader-card__note">Good for provider defaults, org integrations, review UX, and workflow-layer extensions.</p>
         </div>
       </div>
-
-      <p class="deep-slide__takeaway">Skills and plugins both plug into the stock runtime. That still does not tell you how much of the agent experience they own.</p>
     </div>
   </Slide>
 
-  <!-- Slide 7: Packaging vs control scope -->
-  <Slide id="extensibility">
-    <div class="content-slide deep-slide deep-slide--usage deep-slide--practice">
-      <p class="overline">Key Distinction</p>
-      <h2>Packaging vs <span class="highlight">Control Scope</span></h2>
-      <p class="lead deep-slide__lead">
-        <code>plugin</code> says how something installs. <code>harness</code> says how much of the agent loop it owns.
+  <!-- Slide 6.5: What the code actually looks like -->
+  <Slide id="extensibility-code" variant="accent">
+    <div class="content-slide code-interlude">
+      <p class="overline">What It Actually Looks Like</p>
+      <h2>Skill &amp; Plugin, <span class="highlight">in Code</span></h2>
+      <p class="lead code-interlude__lead">
+        A skill is markdown content. A plugin is a function that returns hook callbacks. Both wire into the same runtime &mdash; very differently.
       </p>
 
-      <div class="scope-compare">
-        <div class="scope-compare__card scope-compare__card--plugin">
-          <span class="scope-compare__eyebrow">Installs as a plugin</span>
-          <h3>Runtime Plugin</h3>
-          <p class="scope-compare__summary">
-            Extends the stock runtime without taking over orchestration.
-          </p>
-          <ul class="scope-compare__list">
-            <li>hooks like <code>catalog.transform</code> and <code>aisdk.sdk</code></li>
-            <li>provider defaults, SDK wiring, workflow-layer UX</li>
-            <li>OpenCode still owns delegation and control flow</li>
+      <div class="code-interlude__grid">
+        <!-- Skill side: SKILL.md -->
+        <div class="code-pane code-pane--skill">
+          <div class="code-pane__header">
+            <span class="code-pane__filename">SKILL.md</span>
+            <span class="code-pane__lang">markdown</span>
+          </div>
+          <pre class="code-pane__pre"><code><span class="code-mark code-mark--1">---
+name: cloudflare
+description: Comprehensive Cloudflare platform skill
+  covering Workers, Pages, KV, D1, R2, AI, &hellip;
+---</span>
+
+<span class="code-mark code-mark--2"># Cloudflare Platform Skill
+
+Consolidated skill for building on Cloudflare.
+Use decision trees to pick the right product,
+then load detailed references.</span></code></pre>
+          <ul class="code-notes">
+            <li><span class="code-notes__chip code-notes__chip--1">1</span><span class="code-notes__text"><strong>frontmatter</strong> &mdash; how the loader discovers this skill</span></li>
+            <li><span class="code-notes__chip code-notes__chip--2">2</span><span class="code-notes__text"><strong>body</strong> &mdash; injected into the conversation when the model calls the <code>skill</code> tool</span></li>
           </ul>
-          <p class="scope-compare__example">Examples: provider plugins, Plannotator</p>
+          <div class="code-pane__caption">
+            <span class="code-pane__caption-label">flow:</span>
+            <span><code>skills[]</code> discovers it &middot; model decides to load it &middot; content injected as tool output</span>
+          </div>
         </div>
 
-        <div class="scope-compare__divider">vs</div>
+        <!-- Plugin side: TypeScript -->
+        <div class="code-pane code-pane--plugin">
+          <div class="code-pane__header">
+            <span class="code-pane__filename">cloudflare.ts</span>
+            <span class="code-pane__lang">typescript</span>
+          </div>
+          <pre class="code-pane__pre"><code><Fragment set:html={`<span class="code-keyword">import</span> { Plugin } <span class="code-keyword">from</span> <span class="code-string">"@opencode-ai/plugin"</span>
 
-        <div class="scope-compare__card scope-compare__card--harness">
-          <span class="scope-compare__eyebrow">May also ship as a plugin</span>
-          <h3>Harness Pack</h3>
-          <p class="scope-compare__summary">
-            Owns orchestration, delegation, and the working style itself.
-          </p>
-          <ul class="scope-compare__list">
-            <li>subagents, planner/executor loops, reviewer flows</li>
-            <li><code>steer</code> / <code>queue</code>, <code>run</code> / <code>wake</code>, retry / resume policy</li>
-            <li>the extension now decides how the agent loop behaves</li>
+<span class="code-keyword">export const</span> <span class="code-fn">CloudflarePlugin</span>: Plugin = <span class="code-keyword">async</span> () =&gt; {
+  <span class="code-keyword">return</span> <span class="code-mark code-mark--1">{
+    <span class="code-mark code-mark--2"><span class="code-string">"chat.params"</span></span>: <span class="code-keyword">async</span> (input, output) =&gt; {
+      <span class="code-keyword">if</span> (input.model.providerID !== <span class="code-string">"cloudflare"</span>) <span class="code-keyword">return</span>
+      <span class="code-mark code-mark--3">output.maxOutputTokens = <span class="code-keyword">undefined</span></span>
+    },
+  }</span>
+}`} /></code></pre>
+          <ul class="code-notes">
+            <li><span class="code-notes__chip code-notes__chip--1">1</span><span class="code-notes__text"><strong>Hooks object</strong> &mdash; the contract the runtime reads</span></li>
+            <li><span class="code-notes__chip code-notes__chip--2">2</span><span class="code-notes__text"><strong>hook key</strong> &mdash; the lifecycle point this fires at</span></li>
+            <li><span class="code-notes__chip code-notes__chip--3">3</span><span class="code-notes__text"><strong>mutation</strong> &mdash; changes the outgoing LLM call</span></li>
           </ul>
-          <p class="scope-compare__example">Example: Oh-My-OpenAgent</p>
+          <div class="code-pane__caption">
+            <span class="code-pane__caption-label">flow:</span>
+            <span><code>PluginBoot</code> registers it &middot; runtime fires <code>chat.params</code> every turn &middot; this function mutates the outgoing call</span>
+          </div>
         </div>
       </div>
 
-      <div class="scope-compare__note">
-        Same packaging shape, different scope: once orchestration becomes the customization, you are effectively shipping a harness pack.
+      <div class="code-interlude__contrast">
+        <span class="code-interlude__contrast-item code-interlude__contrast-item--skill">
+          <span class="code-interlude__contrast-label">Skill</span>
+          content the model can opt into
+        </span>
+        <span class="code-interlude__contrast-divider">vs</span>
+        <span class="code-interlude__contrast-item code-interlude__contrast-item--plugin">
+          <span class="code-interlude__contrast-label">Plugin</span>
+          code the runtime calls into
+        </span>
+      </div>
+    </div>
+  </Slide>
+
+  <!-- Slide 7: Deep dive — Oh-My-OpenAgent as a harness pack -->
+  <Slide id="extensibility" variant="dark">
+    <div class="content-slide deep-slide deep-slide--practice omo-slide">
+      <p class="overline">When a Plugin Becomes a Harness</p>
+      <h2>Deep Dive &mdash; <span class="highlight">Oh-My-OpenAgent</span></h2>
+      <p class="lead deep-slide__lead">
+        Installs as a plugin. Replaces the working style.
+      </p>
+
+      <!-- Three-layer architecture sitting on top of the runtime echo from slide 5 -->
+      <div class="omo-architecture" aria-label="Oh-My-OpenAgent architecture">
+        <div class="omo-layer omo-layer--planning">
+          <span class="omo-layer__kicker">Planning</span>
+          <div class="omo-layer__agents">
+            <span class="omo-agent omo-agent--lead">Prometheus</span>
+            <span class="omo-agent">Metis</span>
+            <span class="omo-agent">Momus</span>
+          </div>
+          <span class="omo-layer__note">interview &middot; gap-check &middot; review</span>
+        </div>
+
+        <span class="omo-arrow" aria-hidden="true">&rarr;</span>
+
+        <div class="omo-layer omo-layer--execution">
+          <span class="omo-layer__kicker">Execution</span>
+          <div class="omo-layer__agents">
+            <span class="omo-agent omo-agent--lead">Atlas</span>
+          </div>
+          <span class="omo-layer__note">reads plan &middot; delegates &middot; verifies</span>
+        </div>
+
+        <span class="omo-arrow" aria-hidden="true">&rarr;</span>
+
+        <div class="omo-layer omo-layer--workers">
+          <span class="omo-layer__kicker">Workers</span>
+          <div class="omo-layer__agents omo-layer__agents--grid">
+            <span class="omo-agent omo-agent--lead">Hephaestus</span>
+            <span class="omo-agent">Oracle</span>
+            <span class="omo-agent">Explore</span>
+            <span class="omo-agent">Librarian</span>
+            <span class="omo-agent">Multimodal-Looker</span>
+            <span class="omo-agent">+ dynamic agent</span>
+          </div>
+          <span class="omo-layer__note">specialized by intent, not model name</span>
+        </div>
       </div>
 
-      <p class="deep-slide__takeaway">Plugin is packaging. Harness is scope of control.</p>
+      <div class="omo-runtime-base" aria-label="Runs inside the OpenCode runtime">
+        <span class="omo-runtime-base__label">runs inside</span>
+        <div class="omo-runtime-base__strip">
+          <span>Session API</span>
+          <span>SessionRunner</span>
+          <span>ToolRegistry</span>
+          <span>EventV2</span>
+        </div>
+        <span class="omo-runtime-base__caption">the OpenCode runtime from slide 5</span>
+      </div>
+
+      <!-- Workflow narrative (option C) -->
+      <div class="omo-workflow">
+        <span class="omo-workflow__kicker">How a task flows through it</span>
+        <ol class="omo-workflow__steps">
+          <li><span class="omo-workflow__num">1</span><span class="omo-workflow__text">User types <code>ulw</code> (Ultra Work mode)</span></li>
+          <li><span class="omo-workflow__num">2</span><span class="omo-workflow__text">Prometheus interviews + explores &rarr; Metis catches gaps &rarr; Momus reviews</span></li>
+          <li><span class="omo-workflow__num">3</span><span class="omo-workflow__text">Plan + session state tracked in <code>boulder.json</code></span></li>
+          <li><span class="omo-workflow__num">4</span><span class="omo-workflow__text">Atlas reads the verified plan and delegates to specialists</span></li>
+          <li><span class="omo-workflow__num">5</span><span class="omo-workflow__text">Workers return results + learnings; Atlas verifies, loops or reports</span></li>
+        </ol>
+      </div>
+
+      <!-- Category routing strip — concrete grounding for "owns the choreography" -->
+      <div class="omo-routing">
+        <span class="omo-routing__label">Routing by intent:</span>
+        <span class="omo-routing__chip"><code>deep</code> &rarr; GPT-5.5 Medium</span>
+        <span class="omo-routing__chip"><code>visual-engineering</code> &rarr; Gemini 3.1 Pro</span>
+        <span class="omo-routing__chip"><code>quick</code> &rarr; GPT-5.4 Mini</span>
+        <span class="omo-routing__chip"><code>ultrabrain</code> &rarr; GPT-5.5 xHigh</span>
+      </div>
+
+      <div class="omo-takeaway">
+        <p class="omo-takeaway__line">OpenCode owns the engine. <span class="omo-takeaway__accent">OmO owns the choreography.</span></p>
+        <p class="omo-takeaway__sub">That&rsquo;s the difference between a plugin and a harness pack.</p>
+      </div>
     </div>
   </Slide>
 
@@ -1844,6 +1968,104 @@ feedback loop`}</code></pre>
     color: var(--color-text);
   }
 
+  .loader-card__example {
+    align-self: flex-start;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+    background: rgba(20, 184, 166, 0.08);
+    border: 1px solid rgba(20, 184, 166, 0.18);
+    font-size: 0.76rem;
+    color: #0f766e;
+    line-height: 1.4;
+  }
+
+  /* Intervention block: when + what + direction */
+  .intervenes {
+    margin-top: 0.2rem;
+    padding: 0.6rem 0.7rem 0.65rem;
+    border-radius: 0.7rem;
+    background: rgba(15, 23, 42, 0.03);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .intervenes__label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+  }
+
+  .intervenes__when {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--color-text);
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .intervenes__when code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    padding: 0.04em 0.3em;
+    border-radius: 0.3em;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--color-accent-dim);
+    font-weight: 500;
+  }
+
+  .intervenes__touches {
+    margin: 0;
+    font-size: 0.76rem;
+    color: var(--color-text-muted);
+    line-height: 1.45;
+  }
+
+  .intervenes__hooks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .intervenes__hooks code {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.14rem 0.4rem;
+    border-radius: 0.35rem;
+    background: rgba(20, 184, 166, 0.08);
+    border: 1px solid rgba(20, 184, 166, 0.16);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #0f766e;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .intervenes__hooks-more {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.14rem 0.4rem;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+
+  .intervenes__direction {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .intervenes--skill .intervenes__direction {
+    color: #6366f1;
+  }
+
+  .intervenes--plugin .intervenes__direction {
+    color: #0f766e;
+  }
+
   .loader-flow {
     display: flex;
     flex-wrap: wrap;
@@ -1924,112 +2146,537 @@ feedback loop`}</code></pre>
     background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(17, 24, 39, 1));
   }
 
-  .scope-compare {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    gap: 0.85rem;
-    align-items: stretch;
-    margin-top: 1.2rem;
+  /* ===== Slide 7: Oh-My-OpenAgent deep dive ===== */
+  .omo-slide {
+    max-width: 70rem;
   }
 
-  .scope-compare__card {
+  /* Three-layer architecture: planning | execution | workers (workers wider) */
+  .omo-architecture {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 0.8fr) auto minmax(0, 1.6fr);
+    gap: 0.7rem;
+    align-items: stretch;
+    margin-top: 0.85rem;
+  }
+
+  .omo-layer {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
-    padding: 1rem 1rem 1.05rem;
-    border-radius: 1.15rem;
+    gap: 0.55rem;
+    padding: 0.85rem 0.9rem 0.95rem;
+    border-radius: 1.1rem;
     background: #ffffff;
     border: 1px solid rgba(226, 232, 240, 0.95);
     box-shadow: 0 18px 34px -30px rgba(15, 23, 42, 0.14);
     overflow: hidden;
   }
 
-  .scope-compare__card::before {
+  .omo-layer::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 3px;
-    background: var(--scope-accent, rgba(148, 163, 184, 0.5));
+    background: var(--omo-accent, rgba(148, 163, 184, 0.5));
   }
 
-  .scope-compare__card--plugin { --scope-accent: linear-gradient(90deg, #14b8a6, #0f766e); }
-  .scope-compare__card--harness { --scope-accent: linear-gradient(90deg, #f59e0b, #f97316); }
+  .omo-layer--planning { --omo-accent: linear-gradient(90deg, #6366f1, #8b5cf6); }
+  .omo-layer--execution { --omo-accent: linear-gradient(90deg, #f59e0b, #f97316); }
+  .omo-layer--workers { --omo-accent: linear-gradient(90deg, #14b8a6, #0f766e); }
 
-  .scope-compare__eyebrow {
+  .omo-layer__kicker {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     color: var(--color-accent);
   }
 
-  .scope-compare__card h3 {
-    font-size: 1.12rem;
-    line-height: 1.2;
+  .omo-layer__agents {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.32rem;
   }
 
-  .scope-compare__summary,
-  .scope-compare__example {
-    font-size: 0.84rem;
-    color: var(--color-text-muted);
-    line-height: 1.55;
-  }
-
-  .scope-compare__list {
+  .omo-layer__agents--grid {
     display: grid;
-    gap: 0.45rem;
-    padding-left: 1.1rem;
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    gap: 0.3rem;
   }
 
-  .scope-compare__list li {
-    font-size: 0.82rem;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-  }
-
-  .scope-compare__list code {
+  .omo-agent {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.28rem 0.55rem;
+    border-radius: 0.55rem;
+    background: rgba(248, 250, 252, 0.95);
+    border: 1px solid rgba(226, 232, 240, 0.9);
     font-family: var(--font-mono);
-    font-size: 0.8em;
+    font-size: 0.74rem;
     color: var(--color-text);
+    white-space: nowrap;
   }
 
-  .scope-compare__divider {
+  .omo-agent--lead {
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(99, 102, 241, 0.32);
+    color: var(--color-text);
+    font-weight: 600;
+    box-shadow: 0 4px 10px -8px rgba(99, 102, 241, 0.35);
+  }
+
+  .omo-layer--execution .omo-agent--lead {
+    border-color: rgba(245, 158, 11, 0.38);
+    box-shadow: 0 4px 10px -8px rgba(245, 158, 11, 0.4);
+  }
+
+  .omo-layer--workers .omo-agent--lead {
+    border-color: rgba(20, 184, 166, 0.38);
+    box-shadow: 0 4px 10px -8px rgba(20, 184, 166, 0.4);
+  }
+
+  .omo-layer__note {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .omo-arrow {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 2.25rem;
-    font-size: 0.78rem;
-    font-weight: 700;
+    font-size: 1.15rem;
+    color: rgba(148, 163, 184, 0.85);
+    font-weight: 300;
+  }
+
+  /* Runtime echo — compressed reference back to slide 5 */
+  .omo-runtime-base {
+    margin-top: 0.6rem;
+    padding: 0.55rem 0.95rem 0.6rem;
+    border-radius: 0.95rem;
+    background: rgba(15, 23, 42, 0.035);
+    border: 1px dashed rgba(15, 23, 42, 0.12);
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .omo-runtime-base__label {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     color: var(--color-text-muted);
   }
 
-  .scope-compare__note {
-    margin-top: 0.85rem;
-    padding: 0.85rem 1rem;
+  .omo-runtime-base__strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-text);
+  }
+
+  .omo-runtime-base__strip span {
+    position: relative;
+  }
+
+  .omo-runtime-base__strip span:not(:last-child)::after {
+    content: '·';
+    position: absolute;
+    right: -0.75rem;
+    color: rgba(148, 163, 184, 0.7);
+  }
+
+  .omo-runtime-base__caption {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  /* Workflow narrative — numbered steps showing how a task flows through OmO */
+  .omo-workflow {
+    margin-top: 0.7rem;
+    padding: 0.7rem 1rem 0.8rem;
     border-radius: 1rem;
+    background: rgba(99, 102, 241, 0.04);
+    border: 1px solid rgba(99, 102, 241, 0.1);
+  }
+
+  .omo-workflow__kicker {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .omo-workflow__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .omo-workflow__steps li {
+    display: grid;
+    grid-template-columns: 1.55rem 1fr;
+    gap: 0.55rem;
+    align-items: baseline;
+    font-size: 0.84rem;
+    color: var(--color-text);
+    line-height: 1.45;
+  }
+
+  .omo-workflow__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .omo-workflow__text code {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    padding: 0.05em 0.32em;
+    border-radius: 0.3em;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--color-accent-dim);
+  }
+
+  /* Routing strip — concrete category→model evidence */
+  .omo-routing {
+    margin-top: 0.65rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.55rem;
+  }
+
+  .omo-routing__label {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .omo-routing__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
     background: rgba(20, 184, 166, 0.08);
-    border: 1px solid rgba(20, 184, 166, 0.14);
+    border: 1px solid rgba(20, 184, 166, 0.18);
+    font-size: 0.78rem;
     color: #0f766e;
-    font-size: 0.86rem;
-    line-height: 1.55;
+  }
+
+  .omo-routing__chip code {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    color: #0f766e;
+    font-weight: 600;
+  }
+
+  /* Punchline — replaces the inline pill takeaway for this slide only */
+  .omo-takeaway {
+    margin-top: 0.85rem;
+    padding: 0.8rem 1.05rem 0.9rem;
+    border-radius: 1.1rem;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+    color: #ffffff;
+    box-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.5);
+  }
+
+  .omo-takeaway__line {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .omo-takeaway__accent {
+    color: #5eead4;
+  }
+
+  .omo-takeaway__sub {
+    margin: 0.35rem 0 0;
+    font-size: 0.82rem;
+    color: rgba(226, 232, 240, 0.7);
+    line-height: 1.5;
+  }
+
+  /* ===== Slide 6.5: Skill & plugin code interlude ===== */
+  .code-interlude {
+    max-width: 70rem;
+  }
+
+  .code-interlude__lead {
+    max-width: 45rem;
+  }
+
+  .code-interlude__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .code-pane {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.95rem;
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 18px 34px -30px rgba(15, 23, 42, 0.16);
+    overflow: hidden;
+  }
+
+  .code-pane__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0.85rem;
+    background: rgba(248, 250, 252, 0.95);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  }
+
+  .code-pane__filename {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .code-pane__lang {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+
+  .code-pane__pre {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    background: #fbfbfd;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    line-height: 1.6;
+    color: #1e293b;
+    overflow-x: auto;
+    white-space: pre;
+    flex: 1;
+  }
+
+  /* Numbered notes below the code, mapped 1:1 to marked regions above */
+  .code-notes {
+    list-style: none;
+    margin: 0;
+    padding: 0.6rem 0.95rem 0.55rem;
+    display: grid;
+    gap: 0.32rem;
+    background: rgba(248, 250, 252, 0.6);
+    border-top: 1px solid rgba(226, 232, 240, 0.7);
+  }
+
+  .code-notes li {
+    display: grid;
+    grid-template-columns: 1.3rem 1fr;
+    gap: 0.5rem;
+    align-items: baseline;
+    font-size: 0.74rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .code-notes li strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .code-notes li code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    padding: 0 0.25em;
+    border-radius: 0.25em;
+    background: rgba(15, 23, 42, 0.05);
+    color: var(--color-text);
+  }
+
+  .code-notes__chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+  }
+
+  .code-pane__caption {
+    padding: 0.55rem 0.85rem 0.65rem;
+    background: rgba(248, 250, 252, 0.7);
+    border-top: 1px solid rgba(226, 232, 240, 0.9);
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .code-pane__caption-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .code-pane__caption code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    padding: 0.04em 0.3em;
+    border-radius: 0.3em;
+    background: rgba(99, 102, 241, 0.08);
+    color: var(--color-accent-dim);
+  }
+
+  /* Code syntax — :global() so styles reach set:html-injected spans */
+  :global(.code-keyword) { color: #7c3aed; font-weight: 500; }
+  :global(.code-string) { color: #0f766e; }
+  :global(.code-fn) { color: #1d4ed8; font-weight: 500; }
+
+  /* Marked code region: colored highlight + numbered badge before the content */
+  :global(.code-mark) {
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 0.2em;
+    padding: 0 0.15em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    position: relative;
+  }
+
+  :global(.code-mark::before) {
+    content: counter(mark-num);
+    counter-increment: mark-num;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: var(--mark-color, #6366f1);
+    color: #ffffff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    margin-right: 0.35em;
+    vertical-align: 0.05em;
+    font-family: var(--font-mono);
+    line-height: 1;
+  }
+
+  :global(.code-pane--skill .code-pane__pre code),
+  :global(.code-pane--plugin .code-pane__pre code) {
+    counter-reset: mark-num;
+  }
+
+  :global(.code-mark--1) { --mark-color: #6366f1; }
+  :global(.code-mark--2) { --mark-color: #8b5cf6; }
+  :global(.code-mark--3) { --mark-color: #a855f7; }
+
+  :global(.code-pane--plugin .code-mark) {
+    background: rgba(20, 184, 166, 0.1);
+  }
+  :global(.code-pane--plugin .code-mark--1) { --mark-color: #14b8a6; }
+  :global(.code-pane--plugin .code-mark--2) { --mark-color: #0d9488; }
+  :global(.code-pane--plugin .code-mark--3) { --mark-color: #0f766e; }
+
+  /* Numbered chip colors matching the marks */
+  .code-pane--skill .code-notes__chip--1 { background: #6366f1; }
+  .code-pane--skill .code-notes__chip--2 { background: #8b5cf6; }
+  .code-pane--skill .code-notes__chip--3 { background: #a855f7; }
+  .code-pane--plugin .code-notes__chip--1 { background: #14b8a6; }
+  .code-pane--plugin .code-notes__chip--2 { background: #0d9488; }
+  .code-pane--plugin .code-notes__chip--3 { background: #0f766e; }
+
+  /* Final contrast strip — names the difference */
+  .code-interlude__contrast {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    margin-top: 1.1rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0.85rem;
+    background: rgba(15, 23, 42, 0.04);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    font-size: 0.85rem;
+    color: var(--color-text);
+  }
+
+  .code-interlude__contrast-item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+  }
+
+  .code-interlude__contrast-label {
+    font-weight: 700;
+    color: var(--color-accent-dim);
+  }
+
+  .code-interlude__contrast-item--plugin .code-interlude__contrast-label {
+    color: #0f766e;
+  }
+
+  .code-interlude__contrast-divider {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    font-weight: 700;
   }
 
   @media (max-width: 1100px) {
     .loader-grid {
       grid-template-columns: 1fr;
     }
-  }
 
-  @media (max-width: 900px) {
-    .scope-compare {
+    .omo-architecture {
       grid-template-columns: 1fr;
     }
 
-    .scope-compare__divider {
-      min-height: 1.8rem;
+    .omo-arrow {
+      transform: rotate(90deg);
+      padding: 0.2rem 0;
+    }
+
+    .code-interlude__grid {
+      grid-template-columns: 1fr;
     }
   }
 
