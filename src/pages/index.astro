@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import Slide from '../components/Slide.astro';
 import Nav from '../components/Nav.astro';
-import Card from '../components/Card.astro';
 import CodeBlock from '../components/CodeBlock.astro';
 
 const sections = [
@@ -10,7 +9,9 @@ const sections = [
   { id: 'what', label: 'Who\'s Who' },
   { id: 'landscape', label: 'Anatomy' },
   { id: 'how', label: 'Why It Generalizes' },
-  { id: 'workflows', label: 'Capabilities' },
+  { id: 'workflows', label: 'Runtime' },
+  { id: 'harness', label: 'Harness' },
+  { id: 'extensibility', label: 'Extensions' },
   { id: 'demo', label: 'Demo' },
   { id: 'tradeoffs', label: 'Trade-offs' },
   { id: 'takeaways', label: 'Takeaways' },
@@ -42,9 +43,6 @@ const sections = [
       <div class="scatter-text">
         <p class="overline">The Market Right Now</p>
         <h2>Coding Agents Are<br /><span class="highlight">Everywhere</span></h2>
-        <p class="scatter-footnote">
-          Today we zoom in on <strong>OpenCode</strong> — our agent of choice inside the company.
-        </p>
       </div>
       <div class="scatter-logo" style="--x: 8%; --y: 8%; --size: 6rem; --rot: -12deg; --delay: 0s; --float-dur: 5.5s; --float-offset: -0.4s;">
         <img src="/logos/claude.png" alt="Claude Code" />
@@ -70,6 +68,10 @@ const sections = [
         <img src="/logos/cursor.svg" alt="Cursor" />
         <span>Cursor</span>
       </div>
+      <div class="scatter-logo" style="--x: 43%; --y: 11%; --size: 5rem; --rot: 3deg; --delay: 0.6s; --float-dur: 5.8s; --float-offset: -1.9s;">
+        <img src="/logos/pi.svg" alt="Pi" />
+        <span>Pi</span>
+      </div>
     </div>
   </Slide>
 
@@ -80,7 +82,7 @@ const sections = [
       <h2>So What <em>Is</em> a Coding Agent?</h2>
       <p class="lead">
         Strip away the branding and it's simple:
-        <strong>a model doing CodeAct, wrapped in a lot of harness.</strong>
+        <strong>a model doing CodeAct, wrapped in a harness.</strong>
       </p>
 
       <div class="anatomy">
@@ -98,13 +100,14 @@ const sections = [
             <span class="tag">context</span>
             <span class="tag">the loop</span>
             <span class="tag">memory</span>
+            <span class="tag">tools</span>
             <span class="tag">permissions</span>
           </div>
 
           <!-- Middle ring: CodeAct -->
           <div class="layer layer--codeact">
             <span class="layer__label">CodeAct</span>
-            <span class="layer__sub">acts by writing &amp; running code</span>
+            <span class="layer__sub">acts through code &amp; tools</span>
 
             <!-- Core: the model -->
             <div class="layer layer--model">
@@ -154,7 +157,7 @@ const sections = [
         </div>
 
         <!-- Middle: systems column -->
-        <div class="flow__col">
+        <div class="flow__col flow__col--sys">
           <span class="flow__col-header">Systems</span>
           <div class="flow__chips">
             <span class="flow__chip flow__chip--sys" style="--i:0">APIs</span>
@@ -173,7 +176,7 @@ const sections = [
         </div>
 
         <!-- Right: knowledge work column (the payoff — visually dominant) -->
-        <div class="flow__col">
+        <div class="flow__col flow__col--work">
           <span class="flow__col-header">Knowledge Work</span>
           <div class="flow__chips">
             <span class="flow__chip flow__chip--work" style="--i:6">Research</span>
@@ -192,94 +195,199 @@ const sections = [
     </div>
   </Slide>
 
-  <!-- Slide 5: OpenCode architecture — clean centered diagram -->
+  <!-- Slide 5: OpenCode architecture — grounded in the actual core runtime -->
   <Slide id="workflows" variant="accent">
-    <div class="content-slide arc">
+    <div class="content-slide runtime">
       <p class="overline">Inside OpenCode</p>
-      <h2>The <span class="highlight">Architecture</span></h2>
+      <h2>What the Runtime <span class="highlight">Actually Looks Like</span></h2>
+      <p class="lead runtime__lead">
+        OpenCode is split three ways: process-global session scheduling, a cached runtime per
+        location, and one durable <code>SessionRunner</code> loop that assembles context, model,
+        and tools for each provider turn.
+      </p>
 
-      <!-- The diagram — a single centered visual -->
-      <div class="arc__diagram">
-        <!-- Main pipeline row -->
-        <div class="arc__pipeline">
-          <div class="arc__stage arc__stage--input">
-            <div class="arc__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12h16m0 0-5-5m5 5-5 5"/></svg>
+      <div class="runtime__diagram">
+        <div class="runtime__strip" aria-label="Process-global runtime control">
+          <span class="runtime__strip-item"><strong>Session API</strong><small>admit / resume</small></span>
+          <span class="runtime__strip-item"><strong>Drain Coordinator</strong><small>one active run</small></span>
+          <span class="runtime__strip-item"><strong>Location Runtime</strong><small>cached per workspace</small></span>
+        </div>
+
+        <div class="runtime__frame">
+          <span class="runtime__frame-label">Location-scoped runtime</span>
+          <div class="runtime__compact">
+            <div class="runtime__core">
+              <span class="runtime__kicker">Per-turn loop</span>
+              <span class="runtime__core-title">SessionRunner</span>
+              <span class="runtime__core-sub">one <code>llm.stream(...)</code> turn at a time</span>
+              <div class="runtime__pipeline">
+                <span class="runtime__pill">context</span>
+                <span class="runtime__pill">model</span>
+                <span class="runtime__pill">tools</span>
+                <span class="runtime__pill">events</span>
+                <span class="runtime__pill">continue</span>
+              </div>
             </div>
-            <span class="arc__name">Input</span>
-            <span class="arc__meta">steer &middot; queue</span>
-          </div>
 
-          <svg class="arc__connector" viewBox="0 0 40 8"><path d="M0 4h40" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3"/></svg>
-
-          <div class="arc__stage arc__stage--ctx">
-            <div class="arc__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <div class="runtime__support-grid">
+              <div class="runtime__support">
+                <span class="runtime__kicker">SessionStore</span>
+                <span class="runtime__support-title">History</span>
+              </div>
+              <div class="runtime__support">
+                <span class="runtime__kicker">Catalog</span>
+                <span class="runtime__support-title">Models</span>
+              </div>
+              <div class="runtime__support">
+                <span class="runtime__kicker">ToolRegistry</span>
+                <span class="runtime__support-title">Tools</span>
+              </div>
+              <div class="runtime__support">
+                <span class="runtime__kicker">Compaction</span>
+                <span class="runtime__support-title">Memory</span>
+              </div>
             </div>
-            <span class="arc__name">Context</span>
-            <span class="arc__meta">SystemContext &middot; History &middot; Epoch</span>
-          </div>
-
-          <svg class="arc__connector" viewBox="0 0 40 8"><path d="M0 4h40" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3"/></svg>
-
-          <div class="arc__stage arc__stage--llm">
-            <div class="arc__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-            </div>
-            <span class="arc__name">LLM</span>
-            <span class="arc__meta">Anthropic &middot; OpenAI &middot; Bedrock</span>
-          </div>
-
-          <svg class="arc__connector" viewBox="0 0 40 8"><path d="M0 4h40" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3"/></svg>
-
-          <div class="arc__stage arc__stage--tools">
-            <div class="arc__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            </div>
-            <span class="arc__name">Tools</span>
-            <span class="arc__meta">bash &middot; read &middot; write &middot; edit &middot; MCP</span>
-          </div>
-
-          <svg class="arc__connector" viewBox="0 0 40 8"><path d="M0 4h40" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3"/></svg>
-
-          <div class="arc__stage arc__stage--persist">
-            <div class="arc__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 5v6c0 1.66-4.03 3-9 3s-9-1.34-9-3V5"/><path d="M21 11v6c0 1.66-4.03 3-9 3s-9-1.34-9-3v-6"/></svg>
-            </div>
-            <span class="arc__name">Persist</span>
-            <span class="arc__meta">SQLite &middot; Events &middot; ToolOutput</span>
           </div>
         </div>
 
-        <!-- Loop indicator -->
-        <div class="arc__loop-bar">
-          <span class="arc__loop-text">&larr; results feed back &middot; up to 25 iterations per session &rarr;</span>
+        <div class="runtime__store-card runtime__store-card--compact">
+          <span class="runtime__kicker">EventV2 &middot; SessionProjector &middot; SQLite</span>
+          <span class="runtime__store-title">Replayable durable state</span>
         </div>
 
-        <!-- Supporting systems -->
-        <div class="arc__supports">
-          <div class="arc__support">
-            <span class="arc__support-label">Compaction</span>
-            <span class="arc__support-desc">20K&rarr;8K auto-summarize</span>
-          </div>
-          <div class="arc__support">
-            <span class="arc__support-label">Permissions</span>
-            <span class="arc__support-desc">allow &middot; ask &middot; deny</span>
-          </div>
-          <div class="arc__support">
-            <span class="arc__support-label">Skills &amp; Plugins</span>
-            <span class="arc__support-desc">markdown &middot; hooks</span>
-          </div>
-          <div class="arc__support">
-            <span class="arc__support-label">MCP</span>
-            <span class="arc__support-desc">local &middot; remote servers</span>
-          </div>
-        </div>
+        <p class="runtime__caption">
+          One idea: admit work globally, execute inside a location runtime, persist every turn as replayable state.
+        </p>
       </div>
     </div>
   </Slide>
 
-  <!-- Slide 6: Demo / Code example -->
+  <!-- Slide 6: How OpenCode loads extensions -->
+  <Slide id="harness" variant="dark">
+    <div class="content-slide deep-slide deep-slide--usage">
+      <p class="overline">Advanced Usage</p>
+      <h2>How OpenCode Loads <span class="highlight">Extensions</span></h2>
+      <p class="lead deep-slide__lead">
+        Skills and plugins enter OpenCode through different loading paths, but both extend the stock runtime.
+      </p>
+
+      <div class="loader-grid">
+        <div class="loader-card loader-card--skill">
+          <div class="loader-card__header">
+            <span class="loader-card__kicker">Behavior Layer</span>
+            <h3>Skills</h3>
+          </div>
+          <p class="loader-card__text">
+            <code>skills[]</code> points to local roots or URLs. The skill loader discovers
+            <code>SKILL.md</code>, parses frontmatter, and exposes those skills for intentional loading.
+          </p>
+          <div class="loader-flow">
+            <span class="loader-step">skills[]</span>
+            <span class="loader-connector">&#8594;</span>
+            <span class="loader-step">discover</span>
+            <span class="loader-connector">&#8594;</span>
+            <span class="loader-step">SKILL.md</span>
+            <span class="loader-connector">&#8594;</span>
+            <span class="loader-step">skill tool</span>
+          </div>
+          <div class="mini-code">
+            <div class="mini-code__header">Example: GitHub issues / PRs</div>
+            <pre class="mini-code__pre"><code>{`{
+  "skills": ["./team-skills/github"]
+}
+
+---
+name: github-triage
+description: Triage issues and PRs
+---`}</code></pre>
+          </div>
+          <p class="loader-card__note">Best for recurring playbooks, checklists, and domain habits inside one agent.</p>
+        </div>
+
+        <div class="loader-card loader-card--plugin">
+          <div class="loader-card__header">
+            <span class="loader-card__kicker">Runtime Seam Layer</span>
+            <h3>Plugins</h3>
+          </div>
+          <p class="loader-card__text">
+            <code>PluginBoot</code> loads packages, plugins register ordered hooks,
+            and those hooks mutate narrow seams like catalog defaults, SDK wiring, or review flows.
+          </p>
+          <div class="loader-flow">
+            <span class="loader-step">PluginBoot</span>
+            <span class="loader-connector">&#8594;</span>
+            <span class="loader-step">PluginV2</span>
+            <span class="loader-connector">&#8594;</span>
+            <span class="loader-step">hooks</span>
+            <span class="loader-connector">&#8594;</span>
+            <span class="loader-step">runtime seams</span>
+          </div>
+          <div class="mini-code">
+            <div class="mini-code__header">Example package</div>
+            <pre class="mini-code__pre"><code>{`@plannotator/opencode
+
+plan review
+annotations
+feedback loop`}</code></pre>
+          </div>
+          <p class="loader-card__note">Good for provider defaults, org integrations, review UX, and workflow-layer extensions.</p>
+        </div>
+      </div>
+
+      <p class="deep-slide__takeaway">Skills and plugins both plug into the stock runtime. That still does not tell you how much of the agent experience they own.</p>
+    </div>
+  </Slide>
+
+  <!-- Slide 7: Packaging vs control scope -->
+  <Slide id="extensibility">
+    <div class="content-slide deep-slide deep-slide--usage deep-slide--practice">
+      <p class="overline">Key Distinction</p>
+      <h2>Packaging vs <span class="highlight">Control Scope</span></h2>
+      <p class="lead deep-slide__lead">
+        <code>plugin</code> says how something installs. <code>harness</code> says how much of the agent loop it owns.
+      </p>
+
+      <div class="scope-compare">
+        <div class="scope-compare__card scope-compare__card--plugin">
+          <span class="scope-compare__eyebrow">Installs as a plugin</span>
+          <h3>Runtime Plugin</h3>
+          <p class="scope-compare__summary">
+            Extends the stock runtime without taking over orchestration.
+          </p>
+          <ul class="scope-compare__list">
+            <li>hooks like <code>catalog.transform</code> and <code>aisdk.sdk</code></li>
+            <li>provider defaults, SDK wiring, workflow-layer UX</li>
+            <li>OpenCode still owns delegation and control flow</li>
+          </ul>
+          <p class="scope-compare__example">Examples: provider plugins, Plannotator</p>
+        </div>
+
+        <div class="scope-compare__divider">vs</div>
+
+        <div class="scope-compare__card scope-compare__card--harness">
+          <span class="scope-compare__eyebrow">May also ship as a plugin</span>
+          <h3>Harness Pack</h3>
+          <p class="scope-compare__summary">
+            Owns orchestration, delegation, and the working style itself.
+          </p>
+          <ul class="scope-compare__list">
+            <li>subagents, planner/executor loops, reviewer flows</li>
+            <li><code>steer</code> / <code>queue</code>, <code>run</code> / <code>wake</code>, retry / resume policy</li>
+            <li>the extension now decides how the agent loop behaves</li>
+          </ul>
+          <p class="scope-compare__example">Example: Oh-My-OpenAgent</p>
+        </div>
+      </div>
+
+      <div class="scope-compare__note">
+        Same packaging shape, different scope: once orchestration becomes the customization, you are effectively shipping a harness pack.
+      </div>
+
+      <p class="deep-slide__takeaway">Plugin is packaging. Harness is scope of control.</p>
+    </div>
+  </Slide>
+
+  <!-- Slide 8: Demo / Code example -->
   <Slide id="demo">
     <div class="content-slide">
       <p class="overline">Example</p>
@@ -308,7 +416,7 @@ const sections = [
     </div>
   </Slide>
 
-  <!-- Slide 7: Trade-offs -->
+  <!-- Slide 9: Trade-offs -->
   <Slide id="tradeoffs" variant="accent">
     <div class="content-slide">
       <p class="overline">Honest Take</p>
@@ -337,7 +445,7 @@ const sections = [
     </div>
   </Slide>
 
-  <!-- Slide 8: Key takeaways -->
+  <!-- Slide 10: Key takeaways -->
   <Slide id="takeaways" variant="dark">
     <div class="content-slide takeaway-slide">
       <p class="overline">Wrapping Up</p>
@@ -864,19 +972,56 @@ const sections = [
 
   /* ===== Flow diagram: CODE → systems → knowledge work ===== */
   .control-slide {
+    position: relative;
     text-align: center;
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  .control-slide::before,
+  .control-slide::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    filter: blur(24px);
+    z-index: 0;
+    opacity: 0.45;
+  }
+
+  .control-slide::before {
+    top: -4rem;
+    left: 16%;
+    width: 15rem;
+    height: 15rem;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.09), transparent 72%);
+  }
+
+  .control-slide::after {
+    right: 8%;
+    bottom: -3rem;
+    width: 11rem;
+    height: 11rem;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.08), transparent 74%);
+  }
+
+  .control-slide > * {
+    position: relative;
+    z-index: 1;
   }
 
   .overline--glow {
     color: var(--color-accent);
+    display: inline-block;
   }
 
   .control-title {
-    font-size: clamp(1.8rem, 4.5vw, 3rem);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
     font-weight: 700;
-    line-height: 1.12;
+    line-height: 1.04;
+    letter-spacing: -0.04em;
     color: var(--color-text);
-    margin-bottom: 1rem;
+    max-width: 13ch;
+    margin: 0.95rem auto 1.1rem;
   }
 
   .control-title__accent {
@@ -887,9 +1032,9 @@ const sections = [
   }
 
   .control-lead {
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 1.45vw, 1.14rem);
     color: var(--color-text-muted);
-    max-width: 38rem;
+    max-width: 36rem;
     margin: 0 auto;
     line-height: 1.55;
   }
@@ -900,8 +1045,9 @@ const sections = [
   }
 
   .control-caption {
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     color: var(--color-text-muted);
+    font-weight: 500;
     max-width: 38rem;
     margin: 0 auto;
     line-height: 1.5;
@@ -909,17 +1055,59 @@ const sections = [
 
   /* Three-column flow layout */
   .flow {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0;
-    max-width: 60rem;
-    margin: 2.5rem auto 1.5rem;
+    gap: clamp(0.7rem, 1.5vw, 1rem);
+    max-width: 64rem;
+    margin: 2.75rem auto 1.5rem;
+    padding: 2rem clamp(1.2rem, 3vw, 1.8rem);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(99, 102, 241, 0.06);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 249, 255, 0.98));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 18px 40px -34px rgba(15, 23, 42, 0.12);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .flow::before {
+    content: '';
+    position: absolute;
+    inset: 1rem;
+    inset: 1.1rem;
+    border-radius: 0;
+    border: 0;
+    pointer-events: none;
+  }
+
+  .flow::after {
+    content: '';
+    position: absolute;
+    left: 14%;
+    right: 14%;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(203, 213, 225, 0), rgba(203, 213, 225, 0.9) 28%, rgba(203, 213, 225, 0.9) 72%, rgba(203, 213, 225, 0));
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  .flow > * {
+    position: relative;
+    z-index: 1;
   }
 
   /* Left hub: the code orb */
   .flow__hub {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.45rem 0 0.25rem;
   }
 
   .flow__orb {
@@ -929,19 +1117,29 @@ const sections = [
     align-items: center;
     justify-content: center;
     gap: 0.3rem;
-    width: clamp(6rem, 12vw, 7.5rem);
-    height: clamp(6rem, 12vw, 7.5rem);
+    width: clamp(6.1rem, 10vw, 7rem);
+    height: clamp(6.1rem, 10vw, 7rem);
     border-radius: 50%;
     background:
       radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 42%),
       radial-gradient(circle at 38% 32%, #8b93ff 0%, #5b63e8 42%, #4338ca 78%, #3730a3 100%);
+    border: 1px solid rgba(255, 255, 255, 0.65);
     box-shadow:
       0 0 0 1px rgba(255, 255, 255, 0.9),
-      0 0 0 6px rgba(99, 102, 241, 0.1),
-      0 0 44px -4px rgba(99, 102, 241, 0.5),
-      0 16px 40px -10px rgba(67, 56, 202, 0.45),
+      0 0 0 4px rgba(99, 102, 241, 0.05),
+      0 0 28px -14px rgba(99, 102, 241, 0.18),
+      0 14px 24px -18px rgba(67, 56, 202, 0.24),
       inset 0 3px 16px rgba(255, 255, 255, 0.4),
       inset 0 -8px 18px rgba(55, 48, 140, 0.5);
+  }
+
+  .flow__orb::after {
+    content: '';
+    position: absolute;
+    inset: -7%;
+    border-radius: 50%;
+    border: 1px solid rgba(99, 102, 241, 0.08);
+    pointer-events: none;
   }
 
   .flow__orb-glow {
@@ -977,57 +1175,85 @@ const sections = [
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0 clamp(0.75rem, 2.5vw, 1.75rem);
+    gap: 0.5rem;
+    min-width: 4.5rem;
+    padding: 0 clamp(0.3rem, 1.6vw, 0.85rem);
     flex-shrink: 0;
   }
 
   .flow__arrow-label {
-    font-size: 0.72rem;
-    font-weight: 500;
+    font-size: 0.64rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.16em;
     color: var(--color-text-muted);
+    padding: 0;
   }
 
   .flow__arrow-svg {
-    width: 2.4rem;
-    color: var(--color-accent);
-    opacity: 0.55;
+    width: 2.35rem;
+    color: #94a3b8;
+    opacity: 1;
+    filter: none;
   }
 
   /* Middle + right columns */
   .flow__col {
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.65rem;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 1.05rem 1.05rem 1.1rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(229, 231, 235, 0.95);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 10px 24px -24px rgba(15, 23, 42, 0.16);
+    min-width: min(16rem, 100%);
+  }
+
+  .flow__col--sys {
+    background: #ffffff;
+  }
+
+  .flow__col--work {
+    border-color: rgba(99, 102, 241, 0.1);
+    background: rgba(248, 247, 255, 0.96);
+    box-shadow: 0 12px 24px -24px rgba(79, 70, 229, 0.12);
+    min-width: min(17rem, 100%);
   }
 
   .flow__col-header {
-    font-size: 0.72rem;
+    font-size: 0.66rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     color: var(--color-text-muted);
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.05rem;
   }
 
   .flow__chips {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0.55rem;
-    max-width: 16rem;
+    width: 100%;
+    max-width: none;
   }
 
   /* Base chip */
   .flow__chip {
-    font-size: 0.88rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.84rem;
     font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 0.6rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    line-height: 1;
+    min-height: 2.2rem;
+    padding: 0.58rem 0.92rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
     opacity: 0;
     animation: chip-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     animation-delay: calc(0.3s + var(--i) * 0.06s);
@@ -1040,25 +1266,26 @@ const sections = [
   /* Systems chips (the plumbing) — quieter */
   .flow__chip--sys {
     color: var(--color-text-muted);
-    background: #f5f6fa;
-    border: 1px solid var(--color-border);
+    background: #f8fafc;
+    border: 1px solid rgba(229, 231, 235, 0.95);
+    box-shadow: none;
   }
 
   .flow__chip--sys:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 18px -12px rgba(15, 23, 42, 0.22);
     color: var(--color-text);
   }
 
   /* Work chips (the payoff) — visually dominant */
   .flow__chip--work {
     color: var(--color-accent-dim);
-    background: linear-gradient(180deg, #ffffff, #f1efff);
-    border: 1.5px solid rgba(99, 102, 241, 0.35);
-    box-shadow: 0 4px 14px -4px rgba(79, 70, 229, 0.22);
+    background: #f5f3ff;
+    border: 1px solid rgba(99, 102, 241, 0.22);
+    box-shadow: none;
   }
 
   .flow__chip--work:hover {
-    box-shadow: 0 6px 20px -4px rgba(79, 70, 229, 0.35);
+    box-shadow: 0 8px 16px -16px rgba(79, 70, 229, 0.18);
   }
 
   @keyframes chip-in {
@@ -1073,205 +1300,788 @@ const sections = [
   @media (max-width: 640px) {
     .flow {
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.95rem;
+      padding: 1.35rem 0.95rem 1.5rem;
+    }
+
+    .flow::after {
+      display: none;
     }
 
     .flow__arrow {
-      transform: rotate(90deg);
+      flex-direction: row;
+      min-width: 0;
       padding: 0;
     }
 
+    .flow__arrow-svg {
+      transform: rotate(90deg);
+      width: 2.25rem;
+    }
+
+    .flow__col {
+      align-items: center;
+      width: min(100%, 24rem);
+    }
+
+    .flow__col--work {
+      transform: none;
+    }
+
+    .flow__col-header {
+      align-self: center;
+    }
+
     .flow__chips {
+      justify-content: center;
       max-width: none;
     }
   }
 
-  /* ===== Slide 5: Architecture diagram ===== */
-  .arc {
+  /* ===== Slide 5: OpenCode runtime architecture ===== */
+  .runtime {
+    position: relative;
     text-align: center;
-    max-width: 58rem;
+    max-width: 64rem;
     margin: 0 auto;
   }
 
-  .arc__diagram {
-    margin-top: 1.75rem;
+  .runtime::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 4.5rem;
+    width: 36rem;
+    height: 14rem;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.12), transparent 70%);
+    filter: blur(36px);
+    pointer-events: none;
   }
 
-  /* Main pipeline — the horizontal flow */
-  .arc__pipeline {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
+  .runtime > * {
+    position: relative;
+    z-index: 1;
   }
 
-  /* Each stage card */
-  .arc__stage {
+  .runtime__lead {
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+  }
+
+  .runtime__diagram {
+    margin-top: 1.45rem;
+  }
+
+  .runtime__strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    width: min(100%, 44rem);
+    margin: 0 auto;
+    padding: 0.35rem;
+    border-radius: 1.1rem;
+    background: linear-gradient(180deg, #ffffff, #fbfcff);
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 12px 24px -24px rgba(15, 23, 42, 0.14);
+  }
+
+  .runtime__strip-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.4rem;
-    padding: 1.1rem 1rem 1rem;
+    justify-content: center;
+    gap: 0.08rem;
+    min-height: 4rem;
+    padding: 0.55rem 0.8rem;
     border-radius: 0.85rem;
+    background: transparent;
+    transition: background 0.2s ease;
+  }
+
+  .runtime__strip-item:hover {
+    background: rgba(248, 250, 252, 0.92);
+  }
+
+  .runtime__strip-item:not(:last-child) {
+    border-right: 1px solid rgba(226, 232, 240, 0.9);
+  }
+
+  .runtime__strip-item strong {
+    font-size: 0.86rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .runtime__strip-item small {
+    font-size: 0.67rem;
+    color: var(--color-text-muted);
+  }
+
+  .runtime__strip-arrow {
+    display: none;
+  }
+
+  .runtime__band {
+    margin-bottom: 0.9rem;
+  }
+
+  .runtime__band-label,
+  .runtime__frame-label,
+  .runtime__store-label {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.65rem;
+  }
+
+  .runtime__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .runtime__top-arrow {
+    width: 2.4rem;
+    height: 0.75rem;
+    color: #94a3b8;
+    flex-shrink: 0;
+  }
+
+  .runtime__node,
+  .runtime__support,
+  .runtime__store-card {
     background: #ffffff;
-    border: 1px solid var(--color-border);
-    min-width: 8.5rem;
-    box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.04),
-      0 8px 24px -8px rgba(0, 0, 0, 0.06);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 10px 24px -22px rgba(15, 23, 42, 0.14);
+  }
+
+  .runtime__node {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.95rem 1rem;
+    border-radius: 1.05rem;
+    min-height: 6.5rem;
+    justify-content: center;
+  }
+
+  .runtime__node--plain {
+    text-align: left;
+  }
+
+  .runtime__node-title,
+  .runtime__support-title,
+  .runtime__store-title,
+  .runtime__core-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.25;
+  }
+
+  .runtime__kicker {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--color-accent);
+  }
+
+  .runtime__node-meta,
+  .runtime__support-meta,
+  .runtime__store-meta,
+  .runtime__core-sub {
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+
+  .runtime__node-meta code,
+  .runtime__support-meta code,
+  .runtime__core-sub code {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+  }
+
+  .runtime__frame {
     position: relative;
-  }
-
-  .arc__stage:hover {
-    transform: translateY(-4px);
+    margin: 1rem auto 0.75rem;
+    padding: 1rem 1rem 0.95rem;
+    border-radius: 1.35rem;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    background: linear-gradient(180deg, #fcfcff, #fafbff);
     box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.04),
-      0 16px 36px -8px rgba(0, 0, 0, 0.1);
+      inset 0 1px 0 rgba(255, 255, 255, 0.92),
+      0 18px 38px -34px rgba(15, 23, 42, 0.18);
+    overflow: hidden;
+    isolation: isolate;
   }
 
-  /* Colored top accent per stage */
-  .arc__stage::before {
+  .runtime__frame-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.28rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(99, 102, 241, 0.08);
+    color: var(--color-accent-dim);
+  }
+
+  .runtime__frame::before {
+    display: none;
+  }
+
+  .runtime__frame::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: 28rem;
+    height: 12rem;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent 68%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .runtime__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.45fr) minmax(0, 1.05fr);
+    grid-template-areas:
+      '. top .'
+      'left core right'
+      '. bottom .';
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .runtime__compact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .runtime__support-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    gap: 0.55rem;
+  }
+
+  .runtime__support {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.22rem;
+    justify-content: center;
+    min-height: 4rem;
+    padding: 0.8rem 0.7rem;
+    border-radius: 0.85rem;
+    text-align: center;
+    background: linear-gradient(180deg, #ffffff, #f8fafc);
+    box-shadow: none;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .runtime__support:hover {
+    transform: translateY(-1px);
+    border-color: rgba(203, 213, 225, 0.95);
+  }
+
+  .runtime__support::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 1rem;
-    right: 1rem;
-    height: 3px;
-    border-radius: 0 0 3px 3px;
-  }
-
-  .arc__stage--input::before { background: #94a3b8; }
-  .arc__stage--ctx::before { background: #6366f1; }
-  .arc__stage--llm::before { background: #a78bfa; }
-  .arc__stage--tools::before { background: #2dd4bf; }
-  .arc__stage--persist::before { background: #fbbf24; }
-
-  /* Icon circle */
-  .arc__icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-bg-card);
-    border: 1.5px solid var(--color-border);
-  }
-
-  .arc__icon svg {
-    width: 1.2rem;
-    height: 1.2rem;
-    color: var(--color-text-muted);
-  }
-
-  .arc__stage:hover .arc__icon {
-    border-color: var(--color-accent);
-  }
-
-  .arc__stage:hover .arc__icon svg {
-    color: var(--color-accent);
-  }
-
-  .arc__name {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--color-text);
-  }
-
-  .arc__meta {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    color: var(--color-text-muted);
-    line-height: 1.45;
-    text-align: center;
-  }
-
-  /* Dashed connector lines between stages */
-  .arc__connector {
-    width: 2.5rem;
-    height: 0.5rem;
-    flex-shrink: 0;
-    color: var(--color-border);
-  }
-
-  /* Loop indicator bar */
-  .arc__loop-bar {
-    margin: 1rem auto;
-    padding: 0.45rem 1.5rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 2px;
     border-radius: 999px;
-    background: rgba(99, 102, 241, 0.06);
-    border: 1px solid rgba(99, 102, 241, 0.15);
-    display: inline-flex;
-    align-items: center;
+    background: var(--runtime-support-accent, rgba(148, 163, 184, 0.5));
   }
 
-  .arc__loop-text {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--color-accent);
-    letter-spacing: 0.02em;
+  .runtime__support:nth-child(1) { --runtime-support-accent: rgba(99, 102, 241, 0.5); }
+  .runtime__support:nth-child(2) { --runtime-support-accent: rgba(139, 92, 246, 0.45); }
+  .runtime__support:nth-child(3) { --runtime-support-accent: rgba(45, 212, 191, 0.5); }
+  .runtime__support:nth-child(4) { --runtime-support-accent: rgba(251, 191, 36, 0.55); }
+
+  .runtime__support .runtime__kicker {
+    color: var(--color-text-muted);
   }
 
-  /* Supporting subsystems row */
-  .arc__supports {
-    display: flex;
-    justify-content: center;
-    gap: 0.6rem;
-    margin-top: 0.75rem;
+  .runtime__support-title {
+    font-size: 0.9rem;
   }
 
-  .arc__support {
+  .runtime__support--top { grid-area: top; }
+  .runtime__support--left { grid-area: left; }
+  .runtime__support--right { grid-area: right; }
+  .runtime__support--bottom { grid-area: bottom; }
+
+  .runtime__core {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.15rem;
-    padding: 0.55rem 1rem;
-    border-radius: 0.6rem;
+    gap: 0.5rem;
+    justify-content: center;
+    width: min(100%, 26rem);
+    padding: 0.95rem 0.9rem 0.9rem;
+    border-radius: 1rem;
+    background: linear-gradient(180deg, #ffffff, #f8f6ff);
+    border: 1px solid rgba(129, 140, 248, 0.2);
+    box-shadow:
+      0 20px 42px -34px rgba(79, 70, 229, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    overflow: hidden;
+  }
+
+  .runtime__core::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 35%);
+    pointer-events: none;
+  }
+
+  .runtime__core .runtime__kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .runtime__core::before {
+    display: none;
+  }
+
+  .runtime__pipeline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+    max-width: 20rem;
+  }
+
+  .runtime__pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1.7rem;
+    padding: 0.34rem 0.58rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--color-accent-dim);
+    background: #f8f7ff;
+    border: 1px solid rgba(99, 102, 241, 0.12);
+  }
+
+  .runtime__store {
+    position: relative;
+    margin-top: 0.95rem;
+  }
+
+  .runtime__store::before {
+    display: none;
+  }
+
+  .runtime__store-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.85rem 1rem;
+    border-radius: 1rem;
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  .runtime__store-card--compact {
+    align-items: center;
+    width: min(100%, 34rem);
+    max-width: 34rem;
+    padding: 0.7rem 1rem;
+    background: linear-gradient(180deg, #ffffff, #fafbff);
+    border-color: rgba(99, 102, 241, 0.08);
+    box-shadow: 0 12px 26px -24px rgba(79, 70, 229, 0.16);
+  }
+
+  .runtime__caption {
+    margin-top: 0.75rem;
+    font-size: 0.86rem;
+    color: #64748b;
+    max-width: 44rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ===== Slide 6-7: Advanced usage ===== */
+  .deep-slide {
+    position: relative;
+    max-width: 66rem;
+    margin: 0 auto;
+  }
+
+  .deep-slide::before {
+    content: '';
+    position: absolute;
+    top: 5rem;
+    right: 8%;
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    filter: blur(36px);
+    pointer-events: none;
+    opacity: 0.72;
+  }
+
+  .deep-slide--usage::before {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.12), transparent 70%);
+  }
+
+  .deep-slide--practice::before {
+    background: radial-gradient(circle, rgba(20, 184, 166, 0.12), transparent 70%);
+  }
+
+  .deep-slide > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .deep-slide__lead {
+    max-width: 43rem;
+    margin-bottom: 0;
+  }
+
+  .deep-slide__takeaway {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.42rem 0.8rem;
+    border-radius: 999px;
+    margin-top: 0.8rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-accent-dim);
+    border: 1px solid rgba(99, 102, 241, 0.12);
+    background: rgba(255, 255, 255, 0.82);
+  }
+
+  .deep-slide--practice .deep-slide__takeaway {
+    color: #0f766e;
+    border-color: rgba(20, 184, 166, 0.16);
+  }
+
+  .loader-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+
+  .loader-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 1rem 1.05rem;
+    border-radius: 1.15rem;
     background: #ffffff;
-    border: 1px solid var(--color-border);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 18px 34px -30px rgba(15, 23, 42, 0.16);
+    overflow: hidden;
   }
 
-  .arc__support:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  .loader-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--loader-accent, rgba(148, 163, 184, 0.5));
   }
 
-  .arc__support-label {
-    font-size: 0.78rem;
-    font-weight: 700;
+  .loader-card--skill { --loader-accent: linear-gradient(90deg, #6366f1, #8b5cf6); }
+  .loader-card--plugin { --loader-accent: linear-gradient(90deg, #14b8a6, #0f766e); }
+
+  .loader-card__header {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .loader-card__kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--color-accent);
+  }
+
+  .loader-card__header h3 {
+    font-size: 1.08rem;
+    line-height: 1.2;
+  }
+
+  .loader-card__text,
+  .loader-card__note {
+    font-size: 0.84rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+
+  .loader-card__text code {
+    font-family: var(--font-mono);
+    font-size: 0.8em;
     color: var(--color-text);
   }
 
-  .arc__support-desc {
+  .loader-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .loader-step,
+  .loader-connector {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1.85rem;
+    border-radius: 999px;
+    font-size: 0.73rem;
+    font-weight: 600;
+  }
+
+  .loader-step {
+    padding: 0.36rem 0.68rem;
+    color: var(--color-accent-dim);
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.12);
+  }
+
+  .loader-card--plugin .loader-step {
+    color: #0f766e;
+    background: rgba(20, 184, 166, 0.08);
+    border-color: rgba(20, 184, 166, 0.14);
+  }
+
+  .loader-connector {
+    min-width: 1.4rem;
+    color: #94a3b8;
+  }
+
+  .mini-code {
+    border-radius: 0.95rem;
+    overflow: hidden;
+    background: #0f172a;
+    border: 1px solid rgba(30, 41, 59, 0.95);
+    box-shadow: 0 18px 36px -30px rgba(15, 23, 42, 0.34);
+  }
+
+  .mini-code__header {
+    position: relative;
+    padding: 0.6rem 0.85rem 0.6rem 3.7rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #a5b4fc;
+    background: rgba(15, 23, 42, 0.96);
+    border-bottom: 1px solid rgba(51, 65, 85, 0.9);
+  }
+
+  .mini-code__header::before {
+    content: '';
+    position: absolute;
+    left: 0.95rem;
+    top: 50%;
+    width: 1.9rem;
+    height: 0.52rem;
+    transform: translateY(-50%);
+    background:
+      radial-gradient(circle, #fb7185 55%, transparent 56%) 0 50% / 0.52rem 0.52rem no-repeat,
+      radial-gradient(circle, #fbbf24 55%, transparent 56%) 0.7rem 50% / 0.52rem 0.52rem no-repeat,
+      radial-gradient(circle, #34d399 55%, transparent 56%) 1.4rem 50% / 0.52rem 0.52rem no-repeat;
+  }
+
+  .mini-code__pre {
+    margin: 0;
+    padding: 0.75rem 0.85rem;
     font-family: var(--font-mono);
-    font-size: 0.58rem;
+    font-size: 0.68rem;
+    line-height: 1.5;
+    color: #e2e8f0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(17, 24, 39, 1));
+  }
+
+  .scope-compare {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 0.85rem;
+    align-items: stretch;
+    margin-top: 1.2rem;
+  }
+
+  .scope-compare__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 1rem 1rem 1.05rem;
+    border-radius: 1.15rem;
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 18px 34px -30px rgba(15, 23, 42, 0.14);
+    overflow: hidden;
+  }
+
+  .scope-compare__card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--scope-accent, rgba(148, 163, 184, 0.5));
+  }
+
+  .scope-compare__card--plugin { --scope-accent: linear-gradient(90deg, #14b8a6, #0f766e); }
+  .scope-compare__card--harness { --scope-accent: linear-gradient(90deg, #f59e0b, #f97316); }
+
+  .scope-compare__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--color-accent);
+  }
+
+  .scope-compare__card h3 {
+    font-size: 1.12rem;
+    line-height: 1.2;
+  }
+
+  .scope-compare__summary,
+  .scope-compare__example {
+    font-size: 0.84rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+
+  .scope-compare__list {
+    display: grid;
+    gap: 0.45rem;
+    padding-left: 1.1rem;
+  }
+
+  .scope-compare__list li {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .scope-compare__list code {
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+    color: var(--color-text);
+  }
+
+  .scope-compare__divider {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
     color: var(--color-text-muted);
   }
 
-  @media (max-width: 768px) {
-    .arc__pipeline {
-      flex-wrap: wrap;
-      gap: 0.5rem;
+  .scope-compare__note {
+    margin-top: 0.85rem;
+    padding: 0.85rem 1rem;
+    border-radius: 1rem;
+    background: rgba(20, 184, 166, 0.08);
+    border: 1px solid rgba(20, 184, 166, 0.14);
+    color: #0f766e;
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 1100px) {
+    .loader-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .scope-compare {
+      grid-template-columns: 1fr;
     }
 
-    .arc__connector {
+    .scope-compare__divider {
+      min-height: 1.8rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .runtime__strip {
+      grid-template-columns: 1fr;
+      width: min(100%, 22rem);
+    }
+
+    .runtime__strip-item:not(:last-child) {
+      border-right: 0;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .runtime__top {
+      grid-template-columns: 1fr;
+    }
+
+    .runtime__top-arrow {
+      width: 0.75rem;
+      height: 2rem;
+      justify-self: center;
+      transform: rotate(90deg);
+    }
+
+    .runtime__grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'top'
+        'left'
+        'core'
+        'right'
+        'bottom';
+    }
+
+    .runtime__compact {
+      width: 100%;
+    }
+
+    .runtime__support-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .runtime__core::before,
+    .runtime__core::after {
       display: none;
     }
 
-    .arc__stage {
-      min-width: 7rem;
-      flex: 1 1 40%;
-    }
-
-    .arc__supports {
-      flex-wrap: wrap;
-    }
-
-    .arc__support {
-      flex: 1 1 45%;
+    .runtime__support,
+    .runtime__node--plain,
+    .runtime__store-card {
+      text-align: center;
     }
   }
 

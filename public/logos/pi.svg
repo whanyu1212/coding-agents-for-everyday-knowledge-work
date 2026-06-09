@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title">
+  <title>Pi</title>
+  <rect width="800" height="800" rx="112" fill="#06060a"/>
+  <rect x="166" y="133" width="117" height="501" fill="#f7f7f7"/>
+  <rect x="166" y="133" width="351" height="149" fill="#f7f7f7"/>
+  <rect x="283" y="400" width="117" height="117" fill="#f7f7f7"/>
+  <rect x="517" y="400" width="117" height="234" fill="#f7f7f7"/>
+</svg>
