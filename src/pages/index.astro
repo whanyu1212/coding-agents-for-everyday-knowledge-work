@@ -13,9 +13,9 @@ const sections = [
   { id: 'harness', label: 'Extensions' },
   { id: 'extensibility-code', label: 'In Code' },
   { id: 'extensibility', label: 'Oh-My-OpenAgent' },
+  { id: 'omo-plugin', label: 'OmO Plugin' },
   { id: 'harness-power', label: 'What It Gives You' },
   { id: 'personalization', label: 'Own Your Harness' },
-  { id: 'personalization-how', label: 'Two Roads' },
   { id: 'demo', label: 'Demo' },
   { id: 'tradeoffs', label: 'Trade-offs' },
   { id: 'takeaways', label: 'Takeaways' },
@@ -310,12 +310,12 @@ const sections = [
 
         <div class="loader-card loader-card--plugin">
           <div class="loader-card__header">
-            <span class="loader-card__kicker">Runtime Seam Layer</span>
+            <span class="loader-card__kicker">Runtime Hook Layer</span>
             <h3>Plugins</h3>
           </div>
           <p class="loader-card__text">
             <code>PluginBoot</code> loads packages, plugins register ordered hooks,
-            and those hooks mutate narrow seams like catalog defaults, SDK wiring, or review flows.
+            and those hooks mutate narrow extension points like catalog defaults, SDK wiring, or review flows.
           </p>
           <div class="loader-flow">
             <span class="loader-step">PluginBoot</span>
@@ -324,7 +324,7 @@ const sections = [
             <span class="loader-connector">&#8594;</span>
             <span class="loader-step">hooks</span>
             <span class="loader-connector">&#8594;</span>
-            <span class="loader-step">runtime seams</span>
+            <span class="loader-step">runtime hooks</span>
           </div>
 
           <div class="intervenes intervenes--plugin">
@@ -366,24 +366,34 @@ const sections = [
         <!-- Skill side: SKILL.md -->
         <div class="code-pane code-pane--skill">
           <div class="code-pane__header">
-            <span class="code-pane__filename">SKILL.md</span>
-            <span class="code-pane__lang">markdown</span>
+            <span class="code-pane__filename">daily-paper-brief/SKILL.md</span>
+            <span class="code-pane__lang">markdown &middot; truncated</span>
           </div>
-          <pre class="code-pane__pre"><code><span class="code-mark code-mark--1">---
-name: cloudflare
-description: Comprehensive Cloudflare platform skill
-  covering Workers, Pages, KV, D1, R2, AI, &hellip;
+          <div class="code-pane__body">
+            <pre class="code-pane__pre"><code><span class="code-mark code-mark--1">---
+name: daily-paper-brief
+description: Survey Hugging Face Daily Papers,
+  pick the most relevant paper, and write
+  a structured brief to paper-brief.md.
+slash: true
 ---</span>
 
-<span class="code-mark code-mark--2"># Cloudflare Platform Skill
+<span class="code-mark code-mark--2"># Daily Paper Brief
 
-Consolidated skill for building on Cloudflare.
-Use decision trees to pick the right product,
-then load detailed references.</span></code></pre>
-          <ul class="code-notes">
-            <li><span class="code-notes__chip code-notes__chip--1">1</span><span class="code-notes__text"><strong>frontmatter</strong> &mdash; how the loader discovers this skill</span></li>
-            <li><span class="code-notes__chip code-notes__chip--2">2</span><span class="code-notes__text"><strong>body</strong> &mdash; injected into the conversation when the model calls the <code>skill</code> tool</span></li>
-          </ul>
+Turn the live Hugging Face Daily Papers feed
+into a single, well-chosen structured brief.
+
+1. Fetch today&rsquo;s trending papers
+   curl -s "https://huggingface.co/api/daily_papers?limit=30&amp;sort=trending"
+
+&hellip;
+Write TL;DR, Problem, Method, Key result,
+Limitations, and relevance to this talk.</span></code></pre>
+            <ul class="code-notes">
+              <li><span class="code-notes__chip code-notes__chip--1">1</span><span class="code-notes__text"><strong>frontmatter</strong> &mdash; how the loader discovers this skill</span></li>
+              <li><span class="code-notes__chip code-notes__chip--2">2</span><span class="code-notes__text"><strong>body</strong> &mdash; injected into the conversation when the model calls the <code>skill</code> tool</span></li>
+            </ul>
+          </div>
           <div class="code-pane__caption">
             <span class="code-pane__caption-label">flow:</span>
             <span><code>skills[]</code> discovers it &middot; model decides to load it &middot; content injected as tool output</span>
@@ -393,42 +403,40 @@ then load detailed references.</span></code></pre>
         <!-- Plugin side: TypeScript -->
         <div class="code-pane code-pane--plugin">
           <div class="code-pane__header">
-            <span class="code-pane__filename">cloudflare.ts</span>
-            <span class="code-pane__lang">typescript</span>
+            <span class="code-pane__filename">oh-my-openagent/src/plugin-interface.ts</span>
+            <span class="code-pane__lang">typescript &middot; truncated</span>
           </div>
-          <pre class="code-pane__pre"><code><Fragment set:html={`<span class="code-keyword">import</span> { Plugin } <span class="code-keyword">from</span> <span class="code-string">"@opencode-ai/plugin"</span>
+          <div class="code-pane__body">
+            <pre class="code-pane__pre"><code><Fragment set:html={`<span class="code-keyword">export function</span> <span class="code-fn">createPluginInterface</span>(args) {
+  <span class="code-keyword">const</span> { ctx, pluginConfig, managers, hooks, tools } = args
 
-<span class="code-keyword">export const</span> <span class="code-fn">CloudflarePlugin</span>: Plugin = <span class="code-keyword">async</span> () =&gt; {
   <span class="code-keyword">return</span> <span class="code-mark code-mark--1">{
+    tool: tools,
     <span class="code-mark code-mark--2"><span class="code-string">"chat.params"</span></span>: <span class="code-keyword">async</span> (input, output) =&gt; {
-      <span class="code-keyword">if</span> (input.model.providerID !== <span class="code-string">"cloudflare"</span>) <span class="code-keyword">return</span>
-      <span class="code-mark code-mark--3">output.maxOutputTokens = <span class="code-keyword">undefined</span></span>
+      <span class="code-keyword">const</span> handler = createChatParamsHandler({ client: ctx.client })
+      <span class="code-keyword">await</span> handler(input, output)
     },
+    <span class="code-string">"experimental.chat.messages.transform"</span>:
+      createMessagesTransformHandler({ hooks }),
+    config: managers.configHandler,
+    event: createEventHandler({ ctx, pluginConfig, managers, hooks }),
+    <span class="code-mark code-mark--3"><span class="code-string">"tool.execute.before"</span>: createToolExecuteBeforeHandler({ ctx, hooks }),
+    <span class="code-string">"tool.execute.after"</span>: createToolExecuteAfterHandler({ ctx, hooks }),</span>
   }</span>
 }`} /></code></pre>
-          <ul class="code-notes">
-            <li><span class="code-notes__chip code-notes__chip--1">1</span><span class="code-notes__text"><strong>Hooks object</strong> &mdash; the contract the runtime reads</span></li>
-            <li><span class="code-notes__chip code-notes__chip--2">2</span><span class="code-notes__text"><strong>hook key</strong> &mdash; the lifecycle point this fires at</span></li>
-            <li><span class="code-notes__chip code-notes__chip--3">3</span><span class="code-notes__text"><strong>mutation</strong> &mdash; changes the outgoing LLM call</span></li>
-          </ul>
+            <ul class="code-notes">
+              <li><span class="code-notes__chip code-notes__chip--1">1</span><span class="code-notes__text"><strong>Hooks object</strong> &mdash; actual OmO interface returned to OpenCode</span></li>
+              <li><span class="code-notes__chip code-notes__chip--2">2</span><span class="code-notes__text"><strong>hook key</strong> &mdash; the lifecycle point OpenCode fires</span></li>
+              <li><span class="code-notes__chip code-notes__chip--3">3</span><span class="code-notes__text"><strong>handler wiring</strong> &mdash; delegates work into OmO&rsquo;s hook stack</span></li>
+            </ul>
+          </div>
           <div class="code-pane__caption">
             <span class="code-pane__caption-label">flow:</span>
-            <span><code>PluginBoot</code> registers it &middot; runtime fires <code>chat.params</code> every turn &middot; this function mutates the outgoing call</span>
+            <span><code>PluginBoot</code> registers it &middot; runtime fires hook keys &middot; OmO dispatches into composed handlers</span>
           </div>
         </div>
       </div>
 
-      <div class="code-interlude__contrast">
-        <span class="code-interlude__contrast-item code-interlude__contrast-item--skill">
-          <span class="code-interlude__contrast-label">Skill</span>
-          content the model can opt into
-        </span>
-        <span class="code-interlude__contrast-divider">vs</span>
-        <span class="code-interlude__contrast-item code-interlude__contrast-item--plugin">
-          <span class="code-interlude__contrast-label">Plugin</span>
-          code the runtime calls into
-        </span>
-      </div>
     </div>
   </Slide>
 
@@ -468,12 +476,12 @@ then load detailed references.</span></code></pre>
         <div class="omo-layer omo-layer--workers">
           <span class="omo-layer__kicker">Workers</span>
           <div class="omo-layer__agents omo-layer__agents--grid">
-            <span class="omo-agent omo-agent--lead">Hephaestus</span>
+            <span class="omo-agent omo-agent--lead">Sisyphus-Junior</span>
             <span class="omo-agent">Oracle</span>
             <span class="omo-agent">Explore</span>
             <span class="omo-agent">Librarian</span>
             <span class="omo-agent">Multimodal-Looker</span>
-            <span class="omo-agent">+ dynamic agent</span>
+            <span class="omo-agent">+ category route</span>
           </div>
           <span class="omo-layer__note">specialized by intent, not model name</span>
         </div>
@@ -494,10 +502,10 @@ then load detailed references.</span></code></pre>
       <div class="omo-workflow">
         <span class="omo-workflow__kicker">How a task flows through it</span>
         <ol class="omo-workflow__steps">
-          <li><span class="omo-workflow__num">1</span><span class="omo-workflow__text">User types <code>ulw</code> (Ultra Work mode)</span></li>
-          <li><span class="omo-workflow__num">2</span><span class="omo-workflow__text">Prometheus interviews + explores &rarr; Metis catches gaps &rarr; Momus reviews</span></li>
-          <li><span class="omo-workflow__num">3</span><span class="omo-workflow__text">Plan + session state tracked in <code>boulder.json</code></span></li>
-          <li><span class="omo-workflow__num">4</span><span class="omo-workflow__text">Atlas reads the verified plan and delegates to specialists</span></li>
+          <li><span class="omo-workflow__num">1</span><span class="omo-workflow__text">User starts precise work with <code>@plan</code></span></li>
+          <li><span class="omo-workflow__num">2</span><span class="omo-workflow__text">Prometheus interviews + explores &rarr; Metis gap-checks &rarr; optional Momus review</span></li>
+          <li><span class="omo-workflow__num">3</span><span class="omo-workflow__text">Plan lives in <code>.omo/plans/</code>; active work in <code>boulder.json</code></span></li>
+          <li><span class="omo-workflow__num">4</span><span class="omo-workflow__text">User runs <code>/start-work</code>; Atlas reads the plan and delegates</span></li>
           <li><span class="omo-workflow__num">5</span><span class="omo-workflow__text">Workers return results + learnings; Atlas verifies, loops or reports</span></li>
         </ol>
       </div>
@@ -518,7 +526,86 @@ then load detailed references.</span></code></pre>
     </div>
   </Slide>
 
-  <!-- Slide 8: What the harness gives you -->
+  <!-- Slide 8: How OmO works as one sophisticated plugin -->
+  <Slide id="omo-plugin" variant="accent">
+    <div class="content-slide omo-plugin">
+      <p class="overline">Sophisticated Plugin Anatomy</p>
+      <h2>One Plugin. <span class="highlight">Many Runtime Hooks.</span></h2>
+      <p class="lead omo-plugin__lead">
+        From OpenCode&rsquo;s view, OmO is just a plugin module that returns hooks.
+        Inside, it composes config, tools, managers, lifecycle hooks, MCPs, and SDK calls into a harness layer.
+      </p>
+
+      <div class="omo-plugin__map" aria-label="How oh-my-openagent plugs into OpenCode hooks">
+        <div class="omo-plugin__core" aria-label="OpenCode hooks object returned by OmO">
+          <div class="omo-hooks-card__header">
+            <span class="omo-plugin__core-kicker">returns</span>
+            <span class="omo-plugin__core-title">hooks</span>
+          </div>
+          <div class="omo-hooks-object">
+            <div class="omo-hooks-object__row"><code>config</code><span>shape runtime</span></div>
+            <div class="omo-hooks-object__row"><code>tool</code><span>add tools</span></div>
+            <div class="omo-hooks-object__row"><code>event</code><span>react to sessions</span></div>
+            <div class="omo-hooks-object__row"><code>tool.execute.*</code><span>guard actions</span></div>
+            <div class="omo-hooks-object__row"><code>experimental.*</code><span>preserve memory</span></div>
+          </div>
+          <span class="omo-plugin__core-sub">a plain object with enough extension points to become a harness</span>
+        </div>
+
+        <div class="omo-plugin__hooks-grid">
+          <div class="omo-hook-card omo-hook-card--config">
+            <span class="omo-hook-card__hook"><code>config</code></span>
+            <h3>Shape the runtime</h3>
+            <p>Agents, MCPs, commands, model defaults, runtime skill sources.</p>
+            <pre class="omo-hook-card__code"><code>config.agent = omoAgents
+config.mcp = builtinMcps</code></pre>
+          </div>
+          <div class="omo-hook-card omo-hook-card--tool">
+            <span class="omo-hook-card__hook"><code>tool</code></span>
+            <h3>Add capabilities</h3>
+            <p>Background agents, task delegation, skill MCPs, team tools, hashline edit.</p>
+            <pre class="omo-hook-card__code"><code>tool: &#123; task, skill_mcp,
+        team_create &#125;</code></pre>
+          </div>
+          <div class="omo-hook-card omo-hook-card--before">
+            <span class="omo-hook-card__hook"><code>tool.execute.before</code></span>
+            <h3>Guard the action</h3>
+            <p>Write guards, rule injection, comment checks, task routing, mode limits.</p>
+            <pre class="omo-hook-card__code"><code>if (tool === "write")
+  requireReadFirst(args)</code></pre>
+          </div>
+          <div class="omo-hook-card omo-hook-card--after">
+            <span class="omo-hook-card__hook"><code>tool.execute.after</code></span>
+            <h3>Clean up results</h3>
+            <p>Output truncation, metadata recovery, read tagging, error recovery.</p>
+            <pre class="omo-hook-card__code"><code>output.output = truncate(output)
+output.metadata = recover()</code></pre>
+          </div>
+          <div class="omo-hook-card omo-hook-card--event">
+            <span class="omo-hook-card__hook"><code>event</code></span>
+            <h3>React to lifecycle</h3>
+            <p>Idle wakeups, session errors, tmux sync, team mode, OpenClaw dispatch.</p>
+            <pre class="omo-hook-card__code"><code>if (event.type === "session.idle")
+  wakeParentSession()</code></pre>
+          </div>
+          <div class="omo-hook-card omo-hook-card--memory">
+            <span class="omo-hook-card__hook"><code>experimental.*</code></span>
+            <h3>Survive context walls</h3>
+            <p>Message transforms, system transforms, compaction context, auto-continue.</p>
+            <pre class="omo-hook-card__code"><code>output.context.push(savedTodos)
+output.enabled = true</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="omo-plugin__takeaway">
+        <span>OpenCode exposes hooks.</span>
+        <strong>OmO wires a harness through them.</strong>
+      </div>
+    </div>
+  </Slide>
+
+  <!-- Slide 9: What the harness gives you -->
   <Slide id="harness-power" variant="accent">
     <div class="content-slide harness-power">
       <p class="overline">Why OmO</p>
@@ -573,7 +660,7 @@ then load detailed references.</span></code></pre>
               <p class="pillar__sub">Policy enforced by hooks</p>
             </div>
           </div>
-          <p class="pillar__mechanism">54 base hooks across <code>PreTool</code> / <code>PostTool</code> / <code>Event</code></p>
+          <p class="pillar__mechanism">54 base hooks across message, params, tool, transform, and event phases</p>
           <div class="pillar__chips">
             <span class="pillar__chip"><strong>comment-checker</strong> &mdash; blocks AI-slop</span>
             <span class="pillar__chip"><strong>AGENTS.md inject</strong> &mdash; auto-walks to root</span>
@@ -591,88 +678,43 @@ then load detailed references.</span></code></pre>
     </div>
   </Slide>
 
-  <!-- Slide 9: Personalization thesis -->
+  <!-- Slide 9: Personalization thesis + ownership paths -->
   <Slide id="personalization" variant="dark">
     <div class="content-slide personalization">
       <p class="overline">The Real Lesson</p>
-      <h2><span class="highlight">Own</span> Your Harness</h2>
-      <p class="lead personalization__lead">The harness is the layer between you and the model. Most people accept whatever ships. The leverage is in controlling it yourself.</p>
+      <h2><span class="highlight">Own</span> Your Agent Setup</h2>
+      <p class="lead personalization__lead">
+        A coding-agent setup is not neutral. It is a bundle of opinions about context, tools, models, permissions, memory, and workflow.
+        If you do not shape it, someone else&rsquo;s workflow shapes yours.
+      </p>
 
-      <div class="contrast">
-        <div class="contrast__col contrast__col--default">
-          <p class="contrast__kicker">The untouched default</p>
-          <ul class="contrast__list">
-            <li>Context injected behind your back</li>
-            <li>Prompts &amp; tools change every release</li>
-            <li>Bloat you can&rsquo;t see or remove</li>
-            <li>Subagents: a black box in a black box</li>
-            <li>Your workflow breaks when they ship</li>
-          </ul>
+      <div class="ownership">
+        <div class="ownership__thesis">
+          <span class="ownership__kicker">The default is already a choice</span>
+          <h3>Your harness decides how the agent works.</h3>
+          <p>What it reads. What it can call. Which model gets which task. When it asks. When it continues. When it stops.</p>
+          <p class="ownership__line">The move is not to avoid opinions. The move is to make them yours.</p>
         </div>
 
-        <div class="contrast__vs" aria-hidden="true">vs</div>
-
-        <div class="contrast__col contrast__col--you">
-          <p class="contrast__kicker">A harness you own</p>
-          <ul class="contrast__list">
-            <li>Inspect every model interaction</li>
-            <li>Stable &mdash; you decide when it changes</li>
-            <li>Shaped to your work, not the median</li>
-            <li>Extend it yourself &mdash; or have it extend itself</li>
-            <li>You understand what it&rsquo;s doing, and why</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="contrast__bridge">
-        <p class="contrast__bridge-line">&ldquo;Change the harness, <em>not your workflow.</em>&rdquo;</p>
-        <p class="contrast__bridge-sub">The philosophy behind <strong>Pi</strong> &mdash; and there&rsquo;s more than one way to get there.</p>
-      </div>
-    </div>
-  </Slide>
-
-  <!-- Slide 10: Personalization how-to (the five dials) -->
-  <Slide id="personalization-how" variant="accent">
-    <div class="content-slide personalization-how">
-      <p class="overline">Make It Yours</p>
-      <h2>Two Ways to <span class="highlight">Own It</span></h2>
-      <p class="lead personalization-how__lead">Both are real ownership. They differ in where you start &mdash; not in whether you&rsquo;re in control.</p>
-
-      <div class="roads">
-        <div class="road road--adopt">
-          <div class="road__head">
-            <span class="road__badge">Start rich</span>
-            <h3 class="road__title">Adopt &amp; Make It Yours</h3>
-            <span class="road__example">e.g. Oh-My-OpenAgent on OpenCode</span>
+        <div class="ownership__paths">
+          <div class="ownership-path ownership-path--adopt">
+            <span class="ownership-path__badge">Start rich</span>
+            <h3>Adopt &amp; Reshape</h3>
+            <p>Begin with an opinionated harness like OmO, then disable, override, and rewrite until it fits.</p>
+            <span class="ownership-path__trade">Fast power. You learn by reshaping.</span>
           </div>
-          <ul class="road__list">
-            <li>Begin from a rich, opinionated harness</li>
-            <li>Inherit batteries &mdash; routing, continuation, guardrails</li>
-            <li>Tune the dials to your role and taste</li>
-            <li>Disable, override, and rewrite what doesn&rsquo;t fit</li>
-          </ul>
-          <p class="road__trade"><span class="road__trade-label">Trade</span> Powerful on day one &mdash; you learn the internals as you reshape them.</p>
-        </div>
 
-        <div class="road road--build">
-          <div class="road__head">
-            <span class="road__badge">Start minimal</span>
-            <h3 class="road__title">Build It Up Yourself</h3>
-            <span class="road__example">e.g. Pi &mdash; a minimal harness</span>
+          <div class="ownership-path ownership-path--build">
+            <span class="ownership-path__badge">Start minimal</span>
+            <h3>Build Up</h3>
+            <p>Begin from primitives: a small prompt, a few tools, a model API. Add only what your work actually needs.</p>
+            <span class="ownership-path__trade">Maximum transparency. You assemble the power.</span>
           </div>
-          <ul class="road__list">
-            <li>Begin from primitives: 4 tools, a tiny prompt, a model API</li>
-            <li>Add only what you actually reach for</li>
-            <li>Self-modifying &mdash; &ldquo;just ask it to build it&rdquo;</li>
-            <li>See and control every model call from the start</li>
-          </ul>
-          <p class="road__trade"><span class="road__trade-label">Trade</span> Total transparency &mdash; you assemble the power yourself.</p>
         </div>
       </div>
 
       <div class="roads__destination">
-        <p class="roads__destination-line">Either way you end up somewhere you chose: a harness that <em>fits you, that you understand, that doesn&rsquo;t change under you.</em></p>
-        <p class="roads__destination-sub">The only losing move is leaving the default untouched.</p>
+        <p class="roads__destination-line">Goal: a setup that fits your work, that you understand, and that changes only when you choose.</p>
       </div>
     </div>
   </Slide>
@@ -2851,7 +2893,240 @@ then load detailed references.</span></code></pre>
     line-height: 1.5;
   }
 
-  /* ===== Slide 8: What the harness gives you ===== */
+  /* ===== Slide 8: OmO as one sophisticated plugin ===== */
+  .omo-plugin {
+    max-width: 72rem;
+  }
+
+  .omo-plugin__lead {
+    max-width: 55rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .omo-plugin__map {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.58fr) minmax(0, 1.42fr);
+    gap: 0.95rem;
+    align-items: stretch;
+  }
+
+  .omo-plugin__core,
+  .omo-hook-card {
+    position: relative;
+    border-radius: 1rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 18px 40px -30px rgba(15, 23, 42, 0.35);
+    overflow: hidden;
+  }
+
+  .omo-plugin__core-kicker,
+  .omo-hook-card__hook {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+  }
+
+  .omo-plugin__core {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.75rem;
+    align-content: center;
+    flex-direction: column;
+    min-height: 17.5rem;
+    padding: 0.95rem;
+    text-align: left;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.97)),
+      radial-gradient(circle at 100% 0%, rgba(20, 184, 166, 0.16), transparent 42%);
+    border-color: rgba(20, 184, 166, 0.18);
+    color: var(--color-text);
+  }
+
+  .omo-plugin__core::before,
+  .omo-plugin__core::after {
+    display: none;
+  }
+
+  .omo-plugin__core-kicker {
+    color: #0f766e;
+  }
+
+  .omo-plugin__core-title {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4.4rem;
+    padding: 0.22rem 0.58rem;
+    border-radius: 0.55rem;
+    background: rgba(20, 184, 166, 0.09);
+    border: 1px solid rgba(20, 184, 166, 0.18);
+    color: #0f766e;
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .omo-hooks-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+  }
+
+  .omo-hooks-object {
+    display: grid;
+    gap: 0.38rem;
+    padding: 0.3rem 0;
+  }
+
+  .omo-hooks-object::before,
+  .omo-hooks-object::after {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: rgba(15, 23, 42, 0.42);
+    line-height: 1;
+  }
+
+  .omo-hooks-object::before {
+    content: 'return {';
+  }
+
+  .omo-hooks-object::after {
+    content: '}';
+  }
+
+  .omo-hooks-object__row {
+    display: grid;
+    grid-template-columns: minmax(6.7rem, auto) 1fr;
+    gap: 0.55rem;
+    align-items: baseline;
+    padding: 0.36rem 0.48rem;
+    margin-left: 0.45rem;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+  }
+
+  .omo-hooks-object__row code {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: #4f46e5;
+    white-space: nowrap;
+  }
+
+  .omo-hooks-object__row span {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    line-height: 1.25;
+  }
+
+  .omo-plugin__core-sub {
+    display: block;
+    padding-top: 0.65rem;
+    border-top: 1px solid rgba(15, 23, 42, 0.07);
+    color: var(--color-text-muted);
+    font-size: 0.74rem;
+    line-height: 1.45;
+  }
+
+  .omo-plugin__hooks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.58rem;
+  }
+
+  .omo-hook-card {
+    padding: 0.7rem 0.75rem 0.74rem;
+    background: rgba(255, 255, 255, 0.94);
+  }
+
+  .omo-hook-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--hook-accent, linear-gradient(90deg, #6366f1, #8b5cf6));
+  }
+
+  .omo-hook-card--config { --hook-accent: linear-gradient(90deg, #6366f1, #8b5cf6); --hook-ink: #4f46e5; --hook-bg: rgba(99, 102, 241, 0.08); }
+  .omo-hook-card--tool { --hook-accent: linear-gradient(90deg, #14b8a6, #0d9488); --hook-ink: #0f766e; --hook-bg: rgba(20, 184, 166, 0.08); }
+  .omo-hook-card--before { --hook-accent: linear-gradient(90deg, #f59e0b, #d97706); --hook-ink: #b45309; --hook-bg: rgba(245, 158, 11, 0.09); }
+  .omo-hook-card--after { --hook-accent: linear-gradient(90deg, #ec4899, #db2777); --hook-ink: #be185d; --hook-bg: rgba(236, 72, 153, 0.08); }
+  .omo-hook-card--event { --hook-accent: linear-gradient(90deg, #06b6d4, #0284c7); --hook-ink: #0369a1; --hook-bg: rgba(6, 182, 212, 0.08); }
+  .omo-hook-card--memory { --hook-accent: linear-gradient(90deg, #7c3aed, #5b21b6); --hook-ink: #6d28d9; --hook-bg: rgba(124, 58, 237, 0.08); }
+
+  .omo-hook-card__hook {
+    display: inline-flex;
+    padding: 0.18rem 0.45rem;
+    border-radius: 999px;
+    background: var(--hook-bg);
+    color: var(--hook-ink);
+  }
+
+  .omo-hook-card__hook code {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: inherit;
+  }
+
+  .omo-hook-card h3 {
+    margin: 0.45rem 0 0.24rem;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  .omo-hook-card p {
+    margin: 0;
+    font-size: 0.7rem;
+    line-height: 1.32;
+    color: var(--color-text-muted);
+  }
+
+  .omo-hook-card__code {
+    margin: 0.48rem 0 0;
+    padding: 0.42rem 0.5rem;
+    border-radius: 0.5rem;
+    background: rgba(15, 23, 42, 0.035);
+    border: 1px solid rgba(15, 23, 42, 0.055);
+    overflow: hidden;
+  }
+
+  .omo-hook-card__code code {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    line-height: 1.35;
+    color: rgba(15, 23, 42, 0.78);
+    white-space: pre-wrap;
+  }
+
+  .omo-plugin__takeaway {
+    margin-top: 0.95rem;
+    padding: 0.85rem 1.15rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(20, 184, 166, 0.18);
+    color: var(--color-text-muted);
+    display: flex;
+    justify-content: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    text-align: center;
+    box-shadow: 0 18px 40px -30px rgba(15, 23, 42, 0.28);
+  }
+
+  .omo-plugin__takeaway strong {
+    color: #0f766e;
+  }
+
+  /* ===== Slide 9: What the harness gives you ===== */
   .harness-power {
     max-width: 72rem;
   }
@@ -3013,288 +3288,117 @@ then load detailed references.</span></code></pre>
     margin-top: 0.2rem;
   }
 
-  /* ===== Slide 9: Personalization thesis ===== */
+  /* ===== Slide 9: Own your agent setup ===== */
   .personalization {
     max-width: 70rem;
   }
 
   .personalization__lead {
-    max-width: 46rem;
-    margin-bottom: 1.5rem;
+    max-width: 56rem;
+    margin-bottom: 1.15rem;
   }
 
-  .contrast {
+  .ownership {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: stretch;
-    gap: 1.1rem;
-  }
-
-  .contrast__col {
-    padding: 1.1rem 1.25rem 1.2rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(15, 23, 42, 0.08);
-  }
-
-  .contrast__col--default {
-    background: rgba(15, 23, 42, 0.03);
-  }
-
-  .contrast__col--you {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.07), rgba(139, 92, 246, 0.07));
-    border-color: rgba(99, 102, 241, 0.2);
-  }
-
-  .contrast__kicker {
-    margin: 0 0 0.7rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--color-text-muted);
-  }
-
-  .contrast__col--you .contrast__kicker {
-    color: #6d28d9;
-  }
-
-  .contrast__list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-  }
-
-  .contrast__list li {
-    position: relative;
-    padding-left: 1.1rem;
-    font-size: 0.86rem;
-    line-height: 1.4;
-    color: var(--color-text);
-  }
-
-  .contrast__col--default .contrast__list li {
-    color: var(--color-text-muted);
-  }
-
-  .contrast__col--you .contrast__list li strong {
-    font-weight: 700;
-    color: #6d28d9;
-  }
-
-  .contrast__list li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.55rem;
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 50%;
-  }
-
-  .contrast__col--default .contrast__list li::before {
-    background: rgba(15, 23, 42, 0.25);
-  }
-
-  .contrast__col--you .contrast__list li::before {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  }
-
-  .contrast__vs {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-    font-weight: 700;
-    font-style: italic;
-    color: var(--color-text-muted);
-    padding: 0 0.2rem;
-  }
-
-  .contrast__bridge {
-    margin-top: 1.3rem;
-    padding: 1rem 1.3rem 1.1rem;
-    border-radius: 1.1rem;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.96));
-    text-align: center;
-    box-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.5);
-  }
-
-  .contrast__bridge-line {
-    margin: 0;
-    font-size: 1.15rem;
-    font-weight: 600;
-    line-height: 1.4;
-    color: rgba(255, 255, 255, 0.92);
-  }
-
-  .contrast__bridge-line em {
-    font-style: normal;
-    color: #5eead4;
-  }
-
-  .contrast__bridge-sub {
-    margin: 0.35rem 0 0;
-    font-size: 0.9rem;
-    color: rgba(226, 232, 240, 0.72);
-    line-height: 1.5;
-  }
-
-  .contrast__bridge-sub strong {
-    color: #5eead4;
-    font-weight: 700;
-  }
-
-  /* ===== Slide 10: Two roads (adopt & tune / build & own) ===== */
-  .personalization-how {
-    max-width: 70rem;
-  }
-
-  .personalization-how__lead {
-    max-width: 47rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .roads {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 1rem;
     align-items: stretch;
   }
 
-  .road {
+  .ownership__thesis,
+  .ownership-path {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 1.2rem 1.35rem 1.3rem;
+    overflow: hidden;
     border-radius: 1rem;
     background: rgba(255, 255, 255, 0.92);
     border: 1px solid rgba(15, 23, 42, 0.08);
     box-shadow: 0 18px 40px -28px rgba(15, 23, 42, 0.32);
-    overflow: hidden;
   }
 
-  .road::before {
+  .ownership__thesis {
+    padding: 1.15rem 1.25rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .ownership__thesis::before,
+  .ownership-path::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    inset: 0 0 auto 0;
     height: 3px;
-    background: var(--road-accent, linear-gradient(90deg, #6366f1, #8b5cf6));
+    background: var(--ownership-accent, linear-gradient(90deg, #6366f1, #8b5cf6));
   }
 
-  .road--adopt { --road-accent: linear-gradient(90deg, #f59e0b, #d97706); --road-tint: rgba(245, 158, 11, 0.1); --road-ink: #b45309; }
-  .road--build { --road-accent: linear-gradient(90deg, #6366f1, #8b5cf6); --road-tint: rgba(99, 102, 241, 0.1); --road-ink: #4338ca; }
-
-  .road__head {
-    margin-bottom: 0.85rem;
-  }
-
-  .road__badge {
-    display: inline-block;
-    margin-bottom: 0.45rem;
+  .ownership__kicker,
+  .ownership-path__badge {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-bottom: 0.65rem;
     padding: 0.16rem 0.55rem;
     border-radius: 999px;
-    background: var(--road-tint);
-    color: var(--road-ink);
+    background: var(--ownership-tint, rgba(99, 102, 241, 0.1));
+    color: var(--ownership-ink, #4338ca);
     font-size: 0.66rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.07em;
   }
 
-  .road__title {
-    margin: 0 0 0.3rem;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--color-text);
-    letter-spacing: -0.01em;
-  }
-
-  .road__example {
-    display: block;
-    font-size: 0.82rem;
-    color: var(--color-text-muted);
-    font-style: italic;
-  }
-
-  .road__list {
-    margin: 0 0 1rem;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .road__list li {
-    position: relative;
-    padding-left: 1.2rem;
-    font-size: 0.88rem;
-    line-height: 1.45;
+  .ownership__thesis h3,
+  .ownership-path h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
     color: var(--color-text);
   }
 
-  .road__list li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.55rem;
-    width: 0.42rem;
-    height: 0.42rem;
-    border-radius: 50%;
-    background: var(--road-accent);
-  }
-
-  .road__trade {
-    margin: auto 0 0;
-    padding-top: 0.7rem;
-    border-top: 1px dashed rgba(15, 23, 42, 0.12);
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    line-height: 1.45;
-  }
-
-  .road__trade-label {
-    display: inline-block;
-    margin-right: 0.4rem;
-    font-size: 0.64rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--road-ink);
-  }
-
-  .roads__destination {
-    margin-top: 1.2rem;
-    padding: 1rem 1.3rem 1.1rem;
-    border-radius: 1.1rem;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.96));
-    text-align: center;
-    box-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.5);
-  }
-
-  .roads__destination-line {
+  .ownership__thesis p,
+  .ownership-path p {
     margin: 0;
-    font-size: 1.12rem;
-    font-weight: 600;
-    line-height: 1.4;
-    color: rgba(255, 255, 255, 0.92);
-  }
-
-  .roads__destination-line em {
-    font-style: normal;
-    color: #5eead4;
-  }
-
-  .roads__destination-sub {
-    margin: 0.35rem 0 0;
-    font-size: 0.9rem;
-    color: rgba(226, 232, 240, 0.72);
+    font-size: 0.88rem;
     line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+
+  .ownership__line {
+    margin-top: 0.85rem !important;
+    padding-top: 0.75rem;
+    border-top: 1px dashed rgba(15, 23, 42, 0.12);
+    color: #4338ca !important;
+    font-weight: 600;
+  }
+
+  .ownership__paths {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .ownership-path {
+    padding: 0.95rem 1rem 0.98rem;
+  }
+
+  .ownership-path--adopt {
+    --ownership-accent: linear-gradient(90deg, #f59e0b, #d97706);
+    --ownership-tint: rgba(245, 158, 11, 0.1);
+    --ownership-ink: #b45309;
+  }
+
+  .ownership-path--build {
+    --ownership-accent: linear-gradient(90deg, #14b8a6, #0d9488);
+    --ownership-tint: rgba(20, 184, 166, 0.1);
+    --ownership-ink: #0f766e;
+  }
+
+  .ownership-path__trade {
+    display: block;
+    margin-top: 0.75rem;
+    padding-top: 0.65rem;
+    border-top: 1px dashed rgba(15, 23, 42, 0.12);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--color-text-muted);
   }
 
   /* ===== Appendix slides (A1-A3) ===== */
@@ -3736,81 +3840,117 @@ then load detailed references.</span></code></pre>
 
   .code-interlude__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 1rem;
-    margin-top: 1rem;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-top: 0.9rem;
   }
 
   .code-pane {
     display: flex;
     flex-direction: column;
-    border-radius: 0.95rem;
-    background: #ffffff;
-    border: 1px solid rgba(226, 232, 240, 0.95);
-    box-shadow: 0 18px 34px -30px rgba(15, 23, 42, 0.16);
+    border-radius: 1rem;
+    background: #0f172a;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    box-shadow: 0 24px 50px -36px rgba(15, 23, 42, 0.7);
     overflow: hidden;
   }
 
   .code-pane__header {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.55rem 0.85rem;
-    background: rgba(248, 250, 252, 0.95);
-    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    gap: 0.9rem;
+    padding: 0.48rem 0.85rem 0.48rem 3.45rem;
+    background: rgba(15, 23, 42, 0.98);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
+  .code-pane__header::before {
+    content: '';
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    width: 1.8rem;
+    height: 0.5rem;
+    transform: translateY(-50%);
+    background:
+      radial-gradient(circle, #fb7185 55%, transparent 56%) 0 50% / 0.5rem 0.5rem no-repeat,
+      radial-gradient(circle, #fbbf24 55%, transparent 56%) 0.65rem 50% / 0.5rem 0.5rem no-repeat,
+      radial-gradient(circle, #34d399 55%, transparent 56%) 1.3rem 50% / 0.5rem 0.5rem no-repeat;
   }
 
   .code-pane__filename {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--color-text);
+    font-size: 0.72rem;
+    color: #e2e8f0;
     font-weight: 600;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .code-pane__lang {
+    flex-shrink: 0;
     font-family: var(--font-mono);
-    font-size: 0.66rem;
+    font-size: 0.58rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+    color: #94a3b8;
+  }
+
+  .code-pane__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(11.5rem, 15rem);
+    min-height: 0;
   }
 
   .code-pane__pre {
     margin: 0;
-    padding: 0.85rem 1rem;
-    background: #fbfbfd;
+    padding: 0.52rem 0.7rem;
+    background:
+      linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.98));
     font-family: var(--font-mono);
-    font-size: 0.74rem;
-    line-height: 1.6;
-    color: #1e293b;
-    overflow-x: auto;
-    white-space: pre;
+    font-size: 0.48rem;
+    line-height: 1.36;
+    color: #cbd5e1;
+    overflow: hidden;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
     flex: 1;
+    min-width: 0;
   }
 
   /* Numbered notes below the code, mapped 1:1 to marked regions above */
   .code-notes {
     list-style: none;
     margin: 0;
-    padding: 0.6rem 0.95rem 0.55rem;
-    display: grid;
-    gap: 0.32rem;
-    background: rgba(248, 250, 252, 0.6);
-    border-top: 1px solid rgba(226, 232, 240, 0.7);
+    padding: 0.48rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.42rem;
+    background: rgba(15, 23, 42, 0.96);
+    border-left: 1px solid rgba(148, 163, 184, 0.16);
   }
 
   .code-notes li {
     display: grid;
-    grid-template-columns: 1.3rem 1fr;
-    gap: 0.5rem;
+    grid-template-columns: 1.15rem 1fr;
+    gap: 0.42rem;
     align-items: baseline;
-    font-size: 0.74rem;
-    color: var(--color-text-muted);
-    line-height: 1.4;
+    font-size: 0.68rem;
+    color: #94a3b8;
+    line-height: 1.32;
+  }
+
+  .code-notes__text {
+    display: block;
   }
 
   .code-notes li strong {
-    color: var(--color-text);
+    color: #e2e8f0;
     font-weight: 600;
   }
 
@@ -3819,8 +3959,8 @@ then load detailed references.</span></code></pre>
     font-size: 0.86em;
     padding: 0 0.25em;
     border-radius: 0.25em;
-    background: rgba(15, 23, 42, 0.05);
-    color: var(--color-text);
+    background: rgba(148, 163, 184, 0.12);
+    color: #e2e8f0;
   }
 
   .code-notes__chip {
@@ -3838,11 +3978,11 @@ then load detailed references.</span></code></pre>
   }
 
   .code-pane__caption {
-    padding: 0.55rem 0.85rem 0.65rem;
-    background: rgba(248, 250, 252, 0.7);
-    border-top: 1px solid rgba(226, 232, 240, 0.9);
-    font-size: 0.72rem;
-    color: var(--color-text-muted);
+    padding: 0.42rem 0.85rem 0.52rem;
+    background: rgba(2, 6, 23, 0.98);
+    border-top: 1px solid rgba(148, 163, 184, 0.13);
+    font-size: 0.68rem;
+    color: #94a3b8;
     line-height: 1.4;
     display: flex;
     flex-wrap: wrap;
@@ -3854,7 +3994,7 @@ then load detailed references.</span></code></pre>
     font-size: 0.62rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--color-text-muted);
+    color: #64748b;
     font-weight: 600;
   }
 
@@ -3863,23 +4003,24 @@ then load detailed references.</span></code></pre>
     font-size: 0.86em;
     padding: 0.04em 0.3em;
     border-radius: 0.3em;
-    background: rgba(99, 102, 241, 0.08);
-    color: var(--color-accent-dim);
+    background: rgba(148, 163, 184, 0.12);
+    color: #e2e8f0;
   }
 
   /* Code syntax — :global() so styles reach set:html-injected spans */
-  :global(.code-keyword) { color: #7c3aed; font-weight: 500; }
-  :global(.code-string) { color: #0f766e; }
-  :global(.code-fn) { color: #1d4ed8; font-weight: 500; }
+  :global(.code-keyword) { color: #c4b5fd; font-weight: 600; }
+  :global(.code-string) { color: #5eead4; }
+  :global(.code-fn) { color: #93c5fd; font-weight: 600; }
 
   /* Marked code region: colored highlight + numbered badge before the content */
   :global(.code-mark) {
-    background: rgba(99, 102, 241, 0.1);
-    border-radius: 0.2em;
-    padding: 0 0.15em;
+    background: rgba(99, 102, 241, 0.2);
+    border-radius: 0.22em;
+    padding: 0.04em 0.18em;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
     position: relative;
+    color: #eef2ff;
   }
 
   :global(.code-mark::before) {
@@ -3888,14 +4029,14 @@ then load detailed references.</span></code></pre>
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1rem;
-    height: 1rem;
+    width: 0.78rem;
+    height: 0.78rem;
     border-radius: 50%;
     background: var(--mark-color, #6366f1);
     color: #ffffff;
-    font-size: 0.62rem;
+    font-size: 0.48rem;
     font-weight: 700;
-    margin-right: 0.35em;
+    margin-right: 0.3em;
     vertical-align: 0.05em;
     font-family: var(--font-mono);
     line-height: 1;
@@ -3911,7 +4052,7 @@ then load detailed references.</span></code></pre>
   :global(.code-mark--3) { --mark-color: #a855f7; }
 
   :global(.code-pane--plugin .code-mark) {
-    background: rgba(20, 184, 166, 0.1);
+    background: rgba(20, 184, 166, 0.2);
   }
   :global(.code-pane--plugin .code-mark--1) { --mark-color: #14b8a6; }
   :global(.code-pane--plugin .code-mark--2) { --mark-color: #0d9488; }
@@ -3925,43 +4066,56 @@ then load detailed references.</span></code></pre>
   .code-pane--plugin .code-notes__chip--2 { background: #0d9488; }
   .code-pane--plugin .code-notes__chip--3 { background: #0f766e; }
 
-  /* Final contrast strip — names the difference */
-  .code-interlude__contrast {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.85rem;
-    margin-top: 1.1rem;
-    padding: 0.7rem 1rem;
-    border-radius: 0.85rem;
-    background: rgba(15, 23, 42, 0.04);
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    font-size: 0.85rem;
-    color: var(--color-text);
+  /* Plain footer captions, matching the runtime slide caption. */
+  .omo-takeaway,
+  .omo-plugin__takeaway,
+  .harness-power__strip,
+  .roads__destination {
+    margin: 0.85rem auto 0;
+    max-width: 44rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #64748b;
+    text-align: center;
   }
 
-  .code-interlude__contrast-item {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.45rem;
+  .omo-plugin__takeaway {
+    display: block;
   }
 
-  .code-interlude__contrast-label {
-    font-weight: 700;
-    color: var(--color-accent-dim);
+  .omo-takeaway__line,
+  .omo-plugin__takeaway span,
+  .omo-plugin__takeaway strong,
+  .harness-power__strip-line,
+  .roads__destination-line {
+    margin: 0;
+    font-size: 0.86rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #64748b;
   }
 
-  .code-interlude__contrast-item--plugin .code-interlude__contrast-label {
-    color: #0f766e;
+  .omo-takeaway__accent,
+  .omo-plugin__takeaway strong,
+  .harness-power__strip-line--accent,
+  .roads__destination-line em {
+    color: inherit;
+    font-weight: 600;
   }
 
-  .code-interlude__contrast-divider {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text-muted);
-    font-weight: 700;
+  .omo-takeaway__sub,
+  .roads__destination-sub {
+    margin: 0.2rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: #94a3b8;
+  }
+
+  .harness-power__strip-line--accent {
+    margin-top: 0.15rem;
   }
 
   @media (max-width: 1100px) {
@@ -3971,6 +4125,14 @@ then load detailed references.</span></code></pre>
 
     .omo-architecture {
       grid-template-columns: 1fr;
+    }
+
+    .omo-plugin__map {
+      grid-template-columns: 1fr;
+    }
+
+    .omo-plugin__core {
+      min-height: 9rem;
     }
 
     .omo-arrow {
@@ -4033,9 +4195,25 @@ then load detailed references.</span></code></pre>
     .runtime__store-card {
       text-align: center;
     }
+
+    .omo-plugin__hooks-grid,
+    .harness-power__pillars,
+    .ownership,
+    .ownership__paths {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (max-width: 768px) {
+    .code-pane__body {
+      grid-template-columns: 1fr;
+    }
+
+    .code-notes {
+      border-left: 0;
+      border-top: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
     .pipeline {
       flex-direction: column;
     }
