@@ -1,6 +1,9 @@
 # build output
 dist/
 
+# scratch / screenshots
+tmp/
+
 # generated types
 .astro/
 
