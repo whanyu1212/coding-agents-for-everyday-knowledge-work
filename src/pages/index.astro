@@ -9,9 +9,10 @@ const sections = [
   { id: 'what', label: 'Who\'s Who' },
   { id: 'landscape', label: 'Anatomy' },
   { id: 'how', label: 'Why It Generalizes' },
+  { id: 'demos', label: 'See It Work' },
+  { id: 'opencode', label: 'Meet OpenCode' },
   { id: 'workflows', label: 'Runtime' },
   { id: 'harness', label: 'Extensions' },
-  { id: 'extensibility-code', label: 'In Code' },
   { id: 'extensibility', label: 'Oh-My-OpenAgent' },
   { id: 'omo-plugin', label: 'OmO Plugin' },
   { id: 'harness-power', label: 'What It Gives You' },
@@ -138,7 +139,7 @@ const sections = [
       <p class="overline overline--glow">Why It Generalizes</p>
       <h2 class="control-title">Code Is a <span class="control-title__accent">Universal Remote</span></h2>
       <p class="control-lead">
-        The agent acts by writing <strong>code</strong> — and code can touch almost anything.
+        The agent acts by writing <strong>code</strong> — and code can touch almost anything. Two examples, coming up next.
       </p>
 
       <!-- Three-column flow: CODE → systems → knowledge work.
@@ -198,6 +199,115 @@ const sections = [
 
       <p class="control-caption">
         One action language. Infinite reach.
+      </p>
+    </div>
+  </Slide>
+
+  <!-- Slide 4.5: Demos — prove the "universal remote" claim we just made (placeholders; screenshots/recordings TBD) -->
+  <Slide id="demos" variant="dark">
+    <div class="content-slide demos-slide">
+      <p class="overline">From Theory to Proof</p>
+      <h2>Same Trick, <span class="highlight">Two Real Jobs</span></h2>
+      <p class="lead demos-slide__lead">
+        That's the claim. Here it is for real — two everyday tasks, both done by the agent,
+        neither one "writing software." Same action language, very different jobs.
+      </p>
+
+      <div class="demos-grid">
+        <div class="demo-card demo-card--brief">
+          <div class="demo-card__head">
+            <span class="demo-card__num">Demo 1</span>
+            <span class="demo-card__tag">Research &middot; Synthesize &middot; Publish</span>
+          </div>
+          <h3 class="demo-card__title">Daily paper brief &rarr; Confluence</h3>
+          <p class="demo-card__desc">
+            Agent surveys the Hugging Face Daily Papers feed, picks the most relevant paper,
+            writes a structured brief, and posts it to our Confluence space.
+          </p>
+          <div class="demo-card__flow">
+            <span class="demo-card__step">HF Daily Papers</span>
+            <span class="demo-card__arrow">&rarr;</span>
+            <span class="demo-card__step">structured brief</span>
+            <span class="demo-card__arrow">&rarr;</span>
+            <span class="demo-card__step">Confluence page</span>
+          </div>
+          <p class="demo-card__notice">Watch for: it doesn't just summarize — it <strong>writes into a system we actually read.</strong></p>
+          <div class="demo-card__placeholder">
+            <span class="demo-card__placeholder-icon" aria-hidden="true">&#9655;</span>
+            <span>recording / screenshot goes here</span>
+          </div>
+        </div>
+
+        <div class="demo-card demo-card--triage">
+          <div class="demo-card__head">
+            <span class="demo-card__num">Demo 2</span>
+            <span class="demo-card__tag">Read &middot; Reason &middot; Act</span>
+          </div>
+          <h3 class="demo-card__title">Triaging GitHub issues</h3>
+          <p class="demo-card__desc">
+            Agent reads messy, free-form issues, reasons about each one, and takes
+            structured action — label, prioritize, route, or reply.
+          </p>
+          <div class="demo-card__flow">
+            <span class="demo-card__step">raw issues</span>
+            <span class="demo-card__arrow">&rarr;</span>
+            <span class="demo-card__step">classify + reason</span>
+            <span class="demo-card__arrow">&rarr;</span>
+            <span class="demo-card__step">labels / routing</span>
+          </div>
+          <p class="demo-card__notice">Watch for: it turns <strong>unstructured human input into structured action.</strong></p>
+          <div class="demo-card__placeholder">
+            <span class="demo-card__placeholder-icon" aria-hidden="true">&#9655;</span>
+            <span>recording / screenshot goes here</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="demos-slide__caption">
+        <!-- TODO (decide once recorded): note whether these run on a vanilla agent or through OmO,
+             and tweak the line below to match. Vanilla → "and this is before the harness gets opinionated."
+             OmO → "the harness is already doing the routing and skill-loading here." -->
+        One action language did both. Next: <em>which</em> agent we run to get this &mdash; and what&rsquo;s under its hood.
+      </p>
+    </div>
+  </Slide>
+
+  <!-- Slide 4.75: Meet OpenCode — establishing shot before the runtime deep-dive -->
+  <Slide id="opencode" variant="accent">
+    <div class="content-slide opencode-intro">
+      <p class="overline">Meet OpenCode</p>
+      <h2>What&rsquo;s Good About <span class="highlight">OpenCode</span></h2>
+      <p class="lead opencode-intro__lead">
+        Of the six on that first slide, this is the one we run internally &mdash;
+        <strong>&ldquo;the open source AI coding agent.&rdquo;</strong> Three reasons it earns the spot.
+      </p>
+
+      <div class="opencode-traits">
+        <div class="oc-trait oc-trait--open">
+          <span class="oc-trait__icon oc-trait__icon--code" aria-hidden="true">&lt;/&gt;</span>
+          <h3 class="oc-trait__title">Open source</h3>
+          <p class="oc-trait__desc">The whole runtime is readable. No black box &mdash; you can see exactly how a turn is assembled.</p>
+          <span class="oc-trait__tag">terminal-first &middot; MIT</span>
+        </div>
+
+        <div class="oc-trait oc-trait--model">
+          <span class="oc-trait__icon" aria-hidden="true">&#8644;</span>
+          <h3 class="oc-trait__title">Model-agnostic</h3>
+          <p class="oc-trait__desc">Bring any provider &mdash; Anthropic, OpenAI, Google, local. Swap freely; the harness isn&rsquo;t welded to one vendor.</p>
+          <span class="oc-trait__tag">any LLM, per task</span>
+        </div>
+
+        <div class="oc-trait oc-trait--hack">
+          <span class="oc-trait__icon" aria-hidden="true">&#9881;</span>
+          <h3 class="oc-trait__title">Hackable</h3>
+          <p class="oc-trait__desc">A core runtime with clients on top &mdash; TUI, desktop, SDK &mdash; plus skills, plugins, and lifecycle hooks.</p>
+          <span class="oc-trait__tag">plugins &middot; hooks &middot; skills</span>
+        </div>
+      </div>
+
+      <p class="opencode-intro__bridge">
+        And because it&rsquo;s open, we can do something the closed agents won&rsquo;t let you:
+        <em>look inside the runtime itself.</em>
       </p>
     </div>
   </Slide>
@@ -306,6 +416,10 @@ const sections = [
           </div>
 
           <p class="loader-card__note">Best for recurring playbooks, checklists, and domain habits inside one agent.</p>
+          <a class="loader-card__link" href="https://github.com/sst/opencode/blob/dev/packages/core/src/skill.ts" target="_blank" rel="noopener">
+            <span class="loader-card__link-icon" aria-hidden="true">&#8599;</span>
+            <span>See a real <code>SKILL.md</code> + the loader</span>
+          </a>
         </div>
 
         <div class="loader-card loader-card--plugin">
@@ -348,95 +462,12 @@ const sections = [
 
           <p class="loader-card__example">e.g. Plannotator &mdash; plan review, annotations, feedback loop</p>
           <p class="loader-card__note">Good for provider defaults, org integrations, review UX, and workflow-layer extensions.</p>
+          <a class="loader-card__link" href="https://github.com/code-yeongyu/oh-my-openagent/blob/dev/packages/omo-opencode/src/plugin-interface.ts" target="_blank" rel="noopener">
+            <span class="loader-card__link-icon" aria-hidden="true">&#8599;</span>
+            <span>See OmO&rsquo;s <code>createPluginInterface()</code></span>
+          </a>
         </div>
       </div>
-    </div>
-  </Slide>
-
-  <!-- Slide 6.5: What the code actually looks like -->
-  <Slide id="extensibility-code" variant="accent">
-    <div class="content-slide code-interlude">
-      <p class="overline">What It Actually Looks Like</p>
-      <h2>Skill &amp; Plugin, <span class="highlight">in Code</span></h2>
-      <p class="lead code-interlude__lead">
-        A skill is markdown content. A plugin is a function that returns hook callbacks. Both wire into the same runtime &mdash; very differently.
-      </p>
-
-      <div class="code-interlude__grid">
-        <!-- Skill side: SKILL.md -->
-        <div class="code-pane code-pane--skill">
-          <div class="code-pane__header">
-            <span class="code-pane__filename">daily-paper-brief/SKILL.md</span>
-            <span class="code-pane__lang">markdown &middot; truncated</span>
-          </div>
-          <div class="code-pane__body">
-            <pre class="code-pane__pre"><code><span class="code-mark code-mark--1">---
-name: daily-paper-brief
-description: Survey Hugging Face Daily Papers,
-  pick the most relevant paper, and write
-  a structured brief to paper-brief.md.
-slash: true
----</span>
-
-<span class="code-mark code-mark--2"># Daily Paper Brief
-
-Turn the live Hugging Face Daily Papers feed
-into a single, well-chosen structured brief.
-
-1. Fetch today&rsquo;s trending papers
-   curl -s "https://huggingface.co/api/daily_papers?limit=30&amp;sort=trending"
-
-&hellip;
-Write TL;DR, Problem, Method, Key result,
-Limitations, and relevance to this talk.</span></code></pre>
-            <ul class="code-notes">
-              <li><span class="code-notes__chip code-notes__chip--1">1</span><span class="code-notes__text"><strong>frontmatter</strong> &mdash; how the loader discovers this skill</span></li>
-              <li><span class="code-notes__chip code-notes__chip--2">2</span><span class="code-notes__text"><strong>body</strong> &mdash; injected into the conversation when the model calls the <code>skill</code> tool</span></li>
-            </ul>
-          </div>
-          <div class="code-pane__caption">
-            <span class="code-pane__caption-label">flow:</span>
-            <span><code>skills[]</code> discovers it &middot; model decides to load it &middot; content injected as tool output</span>
-          </div>
-        </div>
-
-        <!-- Plugin side: TypeScript -->
-        <div class="code-pane code-pane--plugin">
-          <div class="code-pane__header">
-            <span class="code-pane__filename">oh-my-openagent/src/plugin-interface.ts</span>
-            <span class="code-pane__lang">typescript &middot; truncated</span>
-          </div>
-          <div class="code-pane__body">
-            <pre class="code-pane__pre"><code><Fragment set:html={`<span class="code-keyword">export function</span> <span class="code-fn">createPluginInterface</span>(args) {
-  <span class="code-keyword">const</span> { ctx, pluginConfig, managers, hooks, tools } = args
-
-  <span class="code-keyword">return</span> <span class="code-mark code-mark--1">{
-    tool: tools,
-    <span class="code-mark code-mark--2"><span class="code-string">"chat.params"</span></span>: <span class="code-keyword">async</span> (input, output) =&gt; {
-      <span class="code-keyword">const</span> handler = createChatParamsHandler({ client: ctx.client })
-      <span class="code-keyword">await</span> handler(input, output)
-    },
-    <span class="code-string">"experimental.chat.messages.transform"</span>:
-      createMessagesTransformHandler({ hooks }),
-    config: managers.configHandler,
-    event: createEventHandler({ ctx, pluginConfig, managers, hooks }),
-    <span class="code-mark code-mark--3"><span class="code-string">"tool.execute.before"</span>: createToolExecuteBeforeHandler({ ctx, hooks }),
-    <span class="code-string">"tool.execute.after"</span>: createToolExecuteAfterHandler({ ctx, hooks }),</span>
-  }</span>
-}`} /></code></pre>
-            <ul class="code-notes">
-              <li><span class="code-notes__chip code-notes__chip--1">1</span><span class="code-notes__text"><strong>Hooks object</strong> &mdash; actual OmO interface returned to OpenCode</span></li>
-              <li><span class="code-notes__chip code-notes__chip--2">2</span><span class="code-notes__text"><strong>hook key</strong> &mdash; the lifecycle point OpenCode fires</span></li>
-              <li><span class="code-notes__chip code-notes__chip--3">3</span><span class="code-notes__text"><strong>handler wiring</strong> &mdash; delegates work into OmO&rsquo;s hook stack</span></li>
-            </ul>
-          </div>
-          <div class="code-pane__caption">
-            <span class="code-pane__caption-label">flow:</span>
-            <span><code>PluginBoot</code> registers it &middot; runtime fires hook keys &middot; OmO dispatches into composed handlers</span>
-          </div>
-        </div>
-      </div>
-
     </div>
   </Slide>
 
@@ -1565,6 +1596,266 @@ output.enabled = true</code></pre>
     line-height: 1.5;
   }
 
+  /* ===== Demos: show it before abstracting it ===== */
+  .demos-slide {
+    max-width: 66rem;
+    margin: 0 auto;
+  }
+
+  .demos-slide__lead {
+    max-width: 44rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .demos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .demo-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.1rem 1.15rem 1.2rem;
+    border-radius: 1.15rem;
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 18px 34px -30px rgba(15, 23, 42, 0.16);
+    overflow: hidden;
+  }
+
+  .demo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--demo-accent, rgba(148, 163, 184, 0.5));
+  }
+
+  .demo-card--brief { --demo-accent: linear-gradient(90deg, #6366f1, #8b5cf6); }
+  .demo-card--triage { --demo-accent: linear-gradient(90deg, #14b8a6, #0f766e); }
+
+  .demo-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .demo-card__num {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent-dim);
+  }
+
+  .demo-card--triage .demo-card__num { color: #0f766e; }
+
+  .demo-card__tag {
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .demo-card__title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.25;
+  }
+
+  .demo-card__desc {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+
+  .demo-card__flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.15rem 0 0.1rem;
+  }
+
+  .demo-card__step {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 0.22rem 0.5rem;
+    border-radius: 0.45rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+
+  .demo-card__arrow {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+
+  .demo-card__notice {
+    font-size: 0.82rem;
+    color: var(--color-text);
+    line-height: 1.5;
+  }
+
+  .demo-card__notice strong {
+    color: var(--color-accent-dim);
+  }
+
+  .demo-card--triage .demo-card__notice strong { color: #0f766e; }
+
+  .demo-card__placeholder {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.3rem 1rem;
+    border-radius: 0.7rem;
+    border: 1.5px dashed var(--color-border);
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(148, 163, 184, 0.04),
+      rgba(148, 163, 184, 0.04) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .demo-card__placeholder-icon {
+    font-size: 0.9rem;
+    font-style: normal;
+  }
+
+  .demos-slide__caption {
+    margin-top: 1.2rem;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .demos-slide__caption em {
+    color: var(--color-text);
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .demos-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Meet OpenCode: establishing shot before the runtime deep-dive ===== */
+  .opencode-intro {
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  .opencode-intro__lead {
+    max-width: 46rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .opencode-traits {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .oc-trait {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 1.3rem 1.2rem 1.35rem;
+    border-radius: 1.1rem;
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 18px 34px -30px rgba(15, 23, 42, 0.16);
+    overflow: hidden;
+  }
+
+  .oc-trait::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--oc-accent, rgba(148, 163, 184, 0.5));
+  }
+
+  .oc-trait--open { --oc-accent: linear-gradient(90deg, #4f46e5, #7c3aed); }
+  .oc-trait--model { --oc-accent: linear-gradient(90deg, #0ea5e9, #6366f1); }
+  .oc-trait--hack { --oc-accent: linear-gradient(90deg, #14b8a6, #0f766e); }
+
+  .oc-trait__icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--color-accent-dim);
+  }
+
+  .oc-trait--model .oc-trait__icon { color: #0284c7; }
+  .oc-trait--hack .oc-trait__icon { color: #0f766e; }
+
+  .oc-trait__icon--code {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .oc-trait__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .oc-trait__desc {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+
+  .oc-trait__tag {
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    padding-top: 0.4rem;
+    letter-spacing: 0.01em;
+  }
+
+  .opencode-intro__bridge {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+    max-width: 46rem;
+  }
+
+  .opencode-intro__bridge em {
+    color: var(--color-text);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .opencode-traits {
+      grid-template-columns: 1fr;
+    }
+  }
+
   /* ===== Flow diagram: CODE → systems → knowledge work ===== */
   .control-slide {
     position: relative;
@@ -2431,6 +2722,50 @@ output.enabled = true</code></pre>
     font-size: 0.84rem;
     color: var(--color-text-muted);
     line-height: 1.55;
+  }
+
+  .loader-card__link {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.1rem;
+    padding: 0.32rem 0.6rem;
+    border-radius: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--color-accent-dim);
+    background: rgba(99, 102, 241, 0.07);
+    border: 1px solid rgba(99, 102, 241, 0.16);
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .loader-card--plugin .loader-card__link {
+    color: #0f766e;
+    background: rgba(20, 184, 166, 0.08);
+    border-color: rgba(20, 184, 166, 0.2);
+  }
+
+  .loader-card__link:hover {
+    transform: translateY(-1px);
+    background: rgba(99, 102, 241, 0.12);
+    border-color: rgba(99, 102, 241, 0.3);
+  }
+
+  .loader-card--plugin .loader-card__link:hover {
+    background: rgba(20, 184, 166, 0.14);
+    border-color: rgba(20, 184, 166, 0.32);
+  }
+
+  .loader-card__link code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+  }
+
+  .loader-card__link-icon {
+    font-size: 0.85rem;
+    line-height: 1;
   }
 
   .loader-card__text code {
@@ -3828,243 +4163,6 @@ output.enabled = true</code></pre>
     gap: 0.6rem;
     padding: 0.85rem 0.9rem 0.9rem;
   }
-
-  /* ===== Slide 6.5: Skill & plugin code interlude ===== */
-  .code-interlude {
-    max-width: 70rem;
-  }
-
-  .code-interlude__lead {
-    max-width: 45rem;
-  }
-
-  .code-interlude__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-    margin-top: 0.9rem;
-  }
-
-  .code-pane {
-    display: flex;
-    flex-direction: column;
-    border-radius: 1rem;
-    background: #0f172a;
-    border: 1px solid rgba(148, 163, 184, 0.22);
-    box-shadow: 0 24px 50px -36px rgba(15, 23, 42, 0.7);
-    overflow: hidden;
-  }
-
-  .code-pane__header {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.9rem;
-    padding: 0.48rem 0.85rem 0.48rem 3.45rem;
-    background: rgba(15, 23, 42, 0.98);
-    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-  }
-
-  .code-pane__header::before {
-    content: '';
-    position: absolute;
-    left: 0.9rem;
-    top: 50%;
-    width: 1.8rem;
-    height: 0.5rem;
-    transform: translateY(-50%);
-    background:
-      radial-gradient(circle, #fb7185 55%, transparent 56%) 0 50% / 0.5rem 0.5rem no-repeat,
-      radial-gradient(circle, #fbbf24 55%, transparent 56%) 0.65rem 50% / 0.5rem 0.5rem no-repeat,
-      radial-gradient(circle, #34d399 55%, transparent 56%) 1.3rem 50% / 0.5rem 0.5rem no-repeat;
-  }
-
-  .code-pane__filename {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: #e2e8f0;
-    font-weight: 600;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .code-pane__lang {
-    flex-shrink: 0;
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #94a3b8;
-  }
-
-  .code-pane__body {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(11.5rem, 15rem);
-    min-height: 0;
-  }
-
-  .code-pane__pre {
-    margin: 0;
-    padding: 0.52rem 0.7rem;
-    background:
-      linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.98));
-    font-family: var(--font-mono);
-    font-size: 0.48rem;
-    line-height: 1.36;
-    color: #cbd5e1;
-    overflow: hidden;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    flex: 1;
-    min-width: 0;
-  }
-
-  /* Numbered notes below the code, mapped 1:1 to marked regions above */
-  .code-notes {
-    list-style: none;
-    margin: 0;
-    padding: 0.48rem 0.85rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.42rem;
-    background: rgba(15, 23, 42, 0.96);
-    border-left: 1px solid rgba(148, 163, 184, 0.16);
-  }
-
-  .code-notes li {
-    display: grid;
-    grid-template-columns: 1.15rem 1fr;
-    gap: 0.42rem;
-    align-items: baseline;
-    font-size: 0.68rem;
-    color: #94a3b8;
-    line-height: 1.32;
-  }
-
-  .code-notes__text {
-    display: block;
-  }
-
-  .code-notes li strong {
-    color: #e2e8f0;
-    font-weight: 600;
-  }
-
-  .code-notes li code {
-    font-family: var(--font-mono);
-    font-size: 0.86em;
-    padding: 0 0.25em;
-    border-radius: 0.25em;
-    background: rgba(148, 163, 184, 0.12);
-    color: #e2e8f0;
-  }
-
-  .code-notes__chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.15rem;
-    height: 1.15rem;
-    border-radius: 50%;
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    font-weight: 700;
-    color: #ffffff;
-    line-height: 1;
-  }
-
-  .code-pane__caption {
-    padding: 0.42rem 0.85rem 0.52rem;
-    background: rgba(2, 6, 23, 0.98);
-    border-top: 1px solid rgba(148, 163, 184, 0.13);
-    font-size: 0.68rem;
-    color: #94a3b8;
-    line-height: 1.4;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-  }
-
-  .code-pane__caption-label {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #64748b;
-    font-weight: 600;
-  }
-
-  .code-pane__caption code {
-    font-family: var(--font-mono);
-    font-size: 0.86em;
-    padding: 0.04em 0.3em;
-    border-radius: 0.3em;
-    background: rgba(148, 163, 184, 0.12);
-    color: #e2e8f0;
-  }
-
-  /* Code syntax — :global() so styles reach set:html-injected spans */
-  :global(.code-keyword) { color: #c4b5fd; font-weight: 600; }
-  :global(.code-string) { color: #5eead4; }
-  :global(.code-fn) { color: #93c5fd; font-weight: 600; }
-
-  /* Marked code region: colored highlight + numbered badge before the content */
-  :global(.code-mark) {
-    background: rgba(99, 102, 241, 0.2);
-    border-radius: 0.22em;
-    padding: 0.04em 0.18em;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-    position: relative;
-    color: #eef2ff;
-  }
-
-  :global(.code-mark::before) {
-    content: counter(mark-num);
-    counter-increment: mark-num;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 0.78rem;
-    height: 0.78rem;
-    border-radius: 50%;
-    background: var(--mark-color, #6366f1);
-    color: #ffffff;
-    font-size: 0.48rem;
-    font-weight: 700;
-    margin-right: 0.3em;
-    vertical-align: 0.05em;
-    font-family: var(--font-mono);
-    line-height: 1;
-  }
-
-  :global(.code-pane--skill .code-pane__pre code),
-  :global(.code-pane--plugin .code-pane__pre code) {
-    counter-reset: mark-num;
-  }
-
-  :global(.code-mark--1) { --mark-color: #6366f1; }
-  :global(.code-mark--2) { --mark-color: #8b5cf6; }
-  :global(.code-mark--3) { --mark-color: #a855f7; }
-
-  :global(.code-pane--plugin .code-mark) {
-    background: rgba(20, 184, 166, 0.2);
-  }
-  :global(.code-pane--plugin .code-mark--1) { --mark-color: #14b8a6; }
-  :global(.code-pane--plugin .code-mark--2) { --mark-color: #0d9488; }
-  :global(.code-pane--plugin .code-mark--3) { --mark-color: #0f766e; }
-
-  /* Numbered chip colors matching the marks */
-  .code-pane--skill .code-notes__chip--1 { background: #6366f1; }
-  .code-pane--skill .code-notes__chip--2 { background: #8b5cf6; }
-  .code-pane--skill .code-notes__chip--3 { background: #a855f7; }
-  .code-pane--plugin .code-notes__chip--1 { background: #14b8a6; }
-  .code-pane--plugin .code-notes__chip--2 { background: #0d9488; }
-  .code-pane--plugin .code-notes__chip--3 { background: #0f766e; }
 
   /* Plain footer captions, matching the runtime slide caption. */
   .omo-takeaway,
