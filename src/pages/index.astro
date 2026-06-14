@@ -21,6 +21,7 @@ const sections = [
   { id: 'personalization', label: 'Own Your Harness' },
   { id: 'demo', label: 'Example · Agent as Judge' },
   { id: 'tradeoffs', label: 'Resources' },
+  { id: 'future', label: 'Where It\'s Going' },
   { id: 'takeaways', label: 'Takeaways' },
   { id: 'appendix-routing', label: 'Appendix · Routing' },
   { id: 'appendix-continuation', label: 'Appendix · Continuation' },
@@ -793,6 +794,11 @@ output.enabled = true</code></pre>
           <p class="rtk__install-note">Hooks <code>tool.execute.before</code> &mdash; transparently rewrites <code>git status</code> &rarr; <code>rtk git status</code>. Single Rust binary, <code>&lt;10ms</code> overhead.</p>
         </div>
       </div>
+
+      <p class="slide-cite">
+        <span class="slide-cite__tag">Source</span>
+        Savings table &amp; mechanism from <a href="https://github.com/rtk-ai/rtk" target="_blank" rel="noopener">rtk-ai/rtk</a> &mdash; self-reported for a medium TS/Rust project; OpenCode plugin <a href="https://github.com/martinstannard/openrtk" target="_blank" rel="noopener">martinstannard/openrtk</a>.
+      </p>
     </div>
   </Slide>
 
@@ -932,6 +938,16 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
           They stack &mdash; this isn&rsquo;t a pick-one.
         </p>
       </div>
+
+      <p class="slide-cite">
+        <span class="slide-cite__tag">Figures from each project&rsquo;s README</span>
+        <a href="https://github.com/colbymchenry/codegraph" target="_blank" rel="noopener">colbymchenry/codegraph</a>
+        <span class="slide-cite__sep">&middot;</span>
+        <a href="https://github.com/rtk-ai/rtk" target="_blank" rel="noopener">rtk-ai/rtk</a>
+        <span class="slide-cite__sep">&middot;</span>
+        <a href="https://github.com/chopratejas/headroom" target="_blank" rel="noopener">chopratejas/headroom</a>
+        &mdash; self-reported, vary by codebase.
+      </p>
     </div>
   </Slide>
 
@@ -1077,6 +1093,89 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     </div>
   </Slide>
 
+  <!-- Slide 9.9: Where this is going — substantiated forward look -->
+  <Slide id="future" variant="control">
+    <div class="content-slide future">
+      <p class="overline">Looking Ahead</p>
+      <h2>Where This Is <span class="highlight">Going</span> <span class="future__caveat">(opinionated)</span></h2>
+      <p class="lead future__lead">
+        The action format is mostly settled. <strong>CodeAct</strong> &mdash; agents acting by writing and
+        running code &mdash; beats rigid JSON tool-calls (<strong>up to 20% higher success rate</strong>)
+        because code <em>composes</em>: loops, conditionals, piping one tool into the next.
+        The next few years aren&rsquo;t a better action format. They&rsquo;re the
+        three layers <em>around</em> it &mdash; the layers you just saw.
+      </p>
+
+      <!-- Orbital: a settled CodeAct core, three frontier layers orbiting it.
+           Each layer is numbered and tagged with the verb describing how it
+           acts on the core, so the relationship reads as "layers around a core",
+           not "arrows stabbing a target". -->
+      <div class="orbit" aria-label="CodeAct as a settled core, with three frontier layers orbiting it">
+        <!-- CENTER: the settled core -->
+        <div class="orbit__core" aria-label="CodeAct: the settled action format">
+          <span class="orbit__ring orbit__ring--outer" aria-hidden="true"></span>
+          <span class="orbit__ring orbit__ring--inner" aria-hidden="true"></span>
+          <div class="core">
+            <span class="core__tag">Settled</span>
+            <svg class="core__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M8.5 7.5 4 12l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15.5 7.5 20 12l-4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.5 6 10.5 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+            <span class="core__title">CodeAct</span>
+            <span class="core__sub">the action format</span>
+          </div>
+        </div>
+
+        <!-- TOP: judgment steers it -->
+        <div class="layer layer--judgment">
+          <span class="layer__node" aria-hidden="true">01</span>
+          <div class="layer__body">
+            <p class="layer__verb">steers it</p>
+            <h3 class="layer__title">Judgment &amp; planning</h3>
+            <p class="layer__claim">Acting is easy; knowing <em>which</em> action advances the goal &mdash; decompose, route, continue, stop &mdash; lives above the model.</p>
+            <p class="layer__saw"><span class="layer__saw-tag">saw it</span> OmO planners, routing, Ralph loop</p>
+          </div>
+        </div>
+
+        <!-- BOTTOM-LEFT: context feeds it -->
+        <div class="layer layer--context">
+          <span class="layer__node" aria-hidden="true">02</span>
+          <div class="layer__body">
+            <p class="layer__verb">feeds it</p>
+            <h3 class="layer__title">Context economics</h3>
+            <p class="layer__claim">More code &rArr; more output flooding the window. The 2026 consensus: <em>context quality beats window size</em> &mdash; agents degrade from bloat, not token caps.</p>
+            <p class="layer__saw"><span class="layer__saw-tag">saw it</span> RTK, Headroom, CodeGraph</p>
+          </div>
+        </div>
+
+        <!-- BOTTOM-RIGHT: trust bounds it -->
+        <div class="layer layer--trust">
+          <span class="layer__node" aria-hidden="true">03</span>
+          <div class="layer__body">
+            <p class="layer__verb">bounds it</p>
+            <h3 class="layer__title">Trust &amp; verification</h3>
+            <p class="layer__claim">The more code an agent runs unattended, the higher the stakes. Sandboxing, gating, and scoring the agent <em>can&rsquo;t see the answers to</em> keep it usable.</p>
+            <p class="layer__saw"><span class="layer__saw-tag">saw it</span> Docker sandbox, label gatekeeper, fixed rubric</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="future__kicker">
+        The model isn&rsquo;t yours to improve &mdash; but these three layers <em>are</em>.
+        And you don&rsquo;t learn them by watching; you learn them by building.
+        <strong>Point a coding agent at a real problem and start.</strong>
+      </p>
+
+      <p class="slide-cite">
+        <span class="slide-cite__tag">Sources</span>
+        CodeAct: Wang et al., <a href="https://arxiv.org/abs/2402.01030" target="_blank" rel="noopener">&ldquo;Executable Code Actions Elicit Better LLM Agents&rdquo;</a> (ICML 2024) &mdash; &ldquo;up to 20% higher success rate.&rdquo;
+        <span class="slide-cite__sep">&middot;</span>
+        Context-quality framing: <a href="https://arxiv.org/abs/2510.00615" target="_blank" rel="noopener">ACON (2025)</a> &amp; 2026 long-horizon context research.
+      </p>
+    </div>
+  </Slide>
+
   <!-- Slide 10: Key takeaways -->
   <Slide id="takeaways" variant="dark">
     <div class="content-slide takeaway-slide">
@@ -1084,24 +1183,28 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
       <h2>Key Takeaways</h2>
       <ol class="takeaway-list">
         <li>
-          <strong>Agents are a workflow shift, not just a tool.</strong>
-          You move from writing code to directing and reviewing it.
+          <strong>Code is the universal remote.</strong>
+          An agent doesn&rsquo;t just write code &mdash; it <em>acts</em> through it. Paper briefs, issue triage,
+          even judging another agent: same trick, different jobs.
         </li>
         <li>
-          <strong>Start with bounded tasks.</strong>
-          Bug fixes, refactors, and tests are the sweet spot today.
+          <strong>The harness is the product, not the model.</strong>
+          Same engine, different opinions about context, tools, routing, and when to stop.
+          That layer &mdash; OpenCode + OmO &mdash; is what you actually feel.
         </li>
         <li>
-          <strong>Invest in context.</strong>
-          Good project docs (CLAUDE.md, README) make agents dramatically more effective.
+          <strong>Token cost is a design surface.</strong>
+          You can engineer it down (RTK), and there&rsquo;s a whole fast-moving field doing it.
+          What reaches the model is a choice, not a given.
         </li>
         <li>
-          <strong>Keep humans in the loop.</strong>
-          The best workflow is human judgment + agent execution speed.
+          <strong>The default is already a choice &mdash; so make it yours.</strong>
+          Adopt &amp; reshape, or build up from primitives. Either way, own the harness
+          instead of inheriting someone else&rsquo;s.
         </li>
       </ol>
       <div class="closing">
-        <p class="closing__text">Thanks for listening.</p>
+        <p class="closing__text">Don&rsquo;t just use an agent &mdash; <strong>own the harness around it.</strong></p>
       </div>
     </div>
   </Slide>
@@ -1554,7 +1657,12 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
 
   .closing__text {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .closing__text strong {
+    font-weight: 700;
     color: var(--color-accent);
   }
 
@@ -4813,6 +4921,290 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     text-align: center;
   }
 
+  /* ===== Where this is going (forward look) ===== */
+  .future {
+    max-width: 72rem;
+  }
+
+  .future__caveat {
+    font-size: 0.5em;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--color-text-muted);
+    letter-spacing: 0.01em;
+    vertical-align: 0.28em;
+  }
+
+  .future__lead {
+    max-width: 56rem;
+    margin-bottom: 1.05rem;
+  }
+
+  .future__lead strong {
+    color: var(--color-accent-dim);
+  }
+
+  /* Orbital diagram: a settled core in the center cell, three layers in the
+     surrounding cells. A 3-column grid keeps the center column reserved for
+     the core, so layers never overlap it — judgment top-center, context &
+     trust flanking below. */
+  .orbit {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      ".       judgment ."
+      "context core     trust";
+    align-items: center;
+    column-gap: 1.5rem;
+    row-gap: 1.1rem;
+    padding-top: 0.5rem;
+  }
+
+  /* core sits in the reserved center cell, on the slide's center glow */
+  .orbit__core {
+    grid-area: core;
+    position: relative;
+    display: grid;
+    place-items: center;
+    z-index: 2;
+  }
+
+  /* concentric orbital rings — carry the "layers around a core" relationship
+     without directional arrows. Two faint dashed rings = orbits. */
+  .orbit__ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px dashed rgba(67, 56, 202, 0.18);
+  }
+
+  .orbit__ring--inner {
+    width: 11.5rem;
+    height: 11.5rem;
+  }
+
+  .orbit__ring--outer {
+    width: 13.5rem;
+    height: 13.5rem;
+    border-color: rgba(67, 56, 202, 0.1);
+  }
+
+  /* the settled core — light, outlined, recedes so the layers read as active */
+  .core {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.12rem;
+    width: 9.5rem;
+    height: 9.5rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 38%, #ffffff, #f5f5ff);
+    border: 1px solid rgba(67, 56, 202, 0.2);
+    box-shadow: 0 10px 30px -22px rgba(67, 56, 202, 0.5);
+  }
+
+  .core__tag {
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-dim);
+    padding: 0.06rem 0.5rem;
+    border-radius: 0.3rem;
+    border: 1px solid rgba(67, 56, 202, 0.25);
+    background: rgba(99, 102, 241, 0.06);
+  }
+
+  .core__icon {
+    width: 1.55rem;
+    height: 1.55rem;
+    color: var(--color-accent-dim);
+    margin: 0.12rem 0;
+  }
+
+  .core__title {
+    font-size: 1.32rem;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+  .core__sub {
+    font-size: 0.62rem;
+    color: var(--color-text-muted);
+    line-height: 1.3;
+    max-width: 8rem;
+  }
+
+  /* each orbiting layer — a numbered node + a card.
+     The node is a small disc on the card edge facing the core, so every layer
+     visually "connects" to the center the same way (consistent grammar). */
+  .layer {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    width: 18.5rem;
+    max-width: 100%;
+    padding: 0.8rem 0.95rem 0.85rem;
+    border-radius: 0.85rem;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-top: 2px solid var(--layer-tint);
+    box-shadow: 0 8px 24px -22px rgba(15, 23, 42, 0.35);
+  }
+
+  .layer--judgment {
+    grid-area: judgment;
+    --layer-tint: #4338ca;
+    justify-self: center;
+  }
+
+  .layer--context {
+    grid-area: context;
+    --layer-tint: #0284c7;
+    justify-self: end;
+  }
+
+  .layer--trust {
+    grid-area: trust;
+    --layer-tint: #0f766e;
+    justify-self: start;
+    flex-direction: row-reverse;
+    text-align: right;
+  }
+
+  /* numbered node — the orbital marker tying each layer to the core */
+  .layer__node {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 50%;
+    background: var(--layer-tint);
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--layer-tint) 14%, transparent);
+  }
+
+  .layer__body {
+    min-width: 0;
+  }
+
+  .layer__verb {
+    margin: 0 0 0.18rem;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--layer-tint);
+  }
+
+  .layer__title {
+    margin: 0 0 0.35rem;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+  .layer__claim {
+    margin: 0 0 0.45rem;
+    font-size: 0.76rem;
+    color: var(--color-text);
+    line-height: 1.42;
+  }
+
+  .layer__saw {
+    margin: 0;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .layer__saw-tag {
+    display: inline-block;
+    margin-right: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    padding: 0.06rem 0.38rem;
+    border-radius: 0.3rem;
+    background: var(--layer-tint);
+    vertical-align: 1px;
+  }
+
+  .future__kicker {
+    margin-top: 1.2rem;
+    padding: 0.9rem 1.2rem;
+    border-radius: 0.9rem;
+    text-align: center;
+    background: rgba(99, 102, 241, 0.07);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    font-size: 1.02rem;
+    color: var(--color-text);
+    line-height: 1.45;
+  }
+
+  .future__kicker em {
+    color: var(--color-text);
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .future__kicker strong {
+    color: var(--color-accent-dim);
+  }
+
+  /* ===== Reusable slide citation line ===== */
+  .slide-cite {
+    margin: 1rem 0 0;
+    font-size: 0.68rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+
+  .slide-cite__tag {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    margin-right: 0.45rem;
+  }
+
+  .slide-cite a {
+    color: var(--color-accent-dim);
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(67, 56, 202, 0.4);
+  }
+
+  .slide-cite a:hover {
+    border-bottom-style: solid;
+  }
+
+  .slide-cite__sep {
+    margin: 0 0.4rem;
+    color: rgba(15, 23, 42, 0.25);
+  }
+
   /* ===== Slide 9: Own your agent setup ===== */
   .personalization {
     max-width: 70rem;
@@ -5469,6 +5861,36 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
 
     .resources__grid {
       grid-template-columns: 1fr;
+    }
+
+    .hubspoke__top {
+      width: 100%;
+    }
+
+    .hubspoke__row {
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .spoke {
+      display: none;
+    }
+
+    .hub {
+      width: 10rem;
+      height: 10rem;
+      order: -1;
+    }
+
+    .force--judgment {
+      width: 100%;
+    }
+
+    .force--context,
+    .force--trust {
+      width: 100%;
+      flex: none;
+      text-align: left;
     }
   }
 
