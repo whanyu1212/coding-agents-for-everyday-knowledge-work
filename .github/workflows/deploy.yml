@@ -1,6 +1,7 @@
 name: Deploy to GitHub Pages
 
-# Trigger on both push and PR to main, per the requested behavior.
+# Push to main builds + deploys. PR to main builds only (compile check) —
+# the deploy job is gated below to push events.
 on:
   push:
     branches: [main]
@@ -54,9 +55,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     # The build job above runs on every trigger (so PRs get a compile check);
     # this `if` gates publishing to the single live Pages environment.
-    # Deploy on push to main AND on PRs to main, per the requested behavior.
-    # Note: a PR deploy overwrites the live site before the PR is merged.
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    # Deploy only on push to main. PRs build but don't publish — GitHub's
+    # `github-pages` environment is branch-protected to the default branch,
+    # so PR-branch deploys are rejected regardless.
+    if: github.event_name == 'push'
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
