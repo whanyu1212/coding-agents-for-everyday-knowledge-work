@@ -1,0 +1,63 @@
+name: Deploy to GitHub Pages
+
+# Trigger on both push and PR to main, per the requested behavior.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  # Allows manually re-running the deploy from the Actions tab.
+  workflow_dispatch:
+
+# Least-privilege token: the deploy job needs to write Pages + mint an OIDC
+# token; everything else stays read-only.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy at a time. `cancel-in-progress: false` lets an in-flight
+# deploy finish rather than being interrupted mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # The build job above runs on every trigger (so PRs get a compile check);
+    # this `if` gates publishing to the single live Pages environment.
+    # Deploy on push to main AND on PRs to main, per the requested behavior.
+    # Note: a PR deploy overwrites the live site before the PR is merged.
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
