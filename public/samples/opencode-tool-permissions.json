@@ -1,0 +1,41 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "_note": "Illustrative global settings example for ~/.config/opencode/opencode.jsonc. OpenCode's current permission config uses last matching rule wins, so broad defaults come first and specific exceptions come later.",
+  "permission": {
+    "read": "allow",
+    "list": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "webfetch": "ask",
+    "external_directory": "deny",
+    "task": "ask",
+    "edit": {
+      "*": "ask",
+      ".env*": "deny",
+      "**/.env*": "deny"
+    },
+    "bash": {
+      "*": "ask",
+      "git status": "allow",
+      "git diff*": "allow",
+      "npm run build": "allow",
+      "npm test": "ask",
+      "rm *": "deny",
+      "sudo *": "deny"
+    }
+  },
+  "agent": {
+    "reviewer": {
+      "mode": "subagent",
+      "description": "Read-only code review helper",
+      "permission": {
+        "read": "allow",
+        "list": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "bash": "deny",
+        "edit": "deny"
+      }
+    }
+  }
+}
