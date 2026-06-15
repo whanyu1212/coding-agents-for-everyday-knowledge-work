@@ -234,6 +234,12 @@ const sections = [
             <span class="demo-card__arrow">&rarr;</span>
             <span class="demo-card__step">Confluence page</span>
           </div>
+          <div class="demo-card__prereqs" aria-label="Daily paper brief prerequisites">
+            <span class="demo-card__prereq-label">Needs</span>
+            <span class="demo-card__prereq">Atlassian MCP connected</span>
+            <span class="demo-card__prereq">HF API skill</span>
+            <span class="demo-card__prereq">extract + write skill</span>
+          </div>
           <p class="demo-card__notice">Watch for: it doesn't just summarize — it <strong>writes into a system we actually read.</strong></p>
           <div class="demo-card__placeholder">
             <span class="demo-card__placeholder-icon" aria-hidden="true">&#9655;</span>
@@ -257,6 +263,11 @@ const sections = [
             <span class="demo-card__step">classify + reason</span>
             <span class="demo-card__arrow">&rarr;</span>
             <span class="demo-card__step">labels / routing</span>
+          </div>
+          <div class="demo-card__prereqs" aria-label="GitHub issue triage prerequisites">
+            <span class="demo-card__prereq-label">Needs</span>
+            <span class="demo-card__prereq">authenticated <code>gh</code> CLI</span>
+            <a class="demo-card__prereq demo-card__prereq--link" href={`${import.meta.env.BASE_URL}samples/github-management-skill.md`} target="_blank" rel="noopener">github-management skill</a>
           </div>
           <p class="demo-card__notice">Watch for: it turns <strong>unstructured human input into structured action.</strong></p>
           <div class="demo-card__placeholder">
@@ -304,9 +315,16 @@ const sections = [
           <span class="oc-trait__icon" aria-hidden="true">&#9881;</span>
           <h3 class="oc-trait__title">Hackable</h3>
           <p class="oc-trait__desc">A core runtime with clients on top &mdash; TUI, desktop, SDK &mdash; plus skills, plugins, and lifecycle hooks.</p>
+          <a class="oc-trait__link" href={`${import.meta.env.BASE_URL}samples/opencode-tool-permissions.json`} target="_blank" rel="noopener">
+            Open sample tool-permission config
+          </a>
           <span class="oc-trait__tag">plugins &middot; hooks &middot; skills</span>
         </div>
       </div>
+
+      <p class="opencode-intro__limitation">
+        <strong>Caveat:</strong> first-party stacks still have an edge &mdash; Opus in Claude Code and GPT in Codex may be post-trained around their own harnesses, so OpenCode is not always 100% behaviorally on par.
+      </p>
 
       <p class="opencode-intro__bridge">
         And because it&rsquo;s open, we can do something the closed agents won&rsquo;t let you:
@@ -326,58 +344,65 @@ const sections = [
         and tools for each provider turn.
       </p>
 
-      <div class="runtime__diagram">
-        <div class="runtime__strip" aria-label="Process-global runtime control">
-          <span class="runtime__strip-item"><strong>Session API</strong><small>admit / resume</small></span>
-          <span class="runtime__strip-item"><strong>Drain Coordinator</strong><small>one active run</small></span>
-          <span class="runtime__strip-item"><strong>Location Runtime</strong><small>cached per workspace</small></span>
-        </div>
+      <div class="runtime__split">
+        <figure class="runtime__screenshot">
+          <img src={`${import.meta.env.BASE_URL}screenshots/opencode-runtime-search.png`} alt="OpenCode terminal session showing a web search task, tool calls, context usage, and session telemetry." />
+          <figcaption>Live run: the harness turns a request into skills, tool calls, context, and state.</figcaption>
+        </figure>
 
-        <div class="runtime__frame">
-          <span class="runtime__frame-label">Location-scoped runtime</span>
-          <div class="runtime__compact">
-            <div class="runtime__core">
-              <span class="runtime__kicker">Per-turn loop</span>
-              <span class="runtime__core-title">SessionRunner</span>
-              <span class="runtime__core-sub">one <code>llm.stream(...)</code> turn at a time</span>
-              <div class="runtime__pipeline">
-                <span class="runtime__pill">context</span>
-                <span class="runtime__pill">model</span>
-                <span class="runtime__pill">tools</span>
-                <span class="runtime__pill">events</span>
-                <span class="runtime__pill">continue</span>
-              </div>
-            </div>
+        <div class="runtime__diagram">
+          <div class="runtime__strip" aria-label="Process-global runtime control">
+            <span class="runtime__strip-item"><strong>Session API</strong><small>admit / resume</small></span>
+            <span class="runtime__strip-item"><strong>Drain Coordinator</strong><small>one active run</small></span>
+            <span class="runtime__strip-item"><strong>Location Runtime</strong><small>cached per workspace</small></span>
+          </div>
 
-            <div class="runtime__support-grid">
-              <div class="runtime__support">
-                <span class="runtime__kicker">SessionStore</span>
-                <span class="runtime__support-title">History</span>
+          <div class="runtime__frame">
+            <span class="runtime__frame-label">Location-scoped runtime</span>
+            <div class="runtime__compact">
+              <div class="runtime__core">
+                <span class="runtime__kicker">Per-turn loop</span>
+                <span class="runtime__core-title">SessionRunner</span>
+                <span class="runtime__core-sub">one <code>llm.stream(...)</code> turn at a time</span>
+                <div class="runtime__pipeline">
+                  <span class="runtime__pill">context</span>
+                  <span class="runtime__pill">model</span>
+                  <span class="runtime__pill">tools</span>
+                  <span class="runtime__pill">events</span>
+                  <span class="runtime__pill">continue</span>
+                </div>
               </div>
-              <div class="runtime__support">
-                <span class="runtime__kicker">Catalog</span>
-                <span class="runtime__support-title">Models</span>
-              </div>
-              <div class="runtime__support">
-                <span class="runtime__kicker">ToolRegistry</span>
-                <span class="runtime__support-title">Tools</span>
-              </div>
-              <div class="runtime__support">
-                <span class="runtime__kicker">Compaction</span>
-                <span class="runtime__support-title">Memory</span>
+
+              <div class="runtime__support-grid">
+                <div class="runtime__support">
+                  <span class="runtime__kicker">SessionStore</span>
+                  <span class="runtime__support-title">History</span>
+                </div>
+                <div class="runtime__support">
+                  <span class="runtime__kicker">Catalog</span>
+                  <span class="runtime__support-title">Models</span>
+                </div>
+                <div class="runtime__support">
+                  <span class="runtime__kicker">ToolRegistry</span>
+                  <span class="runtime__support-title">Tools</span>
+                </div>
+                <div class="runtime__support">
+                  <span class="runtime__kicker">Compaction</span>
+                  <span class="runtime__support-title">Memory</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="runtime__store-card runtime__store-card--compact">
-          <span class="runtime__kicker">EventV2 &middot; SessionProjector &middot; SQLite</span>
-          <span class="runtime__store-title">Replayable durable state</span>
-        </div>
+          <div class="runtime__store-card runtime__store-card--compact">
+            <span class="runtime__kicker">EventV2 &middot; SessionProjector &middot; SQLite</span>
+            <span class="runtime__store-title">Replayable durable state</span>
+          </div>
 
-        <p class="runtime__caption">
-          One idea: admit work globally, execute inside a location runtime, persist every turn as replayable state.
-        </p>
+          <p class="runtime__caption">
+            One idea: admit work globally, execute inside a location runtime, persist every turn as replayable state.
+          </p>
+        </div>
       </div>
     </div>
   </Slide>
@@ -1782,6 +1807,7 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
   .anatomy-slide .lead {
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 1.1rem;
   }
 
   .anatomy-slide em {
@@ -1792,7 +1818,7 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
   .anatomy {
     display: flex;
     justify-content: center;
-    margin: 2.5rem 0;
+    margin: 0.8rem 0 0.9rem;
     perspective: 1000px;
   }
 
@@ -1801,7 +1827,7 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     Depth comes from soft colored shadows (not gradient borders, which would
     flood a translucent fill). Layers cascade in outer -> inner on entry.
   */
-  .layer {
+  .anatomy .layer {
     position: relative;
     border-radius: 1.25rem;
     border: 1.5px solid;
@@ -1814,50 +1840,50 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     animation: layer-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
-  .layer__label {
+  .anatomy .layer__label {
     font-weight: 700;
     letter-spacing: 0.02em;
   }
 
-  .layer__sub {
-    font-size: 0.75rem;
+  .anatomy .layer__sub {
+    font-size: 0.88rem;
     color: var(--color-text-muted);
-    margin-top: 0.15rem;
+    margin-top: 0.25rem;
   }
 
   /* Outer shell — the harness */
-  .layer--harness {
+  .anatomy .layer--harness {
     border-color: rgba(99, 102, 241, 0.45);
     background: linear-gradient(180deg, #eef0fe, #f6f7fe);
-    padding: 1.4rem 2rem 2.2rem;
+    padding: 2rem 2.8rem 2.9rem;
     width: 100%;
-    max-width: 34rem;
+    max-width: 60rem;
     box-shadow:
       0 18px 40px -12px rgba(79, 70, 229, 0.28),
       0 4px 14px rgba(79, 70, 229, 0.08);
     animation-delay: 0.05s;
   }
 
-  .layer--harness > .layer__label {
+  .anatomy .layer--harness > .layer__label {
     color: var(--color-accent);
-    font-size: 0.95rem;
+    font-size: 1.15rem;
   }
 
-  .layer__tags {
+  .anatomy .layer__tags {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.4rem;
-    margin: 0.7rem 0 1.4rem;
+    gap: 0.55rem;
+    margin: 0.8rem 0 1.6rem;
   }
 
   .tag {
-    font-size: 0.7rem;
+    font-size: 0.82rem;
     font-weight: 500;
     color: var(--color-accent);
     background: rgba(79, 70, 229, 0.08);
     border: 1px solid rgba(79, 70, 229, 0.2);
-    padding: 0.18rem 0.65rem;
+    padding: 0.24rem 0.78rem;
     border-radius: 999px;
     transition: transform 0.2s ease, background 0.2s ease;
   }
@@ -1868,26 +1894,26 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
   }
 
   /* Middle ring — CodeAct */
-  .layer--codeact {
+  .anatomy .layer--codeact {
     border-color: rgba(124, 58, 237, 0.5);
     background: linear-gradient(180deg, #f3edfd, #faf7fe);
-    padding: 1.25rem 2rem 1.9rem;
+    padding: 1.85rem 2.8rem 2.7rem;
     width: 100%;
     box-shadow: 0 12px 28px -10px rgba(124, 58, 237, 0.3);
     animation-delay: 0.2s;
   }
 
-  .layer--codeact > .layer__label {
+  .anatomy .layer--codeact > .layer__label {
     color: #7c3aed;
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 
   /* Core — the model */
-  .layer--model {
+  .anatomy .layer--model {
     border-color: rgba(26, 26, 46, 0.85);
     background: linear-gradient(180deg, #ffffff, #f4f4fb);
-    padding: 1.4rem 2.5rem;
-    margin-top: 1.1rem;
+    padding: 2.25rem 3.4rem;
+    margin-top: 1.6rem;
     width: 100%;
     box-shadow:
       0 10px 30px -8px rgba(0, 0, 0, 0.18),
@@ -1895,9 +1921,9 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     animation-delay: 0.38s;
   }
 
-  .layer--model > .layer__label {
+  .anatomy .layer--model > .layer__label {
     color: var(--color-text);
-    font-size: 1.1rem;
+    font-size: 1.4rem;
   }
 
   @keyframes layer-in {
@@ -1912,7 +1938,7 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .layer {
+    .anatomy .layer {
       animation: none;
       opacity: 1;
     }
@@ -2027,6 +2053,69 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
   .demo-card__arrow {
     color: var(--color-text-muted);
     font-size: 0.85rem;
+  }
+
+  .demo-card__prereqs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: -0.05rem;
+    padding: 0.55rem 0.6rem;
+    border-radius: 0.65rem;
+    background: rgba(99, 102, 241, 0.055);
+    border: 1px solid rgba(99, 102, 241, 0.14);
+  }
+
+  .demo-card--triage .demo-card__prereqs {
+    background: rgba(20, 184, 166, 0.06);
+    border-color: rgba(20, 184, 166, 0.18);
+  }
+
+  .demo-card__prereq-label {
+    margin-right: 0.05rem;
+    font-size: 0.64rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent-dim);
+  }
+
+  .demo-card--triage .demo-card__prereq-label {
+    color: #0f766e;
+  }
+
+  .demo-card__prereq {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.14rem 0.42rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    color: var(--color-text);
+    font-size: 0.7rem;
+    line-height: 1.25;
+  }
+
+  .demo-card__prereq code {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: inherit;
+    background: transparent;
+  }
+
+  .demo-card__prereq--link {
+    color: #0f766e;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .demo-card__prereq--link:hover {
+    transform: translateY(-1px);
+    background: rgba(240, 253, 250, 0.95);
+    border-color: rgba(20, 184, 166, 0.34);
   }
 
   .demo-card__notice {
@@ -2166,8 +2255,48 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     letter-spacing: 0.01em;
   }
 
+  .oc-trait__link {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    margin-top: 0.15rem;
+    padding: 0.42rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(15, 118, 110, 0.08);
+    border: 1px solid rgba(15, 118, 110, 0.18);
+    color: #0f766e;
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .oc-trait__link:hover {
+    transform: translateY(-1px);
+    background: rgba(15, 118, 110, 0.12);
+    border-color: rgba(15, 118, 110, 0.28);
+  }
+
+  .opencode-intro__limitation {
+    margin-top: 1rem;
+    max-width: 50rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 0.75rem;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.22);
+    color: #92400e;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .opencode-intro__limitation strong {
+    color: #78350f;
+    font-weight: 700;
+  }
+
   .opencode-intro__bridge {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     font-size: 0.95rem;
     color: var(--color-text-muted);
     line-height: 1.55;
@@ -2558,8 +2687,10 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
   .runtime {
     position: relative;
     text-align: center;
-    max-width: 64rem;
-    margin: 0 auto;
+    width: min(92vw, 80rem);
+    max-width: none;
+    margin-left: 50%;
+    transform: translateX(-50%);
   }
 
   .runtime::before {
@@ -2587,8 +2718,50 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     margin-bottom: 0;
   }
 
+  .runtime__split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    align-items: center;
+    gap: 1.15rem;
+    margin-top: 1.35rem;
+  }
+
+  .runtime__screenshot {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0.55rem;
+    border-radius: 1.15rem;
+    background: linear-gradient(180deg, #202436, #161927);
+    border: 1px solid rgba(15, 23, 42, 0.16);
+    box-shadow: 0 24px 50px -36px rgba(15, 23, 42, 0.45);
+    overflow: hidden;
+  }
+
+  .runtime__screenshot img {
+    display: block;
+    width: 100%;
+    height: clamp(21rem, 45vh, 31rem);
+    object-fit: cover;
+    object-position: left top;
+    border-radius: 0.75rem;
+  }
+
+  .runtime__screenshot figcaption {
+    padding: 0 0.25rem 0.1rem;
+    color: #c7d2fe;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    text-align: left;
+  }
+
   .runtime__diagram {
-    margin-top: 1.45rem;
+    margin-top: 0;
+  }
+
+  .runtime__split .runtime__support-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .runtime__strip {
@@ -5047,7 +5220,7 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
   /* each orbiting layer — a numbered node + a card.
      The node is a small disc on the card edge facing the core, so every layer
      visually "connects" to the center the same way (consistent grammar). */
-  .layer {
+  .orbit .layer {
     position: relative;
     display: flex;
     align-items: flex-start;
@@ -5062,19 +5235,19 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     box-shadow: 0 8px 24px -22px rgba(15, 23, 42, 0.35);
   }
 
-  .layer--judgment {
+  .orbit .layer--judgment {
     grid-area: judgment;
     --layer-tint: #4338ca;
     justify-self: center;
   }
 
-  .layer--context {
+  .orbit .layer--context {
     grid-area: context;
     --layer-tint: #0284c7;
     justify-self: end;
   }
 
-  .layer--trust {
+  .orbit .layer--trust {
     grid-area: trust;
     --layer-tint: #0f766e;
     justify-self: start;
@@ -5083,7 +5256,7 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
   }
 
   /* numbered node — the orbital marker tying each layer to the core */
-  .layer__node {
+  .orbit .layer__node {
     flex: none;
     display: grid;
     place-items: center;
@@ -5099,11 +5272,11 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--layer-tint) 14%, transparent);
   }
 
-  .layer__body {
+  .orbit .layer__body {
     min-width: 0;
   }
 
-  .layer__verb {
+  .orbit .layer__verb {
     margin: 0 0 0.18rem;
     font-family: var(--font-mono);
     font-size: 0.62rem;
@@ -5113,7 +5286,7 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     color: var(--layer-tint);
   }
 
-  .layer__title {
+  .orbit .layer__title {
     margin: 0 0 0.35rem;
     font-size: 0.98rem;
     font-weight: 700;
@@ -5121,21 +5294,21 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
     letter-spacing: -0.01em;
   }
 
-  .layer__claim {
+  .orbit .layer__claim {
     margin: 0 0 0.45rem;
     font-size: 0.76rem;
     color: var(--color-text);
     line-height: 1.42;
   }
 
-  .layer__saw {
+  .orbit .layer__saw {
     margin: 0;
     font-size: 0.7rem;
     color: var(--color-text-muted);
     line-height: 1.4;
   }
 
-  .layer__saw-tag {
+  .orbit .layer__saw-tag {
     display: inline-block;
     margin-right: 0.35rem;
     font-family: var(--font-mono);
@@ -5799,6 +5972,20 @@ tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <spa
   }
 
   @media (max-width: 1100px) {
+    .runtime {
+      width: 100%;
+      margin-left: auto;
+      transform: none;
+    }
+
+    .runtime__split {
+      grid-template-columns: 1fr;
+    }
+
+    .runtime__screenshot img {
+      height: clamp(16rem, 42vh, 24rem);
+    }
+
     .loader-grid {
       grid-template-columns: 1fr;
     }
