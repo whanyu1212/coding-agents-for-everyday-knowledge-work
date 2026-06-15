@@ -1,0 +1,139 @@
+---
+interface Props {
+  sections: { id: string; label: string }[];
+}
+
+const { sections } = Astro.props;
+---
+
+<nav class="nav">
+  <div class="nav__track">
+    {sections.map((s) => (
+      <a href={`#${s.id}`} class="nav__dot" title={s.label}>
+        <span class="nav__label">{s.label}</span>
+      </a>
+    ))}
+  </div>
+</nav>
+
+<style>
+  .nav {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+  }
+
+  .nav__track {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-end;
+  }
+
+  .nav__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d1d5db;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+  }
+
+  .nav__dot:hover {
+    background: var(--color-accent);
+    box-shadow: 0 0 12px var(--color-accent-glow);
+  }
+
+  .nav__label {
+    position: absolute;
+    right: 1.5rem;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    opacity: 0;
+    transform: translateX(0.5rem);
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .nav__dot:hover .nav__label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media (max-width: 768px) {
+    .nav {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const dots = document.querySelectorAll('.nav__dot');
+  const sections = document.querySelectorAll('.slide');
+
+  dots.forEach((dot) => {
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = dot.getAttribute('href')?.slice(1);
+      const target = id ? document.getElementById(id) : null;
+      target?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          dots.forEach((dot) => {
+            const href = dot.getAttribute('href')?.slice(1);
+            if (href === entry.target.id) {
+              (dot as HTMLElement).style.background = 'var(--color-accent)';
+              (dot as HTMLElement).style.transform = 'scale(1.4)';
+            } else {
+              (dot as HTMLElement).style.background = '#d1d5db';
+              (dot as HTMLElement).style.transform = 'scale(1)';
+            }
+          });
+        }
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+
+  let currentSlide = 0;
+  const slides = Array.from(sections) as HTMLElement[];
+
+  observer.takeRecords();
+
+  const syncCurrent = () => {
+    const mid = window.innerHeight / 2;
+    for (let i = slides.length - 1; i >= 0; i--) {
+      if (slides[i].getBoundingClientRect().top <= mid) {
+        currentSlide = i;
+        break;
+      }
+    }
+  };
+
+  window.addEventListener('scroll', syncCurrent, { passive: true });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      currentSlide = Math.min(currentSlide + 1, slides.length - 1);
+      slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      currentSlide = Math.max(currentSlide - 1, 0);
+      slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>

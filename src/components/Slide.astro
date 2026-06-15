@@ -1,0 +1,68 @@
+---
+interface Props {
+  id: string;
+  variant?: 'default' | 'accent' | 'dark' | 'control';
+}
+
+const { id, variant = 'default' } = Astro.props;
+---
+
+<section id={id} class:list={['slide', `slide--${variant}`]}>
+  <div class="slide__inner">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .slide {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide__inner {
+    max-width: 64rem;
+    width: 100%;
+    animation: slide-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+
+  .slide--accent {
+    background: #f8f9fa;
+  }
+
+  .slide--dark {
+    background: linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f3f4f6 100%
+    );
+  }
+
+  /* Orbital slide: light panel with a faint indigo center glow + subtle grid */
+  .slide--control {
+    background-color: #ffffff;
+    background-image:
+      radial-gradient(ellipse 70% 55% at 50% 50%, rgba(99, 102, 241, 0.07), transparent 72%),
+      linear-gradient(rgba(99, 102, 241, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99, 102, 241, 0.035) 1px, transparent 1px);
+    background-size: 100% 100%, 46px 46px, 46px 46px;
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(3rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

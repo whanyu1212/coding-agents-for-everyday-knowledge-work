@@ -1,0 +1,65 @@
+name: Deploy to GitHub Pages
+
+# Push to main builds + deploys. PR to main builds only (compile check) —
+# the deploy job is gated below to push events.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  # Allows manually re-running the deploy from the Actions tab.
+  workflow_dispatch:
+
+# Least-privilege token: the deploy job needs to write Pages + mint an OIDC
+# token; everything else stays read-only.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy at a time. `cancel-in-progress: false` lets an in-flight
+# deploy finish rather than being interrupted mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # The build job above runs on every trigger (so PRs get a compile check);
+    # this `if` gates publishing to the single live Pages environment.
+    # Deploy only on push to main. PRs build but don't publish — GitHub's
+    # `github-pages` environment is branch-protected to the default branch,
+    # so PR-branch deploys are rejected regardless.
+    if: github.event_name == 'push'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
