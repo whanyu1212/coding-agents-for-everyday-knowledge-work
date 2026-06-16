@@ -1,0 +1,12 @@
+/* Appendix divider */
+.appendix-divider {
+  max-width: 68rem;
+  text-align: center;
+}
+
+.appendix-divider h2 {
+  margin: 0;
+  font-size: clamp(3.8rem, 10vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.07em;
+}

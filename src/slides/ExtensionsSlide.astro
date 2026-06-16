@@ -1,0 +1,103 @@
+<!-- Slide 6: How OpenCode loads extensions -->
+<div class="content-slide deep-slide deep-slide--usage">
+  <p class="overline">Runtime Extension Points</p>
+  <h2>How OpenCode Loads <span class="highlight">Extensions</span></h2>
+  <p class="lead deep-slide__lead">
+    Skills are discovered and pulled into context on demand. Plugins are loaded into the
+    runtime and called back through hooks.
+  </p>
+
+  <div class="loader-grid">
+    <div class="loader-card loader-card--skill">
+      <div class="loader-card__header">
+        <span class="loader-card__kicker">Prompted Behavior</span>
+        <h3>Skills</h3>
+      </div>
+      <p class="loader-card__text">
+        Configured sources and conventional <code>skill/</code> or <code>skills/</code> dirs are scanned
+        for <code>SKILL.md</code>. OpenCode advertises names + descriptions; the full body enters context only when selected.
+      </p>
+      <div class="loader-flow">
+        <span class="loader-step">skill sources</span>
+        <span class="loader-connector">&#8594;</span>
+        <span class="loader-step">scan SKILL.md</span>
+        <span class="loader-connector">&#8594;</span>
+        <span class="loader-step">advertise summary</span>
+        <span class="loader-connector">&#8594;</span>
+        <span class="loader-step">load via tool</span>
+      </div>
+
+      <div class="intervenes intervenes--skill">
+        <span class="intervenes__label">How it loads</span>
+        <p class="intervenes__when">Guidance lists available skills in context by name and description</p>
+        <p class="intervenes__touches">The model calls the built-in <code>skill</code> tool to inject the chosen <code>SKILL.md</code></p>
+        <span class="intervenes__direction">discovered upfront &middot; pulled on demand</span>
+      </div>
+
+      <p class="loader-card__note">Best for recurring playbooks, checklists, and domain habits inside one agent.</p>
+      <a class="loader-card__link" href="https://github.com/sst/opencode/blob/dev/packages/core/src/skill.ts" target="_blank" rel="noopener">
+        <span class="loader-card__link-icon" aria-hidden="true">&#8599;</span>
+        <span>See a real <code>SKILL.md</code> + the loader</span>
+      </a>
+    </div>
+
+    <div class="loader-card loader-card--plugin">
+      <div class="loader-card__header">
+        <span class="loader-card__kicker">Runtime Hook Layer</span>
+        <h3>Plugins</h3>
+      </div>
+      <p class="loader-card__text">
+        OpenCode boots internal plugins and resolves configured plugin packages. Loaded plugins
+        return hooks that receive mutable envelopes at model and tool boundaries.
+      </p>
+      <div class="loader-flow">
+        <span class="loader-step">plugin config</span>
+        <span class="loader-connector">&#8594;</span>
+        <span class="loader-step">resolve + import</span>
+        <span class="loader-connector">&#8594;</span>
+        <span class="loader-step">return hooks</span>
+        <span class="loader-connector">&#8594;</span>
+        <span class="loader-step">mutate envelopes</span>
+      </div>
+
+      <div class="intervenes intervenes--plugin">
+        <span class="intervenes__label">What a plugin can change</span>
+        <div class="plugin-impact" aria-label="Plugin hook mutation surfaces">
+          <div class="plugin-impact__row">
+            <code>chat.params</code>
+            <strong>Model input</strong>
+            <span>temperature, max tokens, provider options before <code>llm.stream(request)</code></span>
+          </div>
+          <div class="plugin-impact__row">
+            <code>tool.definition</code>
+            <strong>Tool schema</strong>
+            <span>description + parameters the model sees before it chooses tools</span>
+          </div>
+          <div class="plugin-impact__row">
+            <code>tool.execute.before</code>
+            <strong>Tool input</strong>
+            <span>inspect, mutate, or guard args before the tool executes</span>
+          </div>
+          <div class="plugin-impact__row">
+            <code>tool.execute.after</code>
+            <strong>Tool output</strong>
+            <span>truncate, annotate, or recover output before it re-enters context</span>
+          </div>
+          <div class="plugin-impact__row plugin-impact__row--wide">
+            <code>experimental.text.complete</code>
+            <strong>Model output</strong>
+            <span>last chance to transform completed assistant text</span>
+          </div>
+        </div>
+        <span class="intervenes__direction">Examples: model fallback via <code>chat.params</code>; output compaction via <code>tool.execute.after</code></span>
+      </div>
+
+      <p class="loader-card__example">Think of a plugin as middleware around the model request and every tool call.</p>
+      <p class="loader-card__note">Good for provider defaults, org integrations, review UX, and workflow-layer extensions.</p>
+      <a class="loader-card__link" href="https://github.com/sst/opencode/blob/dev/packages/plugin/src/index.ts" target="_blank" rel="noopener">
+        <span class="loader-card__link-icon" aria-hidden="true">&#8599;</span>
+        <span>See OpenCode&rsquo;s plugin hook contract</span>
+      </a>
+    </div>
+  </div>
+</div>

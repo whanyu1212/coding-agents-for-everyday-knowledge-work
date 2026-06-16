@@ -1,0 +1,92 @@
+<!-- Slide 9.5: RTK — the other plugin we run -->
+<div class="content-slide rtk">
+  <p class="overline">The Other Plugin We Run</p>
+  <h2>RTK &mdash; Killing the <span class="highlight">Token Tax</span></h2>
+  <p class="lead rtk__lead">
+    OmO shapes <em>what</em> the agent does. <strong>RTK</strong> (Rust Token Killer) shapes how
+    much it <em>costs</em> &mdash; a CLI proxy that compacts noisy command output
+    <em>before</em> it ever reaches the context window. Its README reports <strong>60&ndash;90% fewer tokens</strong> on common dev commands.
+  </p>
+
+  <div class="rtk__body">
+    <!-- Left: the four mechanisms -->
+    <div class="rtk__mechanisms" aria-label="How RTK compacts command output">
+      <span class="rtk__col-kicker">How it strips the noise</span>
+      <div class="rtk-mech rtk-mech--filter">
+        <span class="rtk-mech__tag">Filter</span>
+        <p>Removes comments, whitespace, and boilerplate that command filters classify as noise.</p>
+      </div>
+      <div class="rtk-mech rtk-mech--group">
+        <span class="rtk-mech__tag">Group</span>
+        <p>Aggregates similar items &mdash; files by directory, errors by type.</p>
+      </div>
+      <div class="rtk-mech rtk-mech--dedup">
+        <span class="rtk-mech__tag">Dedup</span>
+        <p>Collapses repeated log lines with counts.</p>
+      </div>
+      <div class="rtk-mech rtk-mech--truncate">
+        <span class="rtk-mech__tag">Truncate</span>
+        <p>Keeps command-specific context and cuts redundant tails.</p>
+      </div>
+    </div>
+
+    <!-- Right: the token ledger -->
+    <div class="rtk__ledger" aria-label="Token savings per command, one 30-minute session">
+      <span class="rtk__col-kicker">README 30-min estimate</span>
+      <div class="rtk-ledger__rows">
+        <div class="rtk-ledger__row">
+          <code class="rtk-ledger__cmd">ls &middot; tree</code>
+          <span class="rtk-ledger__nums">2,000 &rarr; 400</span>
+          <span class="rtk-ledger__pct">&minus;80%</span>
+        </div>
+        <div class="rtk-ledger__row">
+          <code class="rtk-ledger__cmd">cat &middot; read</code>
+          <span class="rtk-ledger__nums">40,000 &rarr; 12,000</span>
+          <span class="rtk-ledger__pct">&minus;70%</span>
+        </div>
+        <div class="rtk-ledger__row">
+          <code class="rtk-ledger__cmd">git status</code>
+          <span class="rtk-ledger__nums">3,000 &rarr; 600</span>
+          <span class="rtk-ledger__pct">&minus;80%</span>
+        </div>
+        <div class="rtk-ledger__row">
+          <code class="rtk-ledger__cmd">cargo test</code>
+          <span class="rtk-ledger__nums">25,000 &rarr; 2,500</span>
+          <span class="rtk-ledger__pct">&minus;90%</span>
+        </div>
+        <div class="rtk-ledger__row">
+          <code class="rtk-ledger__cmd">pytest</code>
+          <span class="rtk-ledger__nums">8,000 &rarr; 800</span>
+          <span class="rtk-ledger__pct">&minus;90%</span>
+        </div>
+        <div class="rtk-ledger__row">
+          <code class="rtk-ledger__cmd">other README rows</code>
+          <span class="rtk-ledger__nums">~40,000 &rarr; ~7,600</span>
+          <span class="rtk-ledger__pct">&minus;81%</span>
+        </div>
+      </div>
+      <div class="rtk-ledger__total">
+        <span class="rtk-ledger__total-label">Whole session</span>
+        <span class="rtk-ledger__total-nums">~118,000 &rarr; ~23,900</span>
+        <span class="rtk-ledger__total-pct">&minus;80%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rtk__footer">
+    <div class="rtk__strength">
+      <span class="rtk__strength-kicker">Where it shines</span>
+      <p>Big, repetitive, machine-generated output &mdash; test runs, build logs, <code>git</code> output, directory trees &mdash; when shell output feeds back into the loop.</p>
+    </div>
+    <div class="rtk__install">
+      <span class="rtk__install-kicker">In OpenCode</span>
+      <pre class="rtk__install-code"><code>"plugin": ["openrtk"]</code></pre>
+      <p class="rtk__install-note">Hooks <code>tool.execute.before</code> &mdash; rewrites supported <code>bash</code>/<code>shell</code> commands such as <code>git status</code> &rarr; <code>rtk git status</code>. Upstream claims a single Rust binary and <code>&lt;10ms</code> overhead.</p>
+    </div>
+  </div>
+
+  <p class="slide-cite">
+    <span class="slide-cite__tag">Source</span>
+    Figures &amp; mechanisms from <a href="https://github.com/rtk-ai/rtk" target="_blank" rel="noopener">rtk-ai/rtk</a> README &mdash; self-reported estimates for medium TypeScript/Rust projects; actual savings vary. OpenCode rewrite behavior from <a href="https://github.com/martinstannard/openrtk" target="_blank" rel="noopener">martinstannard/openrtk</a>.
+  </p>
+</div>

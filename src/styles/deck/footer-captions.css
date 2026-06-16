@@ -1,0 +1,243 @@
+/* Plain footer captions, matching the runtime slide caption. */
+.omo-takeaway,
+.harness-power__strip,
+.roads__destination {
+  margin: 0.85rem auto 0;
+  max-width: 44rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #64748b;
+  text-align: center;
+}
+
+.omo-takeaway__line,
+.harness-power__strip-line,
+.roads__destination-line {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+.omo-takeaway__accent,
+.harness-power__strip-line--accent,
+.roads__destination-line em {
+  color: inherit;
+  font-weight: 600;
+}
+
+.omo-takeaway__sub {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+.harness-power__strip-line--accent {
+  margin-top: 0.15rem;
+}
+
+@media (max-width: 1100px) {
+  .runtime {
+    width: 100%;
+    margin-left: auto;
+    transform: none;
+  }
+
+  .runtime__split {
+    grid-template-columns: 1fr;
+  }
+
+  .runtime__screenshot img {
+    height: clamp(16rem, 42vh, 24rem);
+  }
+
+  .loader-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .omo-architecture {
+    grid-template-columns: 1fr;
+  }
+
+  .omo-deep-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .omo-arrow {
+    transform: rotate(90deg);
+    padding: 0.2rem 0;
+  }
+
+  .rtk__body,
+  .rtk__footer {
+    grid-template-columns: 1fr;
+  }
+
+  .rtk-ex__diff {
+    grid-template-columns: 1fr;
+  }
+
+  .rtk-ex__arrow {
+    flex-direction: row;
+    gap: 0.6rem;
+  }
+
+  .rtk-ex__arrow-glyph {
+    transform: rotate(90deg);
+  }
+
+  .rtk-ex__arrow-label {
+    max-width: none;
+  }
+
+  .rtk-land__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .aeval__cast {
+    grid-template-columns: 1fr;
+  }
+
+  .aeval__cast-link {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .aeval__footer {
+    grid-template-columns: 1fr;
+  }
+
+  .resources__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .takeaway-list {
+    grid-template-columns: 1fr;
+  }
+
+  .takeaway-list li,
+  .takeaway-list li:nth-child(4),
+  .takeaway-list li:nth-child(5) {
+    grid-column: auto;
+    min-height: 0;
+  }
+
+  .orbit {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'core'
+      'bridge'
+      'judgment'
+      'context'
+      'trust';
+    justify-items: center;
+    row-gap: 0.75rem;
+  }
+
+  .orbit .layer {
+    width: min(100%, 34rem);
+    min-height: 0;
+  }
+
+}
+
+@media (max-width: 900px) {
+  .runtime__strip {
+    grid-template-columns: 1fr;
+    width: min(100%, 22rem);
+    gap: 0.55rem;
+  }
+
+  .runtime__strip-item:not(:last-child) {
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  .runtime__strip-item:not(:last-child)::after {
+    right: 50%;
+    top: auto;
+    bottom: -0.75rem;
+    transform: translateX(50%) rotate(90deg);
+  }
+
+  .runtime__loop {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    max-width: 20rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .runtime__loop-arrow {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+
+  .runtime__compact {
+    width: 100%;
+  }
+
+  .runtime__support-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .runtime__core::before,
+  .runtime__core::after {
+    display: none;
+  }
+
+  .runtime__support,
+  .runtime__store-card {
+    text-align: center;
+  }
+
+  .harness-power__pillars,
+  .ownership,
+  .ownership__paths {
+    grid-template-columns: 1fr;
+  }
+
+  .omo-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .runtime__flow-stage,
+  .runtime__frame,
+  .runtime__store-card--compact {
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+  }
+
+  .runtime__support-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .runtime__loop-step {
+    white-space: normal;
+  }
+
+  .orbit .core {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    border-radius: 1rem;
+  }
+
+  .orbit .core__sub {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 768px) {
+  .scatter-logo img {
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.08));
+  }
+}

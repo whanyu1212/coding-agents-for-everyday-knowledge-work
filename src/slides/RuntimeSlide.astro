@@ -1,0 +1,112 @@
+<!-- Slide 5: OpenCode architecture — grounded in the actual core runtime -->
+<div class="content-slide runtime">
+  <p class="overline">Inside OpenCode</p>
+  <h2>What the Runtime <span class="highlight">Actually Looks Like</span></h2>
+  <p class="lead runtime__lead">
+    OpenCode records a prompt, runs one <code>SessionRunner</code> turn, executes tools,
+    and persists replayable events.
+  </p>
+
+  <div class="runtime__split">
+    <div class="runtime__left">
+      <figure class="runtime__screenshot">
+        <img src={`${import.meta.env.BASE_URL}screenshots/opencode-runtime-search.png`} alt="OpenCode terminal session showing a web search task, tool calls, context usage, and session telemetry." />
+        <figcaption>Live run: the harness turns a request into skills, tool calls, context, and state.</figcaption>
+      </figure>
+
+      <div class="runtime__flow-stage runtime__flow-stage--admit">
+        <div class="runtime__flow-head">
+          <span class="runtime__stage-num">1</span>
+          <span class="runtime__stage-copy">
+            <strong>Receive prompt</strong>
+            <small>durable input, then wake the session</small>
+          </span>
+        </div>
+        <div class="runtime__strip" aria-label="Process-global runtime control">
+          <span class="runtime__strip-item"><strong>Record prompt</strong><small><code>session_input</code> inbox</small></span>
+          <span class="runtime__strip-item"><strong>Schedule run</strong><small>SessionExecution</small></span>
+          <span class="runtime__strip-item"><strong>Resolve runtime</strong><small>LocationServiceMap</small></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="runtime__diagram" aria-label="OpenCode runtime flow">
+      <div class="runtime__frame">
+        <div class="runtime__flow-head runtime__flow-head--frame">
+          <span class="runtime__stage-num">2</span>
+          <span class="runtime__stage-copy">
+            <strong>Run in workspace runtime</strong>
+            <small>location-scoped services</small>
+          </span>
+        </div>
+        <div class="runtime__compact">
+          <div class="runtime__core">
+            <div class="runtime__core-head">
+              <span class="runtime__stage-num runtime__stage-num--small">3</span>
+              <span class="runtime__core-copy">
+                <span class="runtime__kicker">Assemble one model turn</span>
+                <span class="runtime__core-title">SessionRunner</span>
+              </span>
+            </div>
+            <span class="runtime__core-sub">one <code>llm.stream(request)</code> call</span>
+            <div class="runtime__loop" aria-label="Per-turn loop">
+              <span class="runtime__loop-step">gather context</span>
+              <span class="runtime__loop-arrow" aria-hidden="true">&#8594;</span>
+              <span class="runtime__loop-step">call model</span>
+              <span class="runtime__loop-arrow" aria-hidden="true">&#8594;</span>
+              <span class="runtime__loop-step">execute tools</span>
+              <span class="runtime__loop-arrow" aria-hidden="true">&#8594;</span>
+              <span class="runtime__loop-step">write events</span>
+              <span class="runtime__loop-arrow" aria-hidden="true">&#8594;</span>
+              <span class="runtime__loop-step runtime__loop-step--decision">continue?</span>
+            </div>
+            <span class="runtime__loop-note">If work remains, the next turn reloads history and continues.</span>
+          </div>
+
+          <div class="runtime__support-rail">
+            <span class="runtime__support-label">Inputs to each turn</span>
+            <div class="runtime__support-grid">
+              <div class="runtime__support">
+                <span class="runtime__kicker">SessionStore</span>
+                <span class="runtime__support-title">Session history</span>
+                <span class="runtime__support-meta">what happened before</span>
+              </div>
+              <div class="runtime__support">
+                <span class="runtime__kicker">Catalog</span>
+                <span class="runtime__support-title">Model + provider</span>
+                <span class="runtime__support-meta">provider + model</span>
+              </div>
+              <div class="runtime__support">
+                <span class="runtime__kicker">ToolRegistry</span>
+                <span class="runtime__support-title">Available tools</span>
+                <span class="runtime__support-meta">what it can do</span>
+              </div>
+              <div class="runtime__support">
+                <span class="runtime__kicker">Compaction</span>
+                <span class="runtime__support-title">Context budget</span>
+                <span class="runtime__support-meta">stay under context</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <span class="runtime__downlink" aria-hidden="true">&#8595;</span>
+
+      <div class="runtime__store-card runtime__store-card--compact">
+        <div class="runtime__flow-head runtime__flow-head--store">
+          <span class="runtime__stage-num">4</span>
+          <span class="runtime__stage-copy">
+            <strong>Persist replayable events</strong>
+            <small>EventV2 &middot; SessionProjector &middot; SQLite</small>
+          </span>
+        </div>
+        <span class="runtime__store-title">Durable state for resume / replay</span>
+      </div>
+
+      <p class="runtime__caption">
+        Each turn streams once, settles tools, writes events, then decides whether to continue.
+      </p>
+    </div>
+  </div>
+</div>

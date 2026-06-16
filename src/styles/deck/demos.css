@@ -1,0 +1,221 @@
+/* ===== Demos: show it before abstracting it ===== */
+.demos-slide {
+  max-width: 66rem;
+  margin: 0 auto;
+}
+
+.demos-slide__lead {
+  max-width: 44rem;
+  margin-bottom: 1.4rem;
+}
+
+.demos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.demo-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.1rem 1.15rem 1.2rem;
+  border-radius: 1.15rem;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow: 0 18px 34px -30px rgba(15, 23, 42, 0.16);
+  overflow: hidden;
+}
+
+.demo-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--demo-accent, rgba(148, 163, 184, 0.5));
+}
+
+.demo-card--brief { --demo-accent: linear-gradient(90deg, #6366f1, #8b5cf6); }
+.demo-card--triage { --demo-accent: linear-gradient(90deg, #14b8a6, #0f766e); }
+
+.demo-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.demo-card__num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-dim);
+}
+
+.demo-card--triage .demo-card__num { color: #0f766e; }
+
+.demo-card__tag {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
+.demo-card__title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.25;
+}
+
+.demo-card__desc {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.demo-card__flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.15rem 0 0.1rem;
+}
+
+.demo-card__step {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.22rem 0.5rem;
+  border-radius: 0.45rem;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.demo-card__arrow {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.demo-card__prereqs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: -0.05rem;
+  padding: 0.55rem 0.6rem;
+  border-radius: 0.65rem;
+  background: rgba(99, 102, 241, 0.055);
+  border: 1px solid rgba(99, 102, 241, 0.14);
+}
+
+.demo-card--triage .demo-card__prereqs {
+  background: rgba(20, 184, 166, 0.06);
+  border-color: rgba(20, 184, 166, 0.18);
+}
+
+.demo-card__prereq-label {
+  margin-right: 0.05rem;
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent-dim);
+}
+
+.demo-card--triage .demo-card__prereq-label {
+  color: #0f766e;
+}
+
+.demo-card__prereq {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.14rem 0.42rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  color: var(--color-text);
+  font-size: 0.7rem;
+  line-height: 1.25;
+}
+
+.demo-card__prereq code {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: inherit;
+  background: transparent;
+}
+
+.demo-card__prereq--link {
+  color: #0f766e;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.demo-card__prereq--link:hover {
+  transform: translateY(-1px);
+  background: rgba(240, 253, 250, 0.95);
+  border-color: rgba(20, 184, 166, 0.34);
+}
+
+.demo-card__notice {
+  font-size: 0.82rem;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.demo-card__notice strong {
+  color: var(--color-accent-dim);
+}
+
+.demo-card--triage .demo-card__notice strong { color: #0f766e; }
+
+.demo-card__placeholder {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.3rem 1rem;
+  border-radius: 0.7rem;
+  border: 1.5px dashed var(--color-border);
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(148, 163, 184, 0.04),
+    rgba(148, 163, 184, 0.04) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.demo-card__placeholder-icon {
+  font-size: 0.9rem;
+  font-style: normal;
+}
+
+.demos-slide__caption {
+  margin-top: 1.2rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.demos-slide__caption em {
+  color: var(--color-text);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .demos-grid {
+    grid-template-columns: 1fr;
+  }
+}

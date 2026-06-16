@@ -1,0 +1,86 @@
+<!-- Appendix A1: Routing in full -->
+<div class="content-slide appendix">
+  <p class="overline overline--appendix">Appendix &middot; A1</p>
+  <h2>Routing &mdash; Every Category</h2>
+  <p class="lead appendix__lead">The full Categories table. Pick a task shape, the harness picks the model.</p>
+
+  <div class="appendix__grid">
+    <div class="appendix__main">
+      <table class="appendix-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Default Model</th>
+            <th>Use Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>visual-engineering</code></td>
+            <td>Gemini 3.1 Pro (high)</td>
+            <td>Frontend, UI/UX, styling, animation</td>
+          </tr>
+          <tr>
+            <td><code>ultrabrain</code></td>
+            <td>GPT-5.5 (xhigh)</td>
+            <td>Complex architecture, deep reasoning</td>
+          </tr>
+          <tr>
+            <td><code>deep</code></td>
+            <td>GPT-5.5 (medium)</td>
+            <td>Autonomous problem-solving, hairy bugs</td>
+          </tr>
+          <tr>
+            <td><code>artistry</code></td>
+            <td>Gemini 3.1 Pro (high)</td>
+            <td>Creative/novel ideas</td>
+          </tr>
+          <tr>
+            <td><code>quick</code></td>
+            <td>GPT-5.4 Mini</td>
+            <td>Trivial single-file changes, typos</td>
+          </tr>
+          <tr>
+            <td><code>writing</code></td>
+            <td>Kimi K2.5</td>
+            <td>Documentation, prose, technical writing</td>
+          </tr>
+          <tr>
+            <td><code>unspecified-low</code></td>
+            <td>Claude Sonnet 4.6</td>
+            <td>Misc low-effort tasks</td>
+          </tr>
+          <tr>
+            <td><code>unspecified-high</code></td>
+            <td>Claude Opus 4.7 (max)</td>
+            <td>Misc high-effort tasks</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <aside class="appendix__aside">
+      <div class="appendix-aside__block">
+        <h3 class="appendix-aside__title">Why this works</h3>
+        <ul class="appendix-aside__list">
+          <li>Each category carries its own temperature, thinking budget, and prompt prepend</li>
+          <li>Per-category fallback chains survive provider outages</li>
+          <li>Custom categories defined in <code>oh-my-openagent.jsonc</code></li>
+        </ul>
+      </div>
+      <div class="appendix-aside__block">
+        <h3 class="appendix-aside__title">Customize</h3>
+        <pre class="appendix-aside__code"><code>{`{
+  "categories": {
+"korean-writer": {
+  "model": "google/gemini-3-flash",
+  "temperature": 0.5,
+  "prompt_append": "..."
+}
+  }
+}`}</code></pre>
+      </div>
+      <p class="appendix-aside__source">Source: <code>features.md</code> &middot; Category System</p>
+    </aside>
+  </div>
+</div>

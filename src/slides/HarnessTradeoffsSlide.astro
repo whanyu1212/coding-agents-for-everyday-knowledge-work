@@ -1,0 +1,71 @@
+<!-- Slide 8: What the harness gives you -->
+<div class="content-slide harness-power">
+  <p class="overline">Choosing a Harness</p>
+  <h2>OmO: Power, Bloat, <span class="highlight">Alternatives</span></h2>
+  <p class="lead harness-power__lead">OmO is useful when you want an opinionated agent OS. It is overkill when you only need one or two runtime behaviors.</p>
+
+  <div class="harness-power__pillars">
+    <!-- Pillar 1: What it offers -->
+    <div class="pillar pillar--routing">
+      <div class="pillar__head">
+        <span class="pillar__icon" aria-hidden="true">+</span>
+        <div class="pillar__head-text">
+          <h3 class="pillar__title">What it offers</h3>
+          <p class="pillar__sub">An opinionated agent OS</p>
+        </div>
+      </div>
+      <p class="pillar__mechanism">A full working layer: agents, routing, continuation, tools, MCPs, and guardrails.</p>
+      <div class="pillar__chips">
+        <span class="pillar__chip"><strong>Agent roles</strong> for planning, orchestration, research, coding, review</span>
+        <span class="pillar__chip"><strong>Routing</strong> by work shape instead of manually picking models</span>
+        <span class="pillar__chip"><strong>Continuation</strong> via boulder state, loops, compaction survival</span>
+        <span class="pillar__chip"><strong>Guardrails</strong> around writes, comments, tool output, recovery</span>
+      </div>
+      <p class="pillar__before-after">Best when you want defaults and choreography, not a blank harness.</p>
+    </div>
+
+    <!-- Pillar 2: Critique -->
+    <div class="pillar pillar--continuation">
+      <div class="pillar__head">
+        <span class="pillar__icon" aria-hidden="true">!</span>
+        <div class="pillar__head-text">
+          <h3 class="pillar__title">The critique</h3>
+          <p class="pillar__sub">Heavyweight by design</p>
+        </div>
+      </div>
+      <p class="pillar__mechanism">The same machinery that makes it powerful also adds surface area, hidden behavior, and debugging cost.</p>
+      <div class="pillar__chips">
+        <span class="pillar__chip"><strong>Many hooks</strong> means interactions can be non-obvious</span>
+        <span class="pillar__chip"><strong>Many agents</strong> means more names, modes, and routing rules to learn</span>
+        <span class="pillar__chip"><strong>More config</strong> means more operational ownership</span>
+        <span class="pillar__chip"><strong>Opinionated defaults</strong> can obscure vanilla OpenCode behavior</span>
+      </div>
+      <p class="pillar__before-after">If you only need one guardrail, the bundle can feel bloated.</p>
+    </div>
+
+    <!-- Pillar 3: Alternatives -->
+    <div class="pillar pillar--guardrails">
+      <div class="pillar__head">
+        <span class="pillar__icon" aria-hidden="true">?</span>
+        <div class="pillar__head-text">
+          <h3 class="pillar__title">Alternatives</h3>
+          <p class="pillar__sub">Pick the smallest layer</p>
+        </div>
+      </div>
+      <p class="pillar__mechanism">You do not have to adopt the whole harness. Compose smaller pieces around the pain you actually have.</p>
+      <div class="pillar__chips">
+        <span class="pillar__chip"><strong>OmO Slim / trimmed fork</strong> when you like the pattern, not the whole pack</span>
+        <span class="pillar__chip"><strong>Vanilla OpenCode + skills</strong> for reusable playbooks</span>
+        <span class="pillar__chip"><strong>Small custom plugin</strong> for one or two hooks</span>
+        <span class="pillar__chip"><strong>Targeted plugins</strong> like RTK for token/output pain</span>
+        <span class="pillar__chip"><strong>Your own harness</strong> when the workflow is specific to your team</span>
+      </div>
+      <p class="pillar__before-after">Steal the good ideas, then own the layer you can debug.</p>
+    </div>
+  </div>
+
+  <div class="harness-power__strip">
+    <p class="harness-power__strip-line">OmO is not the default recommendation for everyone.</p>
+    <p class="harness-power__strip-line harness-power__strip-line--accent">The better default: build or adopt the smallest harness you can understand and change.</p>
+  </div>
+</div>

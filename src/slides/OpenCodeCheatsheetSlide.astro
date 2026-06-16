@@ -1,0 +1,88 @@
+<!-- OpenCode cheatsheet -->
+<div class="content-slide opencode-cheat">
+  <div class="cheat-sheet">
+    <div class="cheat-sheet__spine" aria-hidden="true"></div>
+    <header class="cheat-sheet__header">
+      <div>
+        <p class="overline">Keep This Handy</p>
+        <h2>OpenCode Cheatsheet</h2>
+        <p class="cheat-sheet__lede">The documented primitives you actually use day to day.</p>
+      </div>
+      <div class="cheat-terminal" aria-label="Start OpenCode from a project directory">
+        <span class="cheat-terminal__dot"></span>
+        <code>$ cd /path/to/project</code>
+        <code>$ opencode</code>
+        <code>/init</code>
+      </div>
+    </header>
+
+    <div class="cheat-grid" aria-label="OpenCode usage cheatsheet">
+      <section class="cheat-card cheat-card--prompt">
+        <span class="cheat-card__kicker">01 / Start</span>
+        <h3>Initialize the repo once</h3>
+        <pre class="cheat-card__snippet"><code>opencode
+/connect
+/init</code></pre>
+        <p><code>/init</code> creates or updates <code>AGENTS.md</code> with project rules. Commit it so future sessions inherit the same context.</p>
+      </section>
+
+      <section class="cheat-card cheat-card--context">
+        <span class="cheat-card__kicker">02 / Context</span>
+        <h3>Reference files and output</h3>
+        <ul>
+          <li><code>@</code> fuzzy-searches files</li>
+          <li><code>@src/file.ts</code> injects file content</li>
+          <li><code>!npm test</code> adds shell output</li>
+          <li><code>/editor</code> opens a longer prompt</li>
+        </ul>
+      </section>
+
+      <section class="cheat-card cheat-card--loop">
+        <span class="cheat-card__kicker">03 / Agents</span>
+        <h3>Switch by risk level</h3>
+        <ul>
+          <li><code>Tab</code> cycles primary agents</li>
+          <li><strong>Plan</strong>: analyze without writes</li>
+          <li><strong>Build</strong>: default full-tool agent</li>
+          <li><code>@explore</code> / <code>@general</code> for subagents</li>
+        </ul>
+      </section>
+
+      <section class="cheat-card cheat-card--gate">
+        <span class="cheat-card__kicker">04 / Recover</span>
+        <h3>Use the built-ins</h3>
+        <ul>
+          <li><code>/undo</code> reverts last message + file changes</li>
+          <li><code>/redo</code> restores undone work</li>
+          <li><code>/sessions</code> resumes old sessions</li>
+          <li><code>/compact</code> summarizes long context</li>
+        </ul>
+      </section>
+
+      <section class="cheat-card cheat-card--harness">
+        <span class="cheat-card__kicker">05 / Configure</span>
+        <h3>Own the harness layer</h3>
+        <div class="cheat-harness">
+          <span><strong>Rules</strong> <code>AGENTS.md</code></span>
+          <span><strong>Commands</strong> <code>.opencode/commands</code></span>
+          <span><strong>Agents</strong> <code>.opencode/agents</code></span>
+          <span><strong>Skills</strong> <code>SKILL.md</code></span>
+          <span><strong>Plugins</strong> <code>.opencode/plugins</code></span>
+          <span><strong>Safety</strong> <code>permission</code>: allow / ask / deny</span>
+        </div>
+      </section>
+    </div>
+
+    <footer class="cheat-sheet__footer">
+      <strong>Grounded in docs:</strong>
+      <a href="https://opencode.ai/docs/" target="_blank" rel="noopener">Intro</a>,
+      <a href="https://opencode.ai/docs/tui/" target="_blank" rel="noopener">TUI</a>,
+      <a href="https://opencode.ai/docs/agents/" target="_blank" rel="noopener">Agents</a>,
+      <a href="https://opencode.ai/docs/permissions/" target="_blank" rel="noopener">Permissions</a>,
+      <a href="https://opencode.ai/docs/rules/" target="_blank" rel="noopener">Rules</a>,
+      <a href="https://opencode.ai/docs/commands/" target="_blank" rel="noopener">Commands</a>,
+      <a href="https://opencode.ai/docs/skills/" target="_blank" rel="noopener">Skills</a>,
+      <a href="https://opencode.ai/docs/plugins/" target="_blank" rel="noopener">Plugins</a>.
+    </footer>
+  </div>
+</div>

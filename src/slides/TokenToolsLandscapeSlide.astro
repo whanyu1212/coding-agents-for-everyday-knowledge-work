@@ -1,0 +1,92 @@
+<!-- Slide 9.7: RTK vs. peers — different layers of the same loop -->
+<div class="content-slide rtk-land">
+  <p class="overline">Beyond RTK</p>
+  <h2>What Else Is <span class="highlight">Worth a Look</span></h2>
+  <p class="lead rtk-land__lead">
+    RTK is what we happen to run &mdash; but it&rsquo;s one tool in a small, fast-moving field.
+    If you&rsquo;re shaping your own harness, these are the others worth knowing, and each
+    attacks token waste at a <em>different point in the loop</em>.
+  </p>
+
+  <div class="rtk-land__grid">
+    <!-- Layer 1: RUN (RTK) -->
+    <div class="land-card land-card--run">
+      <div class="land-card__stage">
+        <span class="land-card__stage-num">01</span>
+        <span class="land-card__stage-name">Running commands</span>
+      </div>
+      <h3 class="land-card__tool">RTK <span class="land-card__ours-tag">we run this</span></h3>
+      <p class="land-card__how">Compacts <strong>command output</strong> by command type &mdash; a per-command keep-list applied before shell output reaches the model.</p>
+      <div class="land-card__stats">
+        <span class="land-card__stat"><strong>&minus;60&ndash;90%</strong> per command</span>
+      </div>
+      <p class="land-card__meta">CLI proxy / plugin &middot; Rust, <code>&lt;10ms</code> &middot; Apache&#8209;2.0</p>
+    </div>
+
+    <!-- Layer 2: SEARCH (cocoindex-code) -->
+    <div class="land-card land-card--semantic">
+      <div class="land-card__stage">
+        <span class="land-card__stage-num">02</span>
+        <span class="land-card__stage-name">Semantic search</span>
+      </div>
+      <h3 class="land-card__tool">cocoindex-code</h3>
+      <p class="land-card__how">AST-based semantic code search via CLI, Skill, or MCP. Good when natural-language intent beats exact-symbol search.</p>
+      <div class="land-card__stats">
+        <span class="land-card__stat"><strong>&minus;70%</strong> tokens</span>
+      </div>
+      <p class="land-card__meta">CLI / Skill / MCP &middot; Python + Rust engine &middot; Apache&#8209;2.0</p>
+    </div>
+
+    <!-- Layer 3: FIND -->
+    <div class="land-card land-card--find">
+      <div class="land-card__stage">
+        <span class="land-card__stage-num">03</span>
+        <span class="land-card__stage-name">Code structure</span>
+      </div>
+      <h3 class="land-card__tool">CodeGraph</h3>
+      <p class="land-card__how">Pre-indexes the repo into a local knowledge graph (tree-sitter &rarr; SQLite). The agent <strong>queries</strong> structure instead of grepping and reading to discover it.</p>
+      <div class="land-card__stats">
+        <span class="land-card__stat"><strong>&minus;47%</strong> tokens</span>
+        <span class="land-card__stat"><strong>&minus;58%</strong> tool calls</span>
+      </div>
+      <p class="land-card__meta">MCP server &middot; Node &middot; MIT &middot; 100% local</p>
+    </div>
+
+    <!-- Layer 4: COMPRESS (Headroom) -->
+    <div class="land-card land-card--compress">
+      <div class="land-card__stage">
+        <span class="land-card__stage-num">04</span>
+        <span class="land-card__stage-name">Any context</span>
+      </div>
+      <h3 class="land-card__tool">Headroom</h3>
+      <p class="land-card__how">Routes <strong>any</strong> payload &mdash; output, logs, files, RAG, history &mdash; to type-aware compressors. Compression is <strong>reversible</strong>: the model can ask for the original.</p>
+      <div class="land-card__stats">
+        <span class="land-card__stat"><strong>&minus;60&ndash;95%</strong> all context</span>
+      </div>
+      <p class="land-card__meta">Library / proxy / MCP &middot; Python&#8239;&middot;&#8239;TS &middot; Apache&#8209;2.0</p>
+    </div>
+  </div>
+
+  <div class="rtk-land__why">
+    <span class="rtk-land__why-tag">Which to reach for</span>
+    <p>
+      Noisy command output on every loop, want automatic rewrite &rarr; <strong>RTK</strong>.
+      Natural-language code search with Skill/MCP integration &rarr; <strong>cocoindex-code</strong>.
+      Big repo, agent burns tokens just <em>finding</em> structure &rarr; <strong>CodeGraph</strong>.
+      Want one reversible layer over <em>all</em> context, not just shell &rarr; <strong>Headroom</strong>.
+      They stack &mdash; this isn&rsquo;t a pick-one.
+    </p>
+  </div>
+
+  <p class="slide-cite">
+    <span class="slide-cite__tag">Figures from each project&rsquo;s README</span>
+    <a href="https://github.com/rtk-ai/rtk" target="_blank" rel="noopener">rtk-ai/rtk</a>
+    <span class="slide-cite__sep">&middot;</span>
+    <a href="https://github.com/cocoindex-io/cocoindex-code" target="_blank" rel="noopener">cocoindex-io/cocoindex-code</a>
+    <span class="slide-cite__sep">&middot;</span>
+    <a href="https://github.com/colbymchenry/codegraph" target="_blank" rel="noopener">colbymchenry/codegraph</a>
+    <span class="slide-cite__sep">&middot;</span>
+    <a href="https://github.com/chopratejas/headroom" target="_blank" rel="noopener">chopratejas/headroom</a>
+    &mdash; self-reported, vary by codebase.
+  </p>
+</div>

@@ -1,0 +1,51 @@
+<!-- Appendix A2: Continuation in full -->
+<div class="content-slide appendix">
+  <p class="overline overline--appendix">Appendix &middot; A2</p>
+  <h2>Continuation &mdash; Every Mechanism</h2>
+  <p class="lead appendix__lead">How OmO keeps agents working across stops, restarts, and context walls.</p>
+
+  <div class="appendix__grid">
+    <div class="appendix__main">
+      <div class="appendix-group">
+        <h3 class="appendix-group__title"><span class="appendix-group__num">1</span> &ldquo;Until done&rdquo; loops</h3>
+        <ul class="appendix-group__list">
+          <li><strong>Ralph Loop</strong> <span class="appendix-group__sep">&middot;</span> agent runs continuously until <code>&lt;promise&gt;DONE&lt;/promise&gt;</code>; auto-resumes if it stops early. Default max 100 iterations.</li>
+          <li><strong>ULW Loop</strong> <span class="appendix-group__sep">&middot;</span> Ralph variant with <code>ultrawork</code> mode active &mdash; aggressive parallel execution.</li>
+          <li><strong>/start-work</strong> <span class="appendix-group__sep">&middot;</span> Atlas resumes execution from a Prometheus-generated plan in <code>.omo/plans/</code>.</li>
+          <li><strong>todo-continuation-enforcer</strong> <span class="appendix-group__sep">&middot;</span> &ldquo;yanks idle agents back to work&rdquo; when todos remain.</li>
+        </ul>
+      </div>
+
+      <div class="appendix-group">
+        <h3 class="appendix-group__title"><span class="appendix-group__num">2</span> State persistence</h3>
+        <ul class="appendix-group__list">
+          <li><strong>Boulder state</strong> <span class="appendix-group__sep">&middot;</span> session continuation tracked in <code>.omo/boulder.json</code>; survives session close.</li>
+          <li><strong>Task system</strong> <span class="appendix-group__sep">&middot;</span> file-backed tasks in <code>.omo/tasks/</code> with <code>blockedBy</code> dependencies (vs TodoWrite&rsquo;s in-memory list).</li>
+          <li><strong>/handoff</strong> <span class="appendix-group__sep">&middot;</span> generates a structured context summary for clean continuation in a fresh session.</li>
+        </ul>
+      </div>
+
+      <div class="appendix-group">
+        <h3 class="appendix-group__title"><span class="appendix-group__num">3</span> Context survival</h3>
+        <ul class="appendix-group__list">
+          <li><strong>preemptive-compaction</strong> <span class="appendix-group__sep">&middot;</span> proactively compacts before hitting token limits.</li>
+          <li><strong>compaction-context-injector</strong> <span class="appendix-group__sep">&middot;</span> preserves critical context across compaction boundaries.</li>
+          <li><strong>compaction-todo-preserver</strong> <span class="appendix-group__sep">&middot;</span> keeps the todo list intact through compaction.</li>
+          <li><strong>runtime-fallback</strong> + <strong>anthropic-context-window-recovery</strong> <span class="appendix-group__sep">&middot;</span> swap models on 429/500 and recover from context-limit errors gracefully.</li>
+        </ul>
+      </div>
+    </div>
+
+    <aside class="appendix__aside">
+      <div class="appendix-aside__block">
+        <h3 class="appendix-aside__title">The pattern</h3>
+        <p class="appendix-aside__text">Every mechanism answers one of three failures: <em>agent stopped early</em>, <em>session died</em>, or <em>context blew up</em>. OmO defaults to recovery instead of asking you.</p>
+      </div>
+      <div class="appendix-aside__block">
+        <h3 class="appendix-aside__title">Stop everything</h3>
+        <p class="appendix-aside__text"><code>/stop-continuation</code> halts ralph loop, todo continuation, and boulder state for the session.</p>
+      </div>
+      <p class="appendix-aside__source">Source: <code>features.md</code> &middot; Hooks + Commands</p>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<!-- Slide 3: Anatomy — model + CodeAct + harness -->
+<div class="content-slide anatomy-slide">
+  <p class="overline">The Mental Model</p>
+  <h2>So What <em>Is</em> a Coding Agent?</h2>
+  <p class="lead">
+    Strip away the branding and it's simple:
+    <strong>a model doing CodeAct, wrapped in a harness.</strong>
+  </p>
+
+  <div class="anatomy">
+    <!-- Outer shell: the harness -->
+    <div class="layer layer--harness">
+      <span class="layer__label">Harness</span>
+      <div class="layer__tags">
+        <!--
+          TODO (your call): list the harness responsibilities you want to emphasize.
+          These are the bits OF the harness that aren't the model or CodeAct itself.
+          Common candidates — pick/tweak the ones that match how OpenCode works:
+            context gathering · the agent loop · memory & compaction ·
+            permissions & sandboxing · tool wiring · output parsing · session state
+        -->
+        <span class="tag">context</span>
+        <span class="tag">the loop</span>
+        <span class="tag">memory</span>
+        <span class="tag">tools</span>
+        <span class="tag">permissions</span>
+      </div>
+
+      <!-- Middle ring: CodeAct -->
+      <div class="layer layer--codeact">
+        <span class="layer__label">CodeAct</span>
+        <span class="layer__sub">acts through code &amp; tools</span>
+
+        <!-- Core: the model -->
+        <div class="layer layer--model">
+          <span class="layer__label">Model</span>
+          <span class="layer__sub">reasons &amp; decides</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="anatomy-caption">
+    Same model, different harness &rarr; a very different agent. That's why the six above
+    feel so different despite often sharing the same underlying models.
+  </p>
+</div>

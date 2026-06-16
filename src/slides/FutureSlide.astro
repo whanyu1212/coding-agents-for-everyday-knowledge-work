@@ -1,0 +1,89 @@
+<!-- Slide 9.9: Where this is going — substantiated forward look -->
+<div class="content-slide future">
+  <p class="overline">Opinionated Forward Look</p>
+  <h2>Where This Is <span class="highlight">Going</span></h2>
+  <p class="lead future__lead">
+    <strong>CodeAct</strong> gives agents a flexible action format: write code, run it,
+    inspect results, repeat. The next frontier is the harness around that action:
+    what steers it, what feeds it, and what bounds it.
+  </p>
+
+  <!-- Core rail + three harness layers: cleaner than the earlier orbital diagram. -->
+  <div class="orbit" aria-label="CodeAct as the action format, with three harness layers around it">
+    <div class="orbit__core" aria-label="CodeAct: the settled action format">
+      <div class="core">
+        <span class="core__tag">Settled action format</span>
+        <span class="core__title">CodeAct</span>
+        <span class="core__sub">write &rarr; run &rarr; inspect &rarr; repeat</span>
+      </div>
+    </div>
+
+    <div class="orbit__bridge" aria-hidden="true"><span>Harness layers</span></div>
+
+    <div class="layer layer--judgment">
+      <div class="layer__head">
+        <span class="layer__node" aria-hidden="true">01</span>
+        <div class="layer__heading">
+          <p class="layer__verb">Steers</p>
+          <h3 class="layer__title">Judgment &amp; planning</h3>
+        </div>
+      </div>
+      <div class="layer__body">
+        <p class="layer__claim">Acting is easy; knowing <em>which</em> action advances the goal &mdash; decompose, route, continue, stop &mdash; lives above the model.</p>
+        <div class="layer__chips" aria-label="Examples shown earlier">
+          <span>OmO planners</span>
+          <span>routing</span>
+          <span>optimizer loop</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer layer--context">
+      <div class="layer__head">
+        <span class="layer__node" aria-hidden="true">02</span>
+        <div class="layer__heading">
+          <p class="layer__verb">Feeds</p>
+          <h3 class="layer__title">Context economics</h3>
+        </div>
+      </div>
+      <div class="layer__body">
+        <p class="layer__claim">More code &rArr; more output flooding the window. The practical lesson: <em>context quality beats window size</em> &mdash; agents degrade from bloat, not token caps.</p>
+        <div class="layer__chips" aria-label="Examples shown earlier">
+          <span>RTK</span>
+          <span>Headroom</span>
+          <span>CodeGraph</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer layer--trust">
+      <div class="layer__head">
+        <span class="layer__node" aria-hidden="true">03</span>
+        <div class="layer__heading">
+          <p class="layer__verb">Bounds</p>
+          <h3 class="layer__title">Trust &amp; verification</h3>
+        </div>
+      </div>
+      <div class="layer__body">
+        <p class="layer__claim">The more code an agent runs unattended, the higher the stakes. Sandboxing, gating, and scoring the agent <em>can&rsquo;t see the answers to</em> keep it usable.</p>
+        <div class="layer__chips" aria-label="Examples shown earlier">
+          <span>permissions</span>
+          <span>gates</span>
+          <span>fixed rubric</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="future__kicker">
+    Control the harness: judgment, context, verification.
+    <strong>Pick one workflow. Measure one loop. Iterate.</strong>
+  </p>
+
+  <p class="slide-cite">
+    <span class="slide-cite__tag">Sources</span>
+    CodeAct: Wang et al., <a href="https://arxiv.org/abs/2402.01030" target="_blank" rel="noopener">&ldquo;Executable Code Actions Elicit Better LLM Agents&rdquo;</a> (ICML 2024) &mdash; &ldquo;up to 20% higher success rate.&rdquo;
+    <span class="slide-cite__sep">&middot;</span>
+    Context-quality framing: <a href="https://arxiv.org/abs/2510.00615" target="_blank" rel="noopener">ACON (2025)</a> &amp; 2026 long-horizon context research.
+  </p>
+</div>

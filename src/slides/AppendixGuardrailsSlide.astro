@@ -1,0 +1,117 @@
+<!-- Appendix A3: Guardrails in full -->
+<div class="content-slide appendix appendix--guardrails">
+  <p class="overline overline--appendix">Appendix &middot; A3</p>
+  <h2>Guardrails &mdash; All 54 Hooks</h2>
+  <p class="lead appendix__lead">54 hooks fire at six points in the loop. Grouped by the job they do.</p>
+
+  <!-- Lifecycle ribbon: where hooks fire, in pipeline order -->
+  <div class="hook-ribbon">
+    <span class="hook-ribbon__label">Fires in order:</span>
+    <span class="hook-ribbon__step"><code>Message</code><em>intent &amp; keywords</em></span>
+    <span class="hook-ribbon__arrow">&rarr;</span>
+    <span class="hook-ribbon__step"><code>Params</code><em>model &amp; effort</em></span>
+    <span class="hook-ribbon__arrow">&rarr;</span>
+    <span class="hook-ribbon__step"><code>Transform</code><em>context inject</em></span>
+    <span class="hook-ribbon__arrow">&rarr;</span>
+    <span class="hook-ribbon__step"><code>PreToolUse</code><em>block / modify</em></span>
+    <span class="hook-ribbon__arrow">&rarr;</span>
+    <span class="hook-ribbon__step"><code>PostToolUse</code><em>check / enhance</em></span>
+    <span class="hook-ribbon__arrow">&rarr;</span>
+    <span class="hook-ribbon__step"><code>Event</code><em>recover / notify</em></span>
+  </div>
+
+  <div class="appendix__grid appendix__grid--guardrails">
+    <div class="appendix__main">
+      <table class="appendix-table appendix-table--hooks">
+        <thead>
+          <tr>
+            <th>Job</th>
+            <th>Hooks &amp; what they do</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="hook-job"><span class="hook-job__name">Context &amp; Injection</span> <span class="appendix-table__count">5</span></td>
+            <td>
+              <code>rules-injector</code> conditional <code>.claude/rules/</code> by glob &middot;
+              <code>directory-agents-injector</code> walks AGENTS.md to root &middot;
+              <code>preemptive-compaction</code> compacts before the limit
+            </td>
+          </tr>
+          <tr>
+            <td class="hook-job"><span class="hook-job__name">Quality &amp; Safety</span> <span class="appendix-table__count">5</span></td>
+            <td>
+              <code>comment-checker</code> blocks AI-slop comments &middot;
+              <code>write-existing-file-guard</code> no overwrite without read &middot;
+              <code>thinking-block-validator</code> prevents API errors
+            </td>
+          </tr>
+          <tr>
+            <td class="hook-job"><span class="hook-job__name">Recovery &amp; Stability</span> <span class="appendix-table__count">6</span></td>
+            <td>
+              <code>runtime-fallback</code> swaps model on 429/500 &middot;
+              <code>session-recovery</code> rebuilds broken state &middot;
+              <code>json-error-recovery</code> &middot; <code>tool-output-truncator</code> trims by context
+            </td>
+          </tr>
+          <tr>
+            <td class="hook-job"><span class="hook-job__name">Productivity &amp; Control</span> <span class="appendix-table__count">7</span></td>
+            <td>
+              <code>keyword-detector</code> activates <code>ulw</code>/<code>search</code>/<code>team</code> &middot;
+              <code>think-mode</code> catches &ldquo;ultrathink&rdquo; &middot;
+              <code>auto-slash-command</code> runs commands from prompts
+            </td>
+          </tr>
+          <tr>
+            <td class="hook-job"><span class="hook-job__name">Continuation &amp; Tasks</span> <span class="appendix-table__count">7</span></td>
+            <td>
+              <code>todo-continuation-enforcer</code> yanks idle agents back &middot;
+              <code>compaction-todo-preserver</code> keeps todos through compaction &middot;
+              <code>delegate-task-retry</code> retries failed delegations
+            </td>
+          </tr>
+          <tr>
+            <td class="hook-job"><span class="hook-job__name">Notifications &amp; UX</span> <span class="appendix-table__count">5</span></td>
+            <td>
+              <code>session-notification</code> OS alert when idle &middot;
+              <code>background-notification</code> on bg-task done &middot;
+              <code>agent-usage-reminder</code> nudges toward specialists
+            </td>
+          </tr>
+          <tr>
+            <td class="hook-job"><span class="hook-job__name">Integration &amp; Specialized</span> <span class="appendix-table__count">8</span></td>
+            <td>
+              <code>claude-code-hooks</code> runs your <code>settings.json</code> hooks &middot;
+              <code>atlas</code> todo-driven orchestration &middot;
+              <code>prometheus-md-only</code> &middot; <code>no-hephaestus-non-gpt</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <aside class="appendix__aside">
+      <div class="appendix-aside__block">
+        <h3 class="appendix-aside__title">Composition</h3>
+        <ul class="appendix-aside__stats">
+          <li><span class="appendix-aside__stat-num">24</span> Session</li>
+          <li><span class="appendix-aside__stat-num">16</span> Tool Guard</li>
+          <li><span class="appendix-aside__stat-num">7</span> Continuation</li>
+          <li><span class="appendix-aside__stat-num">5</span> Transform</li>
+          <li><span class="appendix-aside__stat-num">2</span> Skill</li>
+        </ul>
+        <p class="appendix-aside__text"><strong>54</strong> base &middot; <strong>+7</strong> with <code>team_mode</code></p>
+      </div>
+      <div class="appendix-aside__block">
+        <h3 class="appendix-aside__title">Bring your own</h3>
+        <pre class="appendix-aside__code"><code>{`// .claude/settings.json
+"PostToolUse": [{
+  "matcher": "Write|Edit",
+  "command": "eslint --fix"
+}]`}</code></pre>
+        <p class="appendix-aside__text appendix-aside__text--tight">Opt out: <code>"disabled_hooks": ["comment-checker"]</code></p>
+      </div>
+      <p class="appendix-aside__source">Source: <code>features.md</code> &middot; Hooks</p>
+    </aside>
+  </div>
+</div>

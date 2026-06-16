@@ -1,0 +1,152 @@
+/* Anatomy: nested model / CodeAct / harness layers */
+.anatomy-slide {
+  text-align: center;
+}
+
+.anatomy-slide .lead {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.1rem;
+}
+
+.anatomy-slide em {
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+.anatomy {
+  display: flex;
+  justify-content: center;
+  margin: 0.8rem 0 0.9rem;
+  perspective: 1000px;
+}
+
+/*
+  Each layer is a labeled box; nesting the DOM mirrors the concept.
+  Depth comes from soft colored shadows (not gradient borders, which would
+  flood a translucent fill). Layers cascade in outer -> inner on entry.
+*/
+.anatomy .layer {
+  position: relative;
+  border-radius: 1.25rem;
+  border: 1.5px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  opacity: 0;
+  animation: layer-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.anatomy .layer__label {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.anatomy .layer__sub {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+/* Outer shell — the harness */
+.anatomy .layer--harness {
+  border-color: rgba(99, 102, 241, 0.45);
+  background: linear-gradient(180deg, #eef0fe, #f6f7fe);
+  padding: 2rem 2.8rem 2.9rem;
+  width: 100%;
+  max-width: 60rem;
+  box-shadow:
+    0 18px 40px -12px rgba(79, 70, 229, 0.28),
+    0 4px 14px rgba(79, 70, 229, 0.08);
+  animation-delay: 0.05s;
+}
+
+.anatomy .layer--harness > .layer__label {
+  color: var(--color-accent);
+  font-size: 1.15rem;
+}
+
+.anatomy .layer__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem;
+  margin: 0.8rem 0 1.6rem;
+}
+
+.tag {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  background: rgba(79, 70, 229, 0.08);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  padding: 0.24rem 0.78rem;
+  border-radius: 999px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.tag:hover {
+  transform: translateY(-2px);
+  background: rgba(79, 70, 229, 0.16);
+}
+
+/* Middle ring — CodeAct */
+.anatomy .layer--codeact {
+  border-color: rgba(124, 58, 237, 0.5);
+  background: linear-gradient(180deg, #f3edfd, #faf7fe);
+  padding: 1.85rem 2.8rem 2.7rem;
+  width: 100%;
+  box-shadow: 0 12px 28px -10px rgba(124, 58, 237, 0.3);
+  animation-delay: 0.2s;
+}
+
+.anatomy .layer--codeact > .layer__label {
+  color: #7c3aed;
+  font-size: 1.25rem;
+}
+
+/* Core — the model */
+.anatomy .layer--model {
+  border-color: rgba(26, 26, 46, 0.85);
+  background: linear-gradient(180deg, #ffffff, #f4f4fb);
+  padding: 2.25rem 3.4rem;
+  margin-top: 1.6rem;
+  width: 100%;
+  box-shadow:
+    0 10px 30px -8px rgba(0, 0, 0, 0.18),
+    0 0 0 5px rgba(255, 255, 255, 0.7);
+  animation-delay: 0.38s;
+}
+
+.anatomy .layer--model > .layer__label {
+  color: var(--color-text);
+  font-size: 1.4rem;
+}
+
+@keyframes layer-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anatomy .layer {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.anatomy-caption {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  max-width: 38rem;
+  margin: 0 auto;
+  line-height: 1.5;
+}

@@ -1,0 +1,44 @@
+<!-- Slide 4.75: Meet OpenCode — establishing shot before the runtime deep-dive -->
+<div class="content-slide opencode-intro">
+  <p class="overline">Meet OpenCode</p>
+  <h2>What&rsquo;s Good About <span class="highlight">OpenCode</span></h2>
+  <p class="lead opencode-intro__lead">
+    Of the six on that first slide, this is the one we run internally &mdash;
+    <strong>&ldquo;the open source AI coding agent.&rdquo;</strong> Three reasons it earns the spot.
+  </p>
+
+  <div class="opencode-traits">
+    <div class="oc-trait oc-trait--open">
+      <span class="oc-trait__icon oc-trait__icon--code" aria-hidden="true">&lt;/&gt;</span>
+      <h3 class="oc-trait__title">Open source</h3>
+      <p class="oc-trait__desc">The whole runtime is readable. No black box &mdash; you can see exactly how a turn is assembled.</p>
+      <span class="oc-trait__tag">terminal-first &middot; MIT</span>
+    </div>
+
+    <div class="oc-trait oc-trait--model">
+      <span class="oc-trait__icon" aria-hidden="true">&#8644;</span>
+      <h3 class="oc-trait__title">Model-agnostic</h3>
+      <p class="oc-trait__desc">Bring any provider &mdash; Anthropic, OpenAI, Google, local. Swap freely; the harness isn&rsquo;t welded to one vendor.</p>
+      <span class="oc-trait__tag">any LLM, per task</span>
+    </div>
+
+    <div class="oc-trait oc-trait--hack">
+      <span class="oc-trait__icon" aria-hidden="true">&#9881;</span>
+      <h3 class="oc-trait__title">Hackable</h3>
+      <p class="oc-trait__desc">A core runtime with clients on top &mdash; TUI, desktop, SDK &mdash; plus skills, plugins, and lifecycle hooks.</p>
+      <a class="oc-trait__link" href={`${import.meta.env.BASE_URL}samples/opencode-tool-permissions.json`} target="_blank" rel="noopener">
+        Open sample tool-permission config
+      </a>
+      <span class="oc-trait__tag">plugins &middot; hooks &middot; skills</span>
+    </div>
+  </div>
+
+  <p class="opencode-intro__limitation">
+    <strong>Caveat:</strong> first-party stacks still have an edge &mdash; Opus in Claude Code and GPT in Codex may be post-trained around their own harnesses, so OpenCode is not always 100% behaviorally on par.
+  </p>
+
+  <p class="opencode-intro__bridge">
+    And because it&rsquo;s open, we can do something the closed agents won&rsquo;t let you:
+    <em>look inside the runtime itself.</em>
+  </p>
+</div>
