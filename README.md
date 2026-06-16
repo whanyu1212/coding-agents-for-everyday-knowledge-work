@@ -57,6 +57,7 @@ npm run preview
 |   |-- pages/index.astro # Deck manifest: slide order, variants, and nav labels
 |   |-- slides/           # One Astro component per slide
 |   `-- styles/           # Shared deck and slide styles
+|-- .opencode/skills/     # Reusable OpenCode skill for Astro slide decks
 |-- public/               # Static assets and samples
 |-- refs/                 # Local reference snapshots used while preparing the talk
 |-- astro.config.mjs      # GitHub Pages site/base config
@@ -66,6 +67,11 @@ npm run preview
 Most content edits happen in `src/slides/`. `src/pages/index.astro` keeps the
 slide order, variants, and navigation labels in one manifest so the deck stays
 easy to reorder without scrolling through the full talk content.
+
+The repo also includes `.opencode/skills/astro-slide-deck/SKILL.md`, a reusable
+OpenCode skill that captures the deck-building and refactoring patterns used
+here. It is project-local, so OpenCode can discover it when working in this repo;
+you can also copy it to `~/.config/opencode/skills/` to use it globally.
 
 ## Deployment
 
