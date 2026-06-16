@@ -1,0 +1,230 @@
+/* ===== Where this is going (forward look) ===== */
+.future {
+  max-width: 72rem;
+}
+
+.future__lead {
+  max-width: 56rem;
+  margin-bottom: 1.05rem;
+}
+
+.future__lead strong {
+  color: var(--color-accent-dim);
+}
+
+/* Clean future map: one settled action rail, then three harness layers. */
+.orbit {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-areas:
+    "core core core"
+    "bridge bridge bridge"
+    "judgment context trust";
+  gap: 0.72rem;
+  margin-top: 0.85rem;
+}
+
+.orbit__core {
+  grid-area: core;
+  position: relative;
+  justify-self: center;
+}
+
+.orbit .core {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+  align-items: center;
+  gap: 0.68rem;
+  padding: 0.42rem 0.68rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  box-shadow: 0 12px 28px -30px rgba(15, 23, 42, 0.28);
+}
+
+.orbit .core__tag {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent-dim);
+  padding: 0.16rem 0.48rem;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.orbit .core__title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.orbit .core__sub {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.orbit__bridge {
+  grid-area: bridge;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.7rem;
+  width: min(100%, 58rem);
+  justify-self: center;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.orbit__bridge::before,
+.orbit__bridge::after {
+  content: '';
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.42));
+}
+
+.orbit__bridge::after {
+  background: linear-gradient(90deg, rgba(148, 163, 184, 0.42), transparent);
+}
+
+/* Verb-first cards. The examples are intentionally muted so the structure is
+   what reads first from the back of the room. */
+.orbit .layer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  width: auto;
+  max-width: 100%;
+  min-height: 10.7rem;
+  padding: 0.9rem 0.95rem 0.92rem;
+  border-radius: 0.95rem;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.075);
+  border-left: 3px solid var(--layer-tint);
+  box-shadow: 0 14px 30px -30px rgba(15, 23, 42, 0.35);
+}
+
+.orbit .layer--judgment {
+  grid-area: judgment;
+  --layer-tint: #4338ca;
+}
+
+.orbit .layer--context {
+  grid-area: context;
+  --layer-tint: #0284c7;
+}
+
+.orbit .layer--trust {
+  grid-area: trust;
+  --layer-tint: #0f766e;
+}
+
+.orbit .layer__head {
+  display: flex;
+  align-items: center;
+  gap: 0.62rem;
+  width: 100%;
+}
+
+.orbit .layer__heading {
+  min-width: 0;
+}
+
+/* numbered node: small index marker, not another competing icon */
+.orbit .layer__node {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.62rem;
+  height: 1.62rem;
+  border-radius: 0.45rem;
+  background: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--layer-tint) 32%, rgba(15, 23, 42, 0.08));
+  color: var(--layer-tint);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.orbit .layer__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.52rem;
+  min-width: 0;
+}
+
+.orbit .layer__verb {
+  margin: 0 0 0.12rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--layer-tint);
+  line-height: 1;
+}
+
+.orbit .layer__title {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.orbit .layer__claim {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #334155;
+  line-height: 1.42;
+}
+
+.orbit .layer__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+}
+
+.orbit .layer__chips span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.24rem;
+  padding: 0.16rem 0.38rem;
+  border-radius: 999px;
+  color: #64748b;
+  background: rgba(15, 23, 42, 0.025);
+  border: 1px solid rgba(15, 23, 42, 0.055);
+  font-size: 0.61rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.future__kicker {
+  max-width: 48rem;
+  margin: 1rem auto 0;
+  padding: 0.62rem 0 0;
+  border-top: 1px solid rgba(99, 102, 241, 0.18);
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.future__kicker strong {
+  color: var(--color-accent-dim);
+  font-weight: 700;
+}

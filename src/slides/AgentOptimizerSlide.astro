@@ -1,0 +1,65 @@
+<!-- Slide 11: Demo / Code example -->
+<div class="content-slide aeval">
+  <p class="overline">Example &middot; The Thesis at Its Limit</p>
+  <h2>Agent as <span class="highlight">Optimizer</span></h2>
+  <p class="lead aeval__lead">
+    This is the thesis at its limit: the agent does not just write code. It runs an evaluation loop,
+    reads failures, edits another agent, and gates changes against a metric that reflects the task.
+  </p>
+
+  <!-- the two agents -->
+  <div class="aeval__cast">
+    <div class="aeval-actor aeval-actor--subject">
+      <span class="aeval-actor__role">Subject</span>
+      <h3>The ML modeler</h3>
+      <p>A CodeAct agent attempts the benchmark: fetch data, train a model, beat a held-out metric.</p>
+      <code class="aeval-actor__file">agent/agent.py</code>
+    </div>
+    <div class="aeval__cast-link" aria-hidden="true">
+      <span class="aeval__cast-glyph">&#8635;</span>
+      <span class="aeval__cast-label">optimizes</span>
+    </div>
+    <div class="aeval-actor aeval-actor--optimizer">
+      <span class="aeval-actor__role">Optimizer</span>
+      <h3>Claude Code <code>/loop</code></h3>
+      <p>Reads scores, diagnoses the dominant failure, makes <strong>one</strong> minimal edit per round.</p>
+      <code class="aeval-actor__file">loop/optimize.md</code>
+    </div>
+  </div>
+
+  <!-- the 6-phase loop -->
+  <div class="aeval__loop" aria-label="The six-phase optimization loop">
+    <div class="aeval-phase"><span class="aeval-phase__n">1</span><span class="aeval-phase__name">Run</span><span class="aeval-phase__d">agent over all tasks</span></div>
+    <span class="aeval-phase__arr" aria-hidden="true">&rarr;</span>
+    <div class="aeval-phase"><span class="aeval-phase__n">2</span><span class="aeval-phase__name">Score</span><span class="aeval-phase__d">metric + rubric</span></div>
+    <span class="aeval-phase__arr" aria-hidden="true">&rarr;</span>
+    <div class="aeval-phase"><span class="aeval-phase__n">3</span><span class="aeval-phase__name">Check</span><span class="aeval-phase__d">target? plateau? cap?</span></div>
+    <span class="aeval-phase__arr" aria-hidden="true">&rarr;</span>
+    <div class="aeval-phase"><span class="aeval-phase__n">4</span><span class="aeval-phase__name">Diagnose</span><span class="aeval-phase__d">dominant failure</span></div>
+    <span class="aeval-phase__arr" aria-hidden="true">&rarr;</span>
+    <div class="aeval-phase"><span class="aeval-phase__n">5</span><span class="aeval-phase__name">Improve</span><span class="aeval-phase__d">one edit to <code>agent.py</code></span></div>
+    <span class="aeval-phase__arr" aria-hidden="true">&rarr;</span>
+    <div class="aeval-phase aeval-phase--gate"><span class="aeval-phase__n">6</span><span class="aeval-phase__name">Gate</span><span class="aeval-phase__d">commit if better, else revert</span></div>
+    <span class="aeval-phase__loopback" aria-hidden="true">&#8629; loop</span>
+  </div>
+
+  <!-- what makes the eval trustworthy + link -->
+  <div class="aeval__footer">
+    <div class="aeval__trust">
+      <span class="aeval__trust-tag">What the harness adds</span>
+      <p>
+        The optimizer gets a tight feedback loop: repeatable runs, a stable score, one small edit per round,
+        and a gate that only keeps improvements. Open-ended agent tweaking becomes an engineering process.
+      </p>
+    </div>
+    <a class="aeval__link" href="https://github.com/whanyu1212/agentic-evaluation-demo/tree/9cbbe88d199fdd0f787b67a6375205ea533fd90a" target="_blank" rel="noopener">
+      <span class="aeval__link-label">Reference pattern &mdash; adapt the loop to your own agent workflow</span>
+      <code class="aeval__link-repo">whanyu1212/agentic-evaluation-demo</code>
+      <span class="aeval__link-icon">&#8599;</span>
+    </a>
+  </div>
+
+  <p class="aeval__takeaway">
+    The trick is not smarter prompting. It is the harness: repeatable runs, fixed scoring, small edits, and gated improvement.
+  </p>
+</div>

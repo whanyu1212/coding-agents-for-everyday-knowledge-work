@@ -1,0 +1,410 @@
+/* ===== Appendix slides (A1-A3) ===== */
+.appendix {
+  max-width: 72rem;
+}
+
+.overline--appendix {
+  color: #6d28d9;
+}
+
+.appendix__lead {
+  max-width: 48rem;
+  margin-bottom: 1.2rem;
+  font-size: 1rem;
+}
+
+.appendix__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18rem;
+  gap: 1.4rem;
+  align-items: stretch;
+}
+
+/* Stretched asides pool extra space at the bottom, before the source line */
+.appendix__aside .appendix-aside__source {
+  margin-top: auto;
+}
+
+.appendix__main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.appendix__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.95rem 1rem 1rem;
+  border-radius: 0.9rem;
+  background: rgba(139, 92, 246, 0.06);
+  border: 1px solid rgba(139, 92, 246, 0.16);
+}
+
+.appendix-aside__block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.appendix-aside__title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6d28d9;
+}
+
+.appendix-aside__text {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.appendix-aside__text em {
+  font-style: italic;
+  color: #6d28d9;
+}
+
+.appendix-aside__list {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.78rem;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.appendix-aside__list li {
+  margin-bottom: 0.25rem;
+}
+
+.appendix-aside__list code,
+.appendix-aside__text code {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.06rem 0.3rem;
+  background: rgba(15, 23, 42, 0.05);
+  border-radius: 0.25rem;
+}
+
+.appendix-aside__code {
+  margin: 0;
+  padding: 0.55rem 0.65rem;
+  background: rgba(15, 23, 42, 0.92);
+  color: #e2e8f0;
+  border-radius: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+.appendix-aside__code code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.appendix-aside__source {
+  margin: 0;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(139, 92, 246, 0.24);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.appendix-aside__source code {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #6d28d9;
+  background: transparent;
+  padding: 0;
+}
+
+.appendix-table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 0.7rem;
+  overflow: hidden;
+  box-shadow: 0 14px 36px -28px rgba(15, 23, 42, 0.3);
+}
+
+.appendix-table thead th {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  background: rgba(15, 23, 42, 0.04);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.appendix-table tbody td {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--color-text);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+  line-height: 1.4;
+  vertical-align: middle;
+}
+
+.appendix-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.appendix-table tbody td code {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  padding: 0.1rem 0.35rem;
+  background: rgba(99, 102, 241, 0.08);
+  color: #4338ca;
+  border-radius: 0.3rem;
+  white-space: nowrap;
+}
+
+.appendix-table__count {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.4rem;
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.appendix-table--hooks tbody td:first-child {
+  width: 9rem;
+}
+
+.appendix-group {
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 0.7rem;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.appendix-group__title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.appendix-group__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 0.74rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.appendix-group__list {
+  margin: 0;
+  padding-left: 0.25rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+
+.appendix-group__list li {
+  font-size: 0.78rem;
+  color: var(--color-text);
+  line-height: 1.45;
+}
+
+.appendix-group__list strong {
+  color: #4338ca;
+  font-weight: 600;
+}
+
+.appendix-group__list code {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.05rem 0.3rem;
+  background: rgba(15, 23, 42, 0.05);
+  border-radius: 0.25rem;
+}
+
+.appendix-group__sep {
+  color: var(--color-text-muted);
+  margin: 0 0.15rem;
+}
+
+/* ===== Appendix A3: Guardrails-specific ===== */
+.appendix--guardrails h2 {
+  margin-bottom: 0.55rem;
+}
+
+.appendix--guardrails .appendix__lead {
+  margin-bottom: 0.7rem;
+}
+
+.hook-ribbon {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  gap: 0.3rem;
+  margin-bottom: 0.85rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 0.7rem;
+  background: rgba(15, 23, 42, 0.03);
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  overflow-x: auto;
+}
+
+.hook-ribbon__label {
+  display: flex;
+  align-items: center;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  padding-right: 0.2rem;
+  flex-shrink: 0;
+}
+
+.hook-ribbon__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.3rem 0.45rem;
+  border-radius: 0.5rem;
+  background: rgba(99, 102, 241, 0.06);
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  flex: 1;
+  min-width: 0;
+}
+
+.hook-ribbon__step code {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #4338ca;
+  background: transparent;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.hook-ribbon__step em {
+  font-style: normal;
+  font-size: 0.62rem;
+  color: var(--color-text-muted);
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.hook-ribbon__arrow {
+  display: flex;
+  align-items: center;
+  color: rgba(99, 102, 241, 0.5);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.appendix__grid--guardrails {
+  grid-template-columns: minmax(0, 1fr) 15rem;
+}
+
+.appendix-table--hooks tbody td:first-child {
+  width: 11rem;
+}
+
+.hook-job {
+  vertical-align: middle;
+}
+
+.hook-job__name {
+  display: inline;
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: var(--color-text);
+}
+
+.appendix-table--hooks tbody td {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  padding: 0.62rem 0.8rem;
+}
+
+.appendix-table--hooks tbody td:last-child code {
+  white-space: normal;
+  background: rgba(99, 102, 241, 0.07);
+  color: #4338ca;
+  font-weight: 600;
+}
+
+.appendix-aside__stats {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.appendix-aside__stats li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  color: var(--color-text);
+}
+
+.appendix-aside__stat-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.7rem;
+  padding: 0.05rem 0.35rem;
+  background: rgba(139, 92, 246, 0.12);
+  color: #6d28d9;
+  border-radius: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.appendix-aside__text strong {
+  color: #6d28d9;
+  font-weight: 700;
+}
+
+.appendix-aside__text--tight {
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.appendix-aside__text--tight code {
+  font-size: 0.64rem;
+  word-break: break-word;
+}
+
+.appendix--guardrails .appendix__aside {
+  gap: 0.6rem;
+  padding: 0.85rem 0.9rem 0.9rem;
+}

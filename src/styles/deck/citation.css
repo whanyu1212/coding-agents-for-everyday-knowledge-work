@@ -1,0 +1,32 @@
+/* ===== Reusable slide citation line ===== */
+.slide-cite {
+  margin: 1rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.slide-cite__tag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-right: 0.45rem;
+}
+
+.slide-cite a {
+  color: var(--color-accent-dim);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(67, 56, 202, 0.4);
+}
+
+.slide-cite a:hover {
+  border-bottom-style: solid;
+}
+
+.slide-cite__sep {
+  margin: 0 0.4rem;
+  color: rgba(15, 23, 42, 0.25);
+}

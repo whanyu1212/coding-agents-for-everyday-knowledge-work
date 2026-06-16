@@ -1,0 +1,113 @@
+<!-- Slide 7: Deep dive — Oh-My-OpenAgent as a harness pack -->
+<div class="content-slide deep-slide deep-slide--practice omo-slide">
+  <p class="overline">When a Plugin Becomes a Harness</p>
+  <h2>Deep Dive &mdash; <span class="highlight">Oh-My-OpenAgent</span></h2>
+  <p class="lead deep-slide__lead">
+    It installs as one plugin, then builds a working layer around OpenCode:
+    config, agents, tools, MCPs, hooks, managers, and persistent task state.
+  </p>
+
+  <div class="omo-deep-grid" aria-label="What Oh-My-OpenAgent adds on top of OpenCode">
+    <div class="omo-build-card">
+      <span class="omo-build-card__kicker">Startup path</span>
+      <h3>One plugin builds the harness</h3>
+      <div class="omo-boot-steps">
+        <div class="omo-boot-step">
+          <span class="omo-boot-step__num">1</span>
+          <strong>Load config</strong>
+          <small>user + walked <code>.opencode</code> JSONC, merge, migrate</small>
+        </div>
+        <div class="omo-boot-step">
+          <span class="omo-boot-step__num">2</span>
+          <strong>Create managers</strong>
+          <small>tmux, background tasks, skill MCPs, config handler</small>
+        </div>
+        <div class="omo-boot-step">
+          <span class="omo-boot-step__num">3</span>
+          <strong>Register tools + agents</strong>
+          <small>task delegation, categories, native tools, team tools</small>
+        </div>
+        <div class="omo-boot-step">
+          <span class="omo-boot-step__num">4</span>
+          <strong>Compose hooks</strong>
+          <small>session, tool guard, transform, continuation, skill tiers</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="omo-detail-grid">
+      <div class="omo-detail-card omo-detail-card--agents">
+        <span class="omo-detail-card__kicker">Agents + routing</span>
+        <strong>11 named roles, routed by intent</strong>
+        <p>Prometheus plans, Atlas orchestrates, Sisyphus-Junior routes categories to workers.</p>
+      </div>
+      <div class="omo-detail-card omo-detail-card--tools">
+        <span class="omo-detail-card__kicker">Tools + MCPs</span>
+        <strong>More action surface</strong>
+        <p>Background agents, skill MCPs, LSP / AST-grep MCPs, hashline edit, team tools.</p>
+      </div>
+      <div class="omo-detail-card omo-detail-card--hooks">
+        <span class="omo-detail-card__kicker">Hook stack</span>
+        <strong>~54 base hooks</strong>
+        <p>Request shaping, tool guards, output cleanup, recovery, continuation, skill awareness.</p>
+      </div>
+      <div class="omo-detail-card omo-detail-card--state">
+        <span class="omo-detail-card__kicker">State + continuation</span>
+        <strong>Work survives the turn</strong>
+        <p><code>.omo/plans</code>, <code>boulder.json</code>, notepads, teams, compaction context.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="omo-architecture" aria-label="Oh-My-OpenAgent agent choreography">
+    <div class="omo-layer omo-layer--planning">
+      <span class="omo-layer__kicker">Plan</span>
+      <div class="omo-layer__agents">
+        <span class="omo-agent omo-agent--lead">Prometheus</span>
+        <span class="omo-agent">Metis</span>
+        <span class="omo-agent">Momus</span>
+      </div>
+      <span class="omo-layer__note">interview &middot; explore &middot; gap-check &middot; review</span>
+    </div>
+
+    <span class="omo-arrow" aria-hidden="true">&rarr;</span>
+
+    <div class="omo-layer omo-layer--execution">
+      <span class="omo-layer__kicker">Orchestrate</span>
+      <div class="omo-layer__agents">
+        <span class="omo-agent omo-agent--lead">Atlas</span>
+      </div>
+      <span class="omo-layer__note">reads plan &middot; delegates &middot; verifies &middot; loops</span>
+    </div>
+
+    <span class="omo-arrow" aria-hidden="true">&rarr;</span>
+
+    <div class="omo-layer omo-layer--workers">
+      <span class="omo-layer__kicker">Execute</span>
+      <div class="omo-layer__agents omo-layer__agents--grid">
+        <span class="omo-agent omo-agent--lead">Sisyphus-Junior</span>
+        <span class="omo-agent">Oracle</span>
+        <span class="omo-agent">Explore</span>
+        <span class="omo-agent">Librarian</span>
+        <span class="omo-agent">Multimodal-Looker</span>
+        <span class="omo-agent">Hephaestus</span>
+      </div>
+      <span class="omo-layer__note">specialized by task shape, not model name</span>
+    </div>
+  </div>
+
+  <div class="omo-workflow">
+    <span class="omo-workflow__kicker">How precise work flows through it</span>
+    <ol class="omo-workflow__steps">
+      <li><span class="omo-workflow__num">1</span><span class="omo-workflow__text"><code>@plan</code> produces an inspected plan, not just a chat answer</span></li>
+      <li><span class="omo-workflow__num">2</span><span class="omo-workflow__text">Plan + active work state live in <code>.omo/plans</code> and <code>boulder.json</code></span></li>
+      <li><span class="omo-workflow__num">3</span><span class="omo-workflow__text"><code>/start-work</code> lets Atlas delegate, collect results, and verify</span></li>
+      <li><span class="omo-workflow__num">4</span><span class="omo-workflow__text">Hooks enforce guardrails, continuation, recovery, and context survival</span></li>
+    </ol>
+  </div>
+
+  <div class="omo-takeaway">
+    <p class="omo-takeaway__line">OpenCode owns the engine. <span class="omo-takeaway__accent">OmO owns the choreography.</span></p>
+    <p class="omo-takeaway__sub">That&rsquo;s the difference between a plugin and a harness pack.</p>
+  </div>
+</div>

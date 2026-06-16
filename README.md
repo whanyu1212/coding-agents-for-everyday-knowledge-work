@@ -52,18 +52,20 @@ npm run preview
 ```text
 .
 |-- src/
-|   |-- components/       # Slide, nav, card, and code-block components
+|   |-- components/       # Reusable deck components
 |   |-- layouts/          # Global HTML shell and CSS variables
-|   `-- pages/index.astro # Main slide deck content and slide-specific styles
+|   |-- pages/index.astro # Deck manifest: slide order, variants, and nav labels
+|   |-- slides/           # One Astro component per slide
+|   `-- styles/           # Shared deck and slide styles
 |-- public/               # Static assets and samples
 |-- refs/                 # Local reference snapshots used while preparing the talk
 |-- astro.config.mjs      # GitHub Pages site/base config
 `-- .github/workflows/    # Build and GitHub Pages deployment workflow
 ```
 
-Most content edits happen in `src/pages/index.astro`. The deck is intentionally
-self-contained: slide markup and slide-specific CSS live together so the talk can
-be iterated quickly.
+Most content edits happen in `src/slides/`. `src/pages/index.astro` keeps the
+slide order, variants, and navigation labels in one manifest so the deck stays
+easy to reorder without scrolling through the full talk content.
 
 ## Deployment
 

@@ -1,0 +1,117 @@
+/* ===== Resources (placeholder) ===== */
+.resources {
+  max-width: 66rem;
+}
+
+.resources__lead {
+  max-width: 48rem;
+  margin-bottom: 1.4rem;
+}
+
+.resources__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.resource-cat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 1.1rem 1.2rem 1.2rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16px 36px -28px rgba(15, 23, 42, 0.32);
+  overflow: hidden;
+}
+
+.resource-cat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--res-accent, linear-gradient(90deg, #6366f1, #8b5cf6));
+}
+
+.resource-cat--docs { --res-accent: linear-gradient(90deg, #6366f1, #4338ca); }
+.resource-cat--tools { --res-accent: linear-gradient(90deg, #0ea5e9, #0284c7); }
+.resource-cat--examples { --res-accent: linear-gradient(90deg, #14b8a6, #0f766e); }
+.resource-cat--community { --res-accent: linear-gradient(90deg, #f59e0b, #d97706); }
+
+.resource-cat__icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.resource-cat h3 {
+  margin: 0 0 0.7rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.resource-cat__slot {
+  margin-top: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0.9rem 1rem;
+  border-radius: 0.6rem;
+  border: 1.5px dashed var(--color-border);
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(148, 163, 184, 0.04),
+    rgba(148, 163, 184, 0.04) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.resource-cat__slot--filled {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-style: normal;
+}
+
+.resource-list {
+  margin: 0;
+  padding-left: 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.64rem;
+  line-height: 1.34;
+}
+
+.resource-list li + li {
+  margin-top: 0.18rem;
+}
+
+.resource-list a {
+  color: #0369a1;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(3, 105, 161, 0.24);
+}
+
+.resource-list a:hover {
+  color: #0284c7;
+  border-bottom-color: currentColor;
+}
+
+.resources__note {
+  margin-top: 1.1rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+  text-align: center;
+}

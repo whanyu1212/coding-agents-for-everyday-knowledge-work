@@ -1,0 +1,220 @@
+/* ===== Slide 9.5: RTK — Rust Token Killer ===== */
+.rtk {
+  max-width: 72rem;
+}
+
+.rtk__lead {
+  max-width: 52rem;
+  margin-bottom: 1.3rem;
+}
+
+.rtk__body {
+  display: grid;
+  grid-template-columns: 0.85fr 1fr;
+  gap: 1.1rem;
+  align-items: start;
+}
+
+.rtk__col-kicker {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.6rem;
+}
+
+/* Left column: four mechanisms */
+.rtk__mechanisms {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rtk-mech {
+  position: relative;
+  padding: 0.6rem 0.75rem 0.6rem 0.85rem;
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 28px -24px rgba(15, 23, 42, 0.4);
+  overflow: hidden;
+}
+
+.rtk-mech::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--rtk-mech-accent, #6366f1);
+}
+
+.rtk-mech--filter { --rtk-mech-accent: linear-gradient(180deg, #6366f1, #4338ca); }
+.rtk-mech--group { --rtk-mech-accent: linear-gradient(180deg, #0ea5e9, #0284c7); }
+.rtk-mech--dedup { --rtk-mech-accent: linear-gradient(180deg, #14b8a6, #0f766e); }
+.rtk-mech--truncate { --rtk-mech-accent: linear-gradient(180deg, #f59e0b, #d97706); }
+
+.rtk-mech__tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 0.15rem;
+}
+
+.rtk-mech p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+/* Right column: token ledger */
+.rtk__ledger {
+  display: flex;
+  flex-direction: column;
+}
+
+.rtk-ledger__rows {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: rgba(255, 255, 255, 0.92);
+  overflow: hidden;
+  box-shadow: 0 14px 32px -26px rgba(15, 23, 42, 0.4);
+}
+
+.rtk-ledger__row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.5rem 0.85rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.rtk-ledger__row:last-child {
+  border-bottom: none;
+}
+
+.rtk-ledger__cmd {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-text);
+}
+
+.rtk-ledger__nums {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  justify-self: end;
+}
+
+.rtk-ledger__pct {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #0f766e;
+  min-width: 3.2rem;
+  text-align: right;
+}
+
+.rtk-ledger__total {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.55rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 0.7rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+  box-shadow: 0 18px 38px -28px rgba(15, 23, 42, 0.55);
+}
+
+.rtk-ledger__total-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.rtk-ledger__total-nums {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  justify-self: end;
+}
+
+.rtk-ledger__total-pct {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #5eead4;
+  min-width: 3.2rem;
+  text-align: right;
+}
+
+/* Footer: strength + install */
+.rtk__footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+  margin-top: 1.2rem;
+}
+
+.rtk__strength,
+.rtk__install {
+  padding: 0.85rem 1rem;
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.rtk__strength-kicker,
+.rtk__install-kicker {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  margin-bottom: 0.45rem;
+}
+
+.rtk__strength p,
+.rtk__install-note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.rtk__strength code,
+.rtk__install-note code {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.05rem 0.3rem;
+  border-radius: 0.25rem;
+  background: rgba(15, 23, 42, 0.05);
+  color: var(--color-text);
+}
+
+.rtk__install-code {
+  margin: 0 0 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.5rem;
+  background: #1a1a2e;
+  overflow-x: auto;
+}
+
+.rtk__install-code code {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #5eead4;
+}

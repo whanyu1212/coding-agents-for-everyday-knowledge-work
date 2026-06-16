@@ -1,0 +1,68 @@
+<!-- Slide 9.6: RTK in action — a worked pytest before/after -->
+<div class="content-slide rtk-ex">
+  <p class="overline">RTK, Concretely</p>
+  <h2>One <code class="rtk-ex__cmd">pytest</code> Run, <span class="highlight">Two Views</span></h2>
+  <p class="lead rtk-ex__lead">
+    A suite finishes: 4 pass, 1 fails. The raw output the shell hands back is mostly noise
+    the model already knows it can ignore. RTK keeps the verdict and the one failure that matters.
+  </p>
+
+  <div class="rtk-ex__diff">
+    <!-- BEFORE: raw pytest -->
+    <div class="rtk-pane rtk-pane--before">
+      <div class="rtk-pane__bar">
+        <span class="rtk-pane__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="rtk-pane__title">raw <code>pytest</code> &rarr; model</span>
+        <span class="rtk-pane__cost rtk-pane__cost--high">~8,000 tokens</span>
+      </div>
+      <pre class="rtk-pane__body"><code><span class="rtk-dim">============== test session starts ==============</span>
+<span class="rtk-dim">platform linux -- Python 3.11.6, pytest-8.2.0</span>
+<span class="rtk-dim">rootdir: /app   collected 5 items</span>
+
+tests/test_foo.py ..<span class="rtk-fail">F</span>..                       <span class="rtk-dim">[100%]</span>
+
+<span class="rtk-dim">=================== FAILURES ====================</span>
+<span class="rtk-dim">________________ test_something ________________</span>
+
+<span class="rtk-dim">    def test_something():</span>
+<span class="rtk-dim">></span>       <span class="rtk-dim">assert False</span>
+<span class="rtk-fail">E       assert False</span>
+
+<span class="rtk-dim">tests/test_foo.py:10: AssertionError</span>
+<span class="rtk-dim">------------ Captured stdout call ---------------</span>
+<span class="rtk-dim">DEBUG  loading fixtures from conftest.py</span>
+<span class="rtk-dim">DEBUG  teardown complete, 3 handles closed</span>
+<span class="rtk-dim">============ short test summary info ============</span>
+<span class="rtk-fail">FAILED tests/test_foo.py::test_something - assert False</span>
+<span class="rtk-dim">========= 4 passed, 1 failed in 0.50s ==========</span></code></pre>
+    </div>
+
+    <!-- arrow -->
+    <div class="rtk-ex__arrow" aria-hidden="true">
+      <span class="rtk-ex__arrow-glyph">&rarr;</span>
+      <span class="rtk-ex__arrow-label">filter &middot; keep failures</span>
+    </div>
+
+    <!-- AFTER: RTK output -->
+    <div class="rtk-pane rtk-pane--after">
+      <div class="rtk-pane__bar">
+        <span class="rtk-pane__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="rtk-pane__title"><code>rtk pytest</code> &rarr; model</span>
+        <span class="rtk-pane__cost rtk-pane__cost--low">~800 tokens</span>
+      </div>
+      <pre class="rtk-pane__body"><code><span class="rtk-ok">Pytest: 4 passed, 1 failed</span>
+
+<span class="rtk-key">Failures:</span>
+1. [<span class="rtk-fail">FAIL</span>] tests/test_foo.py::test_something
+ <span class="rtk-fail">assert False</span></code></pre>
+      <p class="rtk-pane__note">Verdict + the failing test + its one-line cause. Nothing the model needed is gone.</p>
+    </div>
+  </div>
+
+  <p class="rtk-ex__rule">
+    <span class="rtk-ex__rule-tag">The rule</span>
+    Read the summary for the pass/fail counts, then per failure keep the test name + up to
+    <strong>3 lines</strong> that look like signal (<code>assert</code>, <code>E&hellip;</code>, a <code>.py:line</code> pointer).
+    Everything else is dropped by omission &mdash; it&rsquo;s a keep-list, not a guess.
+  </p>
+</div>

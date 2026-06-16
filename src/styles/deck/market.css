@@ -1,0 +1,94 @@
+/* Scatter logos */
+.scatter-slide {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+}
+
+.scatter-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+}
+
+.scatter-text h2 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.scatter-logo {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  transform: rotate(var(--rot));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 3;
+  animation: scatter-pop 0.6s ease both;
+  animation-delay: var(--delay);
+  transition: transform 0.3s ease;
+}
+
+.scatter-logo:hover {
+  transform: rotate(0deg) scale(1.15);
+  z-index: 10;
+}
+
+.scatter-logo img {
+  width: var(--size);
+  height: var(--size);
+  object-fit: contain;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.1));
+  animation: float var(--float-dur, 5s) ease-in-out infinite;
+  animation-delay: var(--float-offset, 0s);
+}
+
+/* Pause the ambient bob while hovering so the lift reads cleanly */
+.scatter-logo:hover img {
+  animation-play-state: paused;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scatter-logo img {
+    animation: none;
+  }
+}
+
+.scatter-logo span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scatter-logo:hover span {
+  opacity: 1;
+}
+
+@keyframes scatter-pop {
+  from {
+    opacity: 0;
+    transform: rotate(var(--rot)) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--rot)) scale(1);
+  }
+}

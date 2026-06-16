@@ -1,0 +1,77 @@
+<!-- Slide 4.5: Demos — prove the "universal remote" claim we just made (placeholders; screenshots/recordings TBD) -->
+<div class="content-slide demos-slide">
+  <p class="overline">From Theory to Proof</p>
+  <h2>Same Trick, <span class="highlight">Two Real Jobs</span></h2>
+  <p class="lead demos-slide__lead">
+    That's the claim. Here it is for real — two everyday tasks, both done by the agent,
+    neither one "writing software." Same action language, very different jobs.
+  </p>
+
+  <div class="demos-grid">
+    <div class="demo-card demo-card--brief">
+      <div class="demo-card__head">
+        <span class="demo-card__num">Demo 1</span>
+        <span class="demo-card__tag">Research &middot; Synthesize &middot; Publish</span>
+      </div>
+      <h3 class="demo-card__title">Daily paper brief &rarr; Confluence</h3>
+      <p class="demo-card__desc">
+        Agent surveys the Hugging Face Daily Papers feed, picks the most relevant paper,
+        writes a structured brief, and posts it to our Confluence space.
+      </p>
+      <div class="demo-card__flow">
+        <span class="demo-card__step">HF Daily Papers</span>
+        <span class="demo-card__arrow">&rarr;</span>
+        <span class="demo-card__step">structured brief</span>
+        <span class="demo-card__arrow">&rarr;</span>
+        <span class="demo-card__step">Confluence page</span>
+      </div>
+      <div class="demo-card__prereqs" aria-label="Daily paper brief prerequisites">
+        <span class="demo-card__prereq-label">Needs</span>
+        <span class="demo-card__prereq">Atlassian MCP connected</span>
+        <span class="demo-card__prereq">HF API skill</span>
+        <span class="demo-card__prereq">extract + write skill</span>
+      </div>
+      <p class="demo-card__notice">Watch for: it doesn't just summarize — it <strong>writes into a system we actually read.</strong></p>
+      <div class="demo-card__placeholder">
+        <span class="demo-card__placeholder-icon" aria-hidden="true">&#9655;</span>
+        <span>recording / screenshot goes here</span>
+      </div>
+    </div>
+
+    <div class="demo-card demo-card--triage">
+      <div class="demo-card__head">
+        <span class="demo-card__num">Demo 2</span>
+        <span class="demo-card__tag">Read &middot; Reason &middot; Act</span>
+      </div>
+      <h3 class="demo-card__title">Triaging GitHub issues</h3>
+      <p class="demo-card__desc">
+        Agent reads messy, free-form issues, reasons about each one, and takes
+        structured action — label, prioritize, route, or reply.
+      </p>
+      <div class="demo-card__flow">
+        <span class="demo-card__step">raw issues</span>
+        <span class="demo-card__arrow">&rarr;</span>
+        <span class="demo-card__step">classify + reason</span>
+        <span class="demo-card__arrow">&rarr;</span>
+        <span class="demo-card__step">labels / routing</span>
+      </div>
+      <div class="demo-card__prereqs" aria-label="GitHub issue triage prerequisites">
+        <span class="demo-card__prereq-label">Needs</span>
+        <span class="demo-card__prereq">authenticated <code>gh</code> CLI</span>
+        <a class="demo-card__prereq demo-card__prereq--link" href={`${import.meta.env.BASE_URL}samples/github-management-skill.md`} target="_blank" rel="noopener">github-management skill</a>
+      </div>
+      <p class="demo-card__notice">Watch for: it turns <strong>unstructured human input into structured action.</strong></p>
+      <div class="demo-card__placeholder">
+        <span class="demo-card__placeholder-icon" aria-hidden="true">&#9655;</span>
+        <span>recording / screenshot goes here</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="demos-slide__caption">
+    <!-- TODO (decide once recorded): note whether these run on a vanilla agent or through OmO,
+         and tweak the line below to match. Vanilla → "and this is before the harness gets opinionated."
+         OmO → "the harness is already doing the routing and skill-loading here." -->
+    One action language did both. Next: <em>which</em> agent we run to get this &mdash; and what&rsquo;s under its hood.
+  </p>
+</div>
